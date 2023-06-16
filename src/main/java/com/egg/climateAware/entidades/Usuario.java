@@ -31,19 +31,19 @@ public class Usuario {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 
-    private String id;
-    private String email;
-    private String password;
+    protected String id;
+    protected String email;
+    protected String password;
 
     @Enumerated(EnumType.STRING)
-    private Rol roles;
+    protected Rol roles;
     
     @Temporal(TemporalType.DATE)
-    private Date fechaAlta;
-    private Boolean altaBaja;
+    protected Date fechaAlta;
+    protected Boolean altaBaja;
     
     @OneToOne
-    private Imagen imagen;
+    protected Imagen imagen;
     
 
 }
