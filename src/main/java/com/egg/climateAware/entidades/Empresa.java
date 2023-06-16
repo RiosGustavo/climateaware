@@ -20,7 +20,7 @@ import lombok.ToString;
 
 public class Empresa extends Usuario  {
     
-    private String nombre;
+   private String nombreEmpresa;
     private String cuit;
     private String direccion;
     private String rubro;
