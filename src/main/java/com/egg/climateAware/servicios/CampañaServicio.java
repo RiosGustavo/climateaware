@@ -151,6 +151,8 @@ public class CampañaServicio {
             campaña.setAltaBaja(Boolean.FALSE);
             
             campañaRepositorio.save(campaña);
+            
+            
         }
     }
     

@@ -102,7 +102,7 @@ public class EmpresaServicio {
             //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
             empresa.setPassword(password);
 
-            empresa.setRol(Rol.EMPRESA);
+            empresa.setRol(Rol.EMP);
 
             String idImagen = null;
             /// falta implementar la entidad imagen 
