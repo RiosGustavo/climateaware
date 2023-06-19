@@ -172,7 +172,7 @@ public class CampañaServicio {
             throw new MiExcepcion("Debe ingrear un Cuerpo de la Campaña");
         }
 
-        if (idpublicacion.isEmpty() || idPublicacion == null) {
+        if (idPublicacion.isEmpty() || idPublicacion == null) {
             throw new MiException("La publicacion no puede ser nulo o estar vacio");
         }
 

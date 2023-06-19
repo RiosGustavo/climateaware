@@ -29,8 +29,8 @@ public interface CampañaRepositorio extends JpaRepository<Campaña, String>{
     
     /// ACA ME HACE FALTA IMPORTAR LA ENTIDAD PUBLICACION
     /// revfizar cuadno acutlice el id de Publicación
-     @Query("SELECT pu FROM Publicacion pu WHERE pu.id = :id")
-    public List<Publicacion> buscarPorPublicacion (@Param("id") String id);
+     @Query("SELECT pu FROM Publicacion pu WHERE pu.idPublicacion = :idPublicacion")
+    public List<Publicacion> buscarPorPublicacion (@Param("idPublicacion") String idPublicacion);
     
     
     
