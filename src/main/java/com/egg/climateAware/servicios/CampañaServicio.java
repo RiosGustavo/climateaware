@@ -34,7 +34,7 @@ public class CampañaServicio {
     /// recordar que id es el id de empresa heredado de usuario
     /// FALTA AGREGAR TAMBIEN EL throws MiExcepcion
     @Transactional
-    public void crearCampaña(String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) {
+    public void crearCampaña(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) {
 
         validar(titulo, cuerpo, fechaAlta, idPublicacion, id);
 
