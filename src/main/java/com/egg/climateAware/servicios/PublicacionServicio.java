@@ -14,41 +14,29 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Service 
+@Service
 public class PublicacionServicio {
-      @Autowired
-    private PublicacionRepositorio publicacionRepositorio;
-      
-       @Autowired
-    private ImagenServicio imagenServicio;
-       
-       
-       @Transactional 
-    public void crearPublicacion(MultipartFile archivo,String cuerpo, String video) throws Exception{
-        
-        
-        validar(cuerpo);
-        
-        Publicacion publicacion = new Publicacion();        
-        
-        publicacion.setCuerpo(cuerpo);
-        
-        publicacion.setFechaAlta(new Date());
-        
-        Imagen imagen = imagenServicio.guardar(archivo);
 
-        publicacion.setImagen(imagen);
-        
-        publicacion.setVideo(video);
-        
-        publicacionRepositorio.save(publicacion);
-        
-        
-    }
-      
-    
+    @Autowired
+    private PublicacionRepositorio publicacionRepositorio;
+
+    @Autowired
+    private ImagenServicio imagenServicio;
+
     @Transactional
-    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String cuerpo, String video ) throws Exception {
+    public void crearPublicacion(MultipartFile archivo, String cuerpo, String video) throws Exception {
+        validar(cuerpo);
+        Publicacion publicacion = new Publicacion();
+        publicacion.setCuerpo(cuerpo);
+        publicacion.setFechaAlta(new Date());
+        Imagen imagen = imagenServicio.guardar(archivo);
+        publicacion.setImagen(imagen);
+        publicacion.setVideo(video);
+        publicacionRepositorio.save(publicacion);
+    }
+
+    @Transactional
+    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String cuerpo, String video) throws Exception {
 
         validar(cuerpo);
 
@@ -56,63 +44,59 @@ public class PublicacionServicio {
 
         if (respuesta.isPresent()) {
             Publicacion publicacion = respuesta.get();
-
             publicacion.setCuerpo(cuerpo);
             publicacion.setVideo(video);
             String idImagen = null;
-            
-            if(publicacion.getImagen() != null){
+            if (publicacion.getImagen() != null) {
                 idImagen = publicacion.getImagen().getId();
             }
-            
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            
             publicacion.setImagen(imagen);
             publicacionRepositorio.save(publicacion);
         }
 
     }
-    
-    
-   /*     @Transactional
+
+    /*
+   @Transactional
     public void eliminarPublicacion(String idPublicacion ) throws Exception { 
-
-            publicacionRepositorio.deleteById(idPublicacion);
-       
-
+            publicacionRepositorio.deleteById(idPublicacion);       
     }
-    */
-   public Publicacion getOne(String idPublicacion) {
+     */
+    public Publicacion getOne(String idPublicacion) {
         return publicacionRepositorio.getOne(idPublicacion);
     }
-
 
     //@Transactional
     public List<Publicacion> listarPublicaciones() {
         List<Publicacion> publicaciones = new ArrayList<>();
         publicaciones = publicacionRepositorio.findAll();
+        //intento solo traer las que no estan dadas de baja
+        for (int j=0; j < publicaciones.size(); j++){
+            if(publicaciones.get(j).getAltaBaja()){
+                publicaciones.remove(j);
+            }
+        }
         return publicaciones;
     }
 
-    
-     @Transactional 
-    public void bajaPublicacion(String idPublicacion) throws Exception{        
-        
-       Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);       
+    @Transactional
+    public void bajaPublicacion(String idPublicacion) throws Exception {
 
-       if (respuesta.isPresent()){
-           Publicacion publicacion = respuesta.get();           
-        publicacion.setAltaBaja(Boolean.TRUE);           
-         publicacionRepositorio.save(publicacion);
-       }
-       
+        Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
+
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            publicacion.setAltaBaja(Boolean.TRUE);
+            publicacionRepositorio.save(publicacion);
+        }
+
     }
-    
-    
+
     private void validar(String cuerpo) throws Exception {
         if (cuerpo.isEmpty() || cuerpo == null) {
             throw new Exception("El cuerpo no puede ser nulo o estar vacío");
         }
-    }    
-    
+    }
+
 }
