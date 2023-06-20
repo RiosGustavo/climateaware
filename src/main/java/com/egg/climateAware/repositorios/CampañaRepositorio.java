@@ -27,8 +27,7 @@ public interface CampañaRepositorio extends JpaRepository<Campaña, String>{
     @Query("SELECT em FROM Empresa em WHERE em.nombreEmpresa = :nombreEmpresa")
     public List<Campaña> buscarPorNombreEmpresa (@Param("nombreEmpresa") String nombreEmpresa);
     
-    /// ACA ME HACE FALTA IMPORTAR LA ENTIDAD PUBLICACION
-    /// revfizar cuadno acutlice el id de Publicación
+   
      @Query("SELECT pu FROM Publicacion pu WHERE pu.idPublicacion = :idPublicacion")
     public List<Publicacion> buscarPorPublicacion (@Param("idPublicacion") String idPublicacion);
     

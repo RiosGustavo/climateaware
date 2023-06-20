@@ -2,6 +2,8 @@ package com.egg.climateAware.servicios;
 
 import com.egg.climateAware.entidades.Campaña;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Imagen;
+import com.egg.climateAware.enumeraciones.Rol;
 import com.egg.climateAware.repositorios.CampañaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class EmpresaServicio {
     ///// FALTA AGREGAR EL throws MiExcepcion
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) {
+            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
 
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
 
@@ -56,7 +58,7 @@ public class EmpresaServicio {
         empresa.setPassword(password);
 
         //// FALTA TRAER EL USUARIO ACUTALIZADO 
-        empresa.setRol(Rol.EMPRESA);
+        empresa.setRoles(Rol.EMP);
 
         ////// falta agregar la parete de la imagen 
         Imagen imagen = imagenServicio.guardar(archivo);
@@ -69,12 +71,12 @@ public class EmpresaServicio {
 
     @Transactional
     public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) {
+            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
         if (id == null || id.isEmpty()) {
-            throw new MiExcepcion("Debe ingrear el id de la Empresa");
+            throw new Exception("Debe ingrear el id de la Empresa");
 
         }
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
@@ -102,7 +104,7 @@ public class EmpresaServicio {
             //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
             empresa.setPassword(password);
 
-            empresa.setRol(Rol.EMP);
+            empresa.setRoles(Rol.EMP);
 
             String idImagen = null;
             /// falta implementar la entidad imagen 
@@ -135,12 +137,12 @@ public class EmpresaServicio {
     }
 
     @Transactional
-    public void darDeBajaEmpresa(String id) {
+    public void darDeBajaEmpresa(String id) throws Exception {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
         if (id == null || id.isEmpty()) {
-            throw new MiExcepcion("Debe ingrear el id de la Empresa");
+            throw new Exception("Debe ingrear el id de la Empresa");
 
         }
 
@@ -156,38 +158,38 @@ public class EmpresaServicio {
     //// FALTA IMPLEMENTAR LA SEGURIDAD PARA CUANDO SE LOGUE LA EMPRESA  "loadUserByUsername"
 ///// FALTA AGREGAR EL throws MiExcepcion
     private void validar(String nombreEmpresa, String cuit, String direccion,
-            String rubro, String email, String password, String password2, String idCampaña) {
+            String rubro, String email, String password, String password2, String idCampaña) throws Exception {
 
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
-            throw new MiExcepcion("Debe ingrear el Nombre de la Empresa");
+            throw new Exception("Debe ingrear el Nombre de la Empresa");
         }
 
         if (cuit.isEmpty() || cuit == null) {
-            throw new MiExcepcion("Debe ingrear el CUIT de la Empresa");
+            throw new Exception("Debe ingrear el CUIT de la Empresa");
         }
 
         if (direccion.isEmpty() || direccion == null) {
-            throw new MiExcepcion("Debe ingrear la direccion de la Empresa");
+            throw new Exception("Debe ingrear la direccion de la Empresa");
         }
 
         if (rubro.isEmpty() || rubro == null) {
-            throw new MiExcepcion("Debe especificar el rubro al que pertenece su Empresa");
+            throw new Exception("Debe especificar el rubro al que pertenece su Empresa");
         }
 
         if (email.isEmpty() || email == null) {
-            throw new MiExcepcion("Debe debe ingresar email valido de su Empresa");
+            throw new Exception("Debe debe ingresar email valido de su Empresa");
         }
 
         if (password.isEmpty() || password == null || password.length() <= 8) {
-            throw new MiExcepcion("Debe ingrear un password y de mas de 8 caracteres");
+            throw new Exception("Debe ingrear un password y de mas de 8 caracteres");
         }
 
         if (!password.equals(password2)) {
-            throw new MiExcepcion("Los password ingresados deben ser iguales");
+            throw new Exception("Los password ingresados deben ser iguales");
         }
 
         if (idCampaña.isEmpty() || idCampaña == null) {
-            throw new MiExcepcion("La campaña no puede ser nulo o estar vacia");
+            throw new Exception("La campaña no puede ser nulo o estar vacia");
         }
 
     }

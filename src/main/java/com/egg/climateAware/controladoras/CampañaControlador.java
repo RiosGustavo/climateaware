@@ -1,5 +1,6 @@
-package com.egg.climateAware.controladores;
+package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Campaña;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.servicios.CampañaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
@@ -36,33 +37,33 @@ public class CampañaControlador {
     @PostMapping("/registro")
     public String registro(MultipartFile archivo, @RequestParam(required = false) String titulo, @RequestParam String cuerpo,
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date fechaAlta, @RequestParam String idPublicacion,
-            @RequestParam String id, ModelMap modelo) throws MiExcepcion {//// PONER ACA COMO LOS CHICOS LE PUSIERON A LA EXCEPCION
-        //(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id)
+            @RequestParam String id, ModelMap modelo) throws Exception {
+        
         try {
             campañaServicio.crearCampaña(archivo, titulo, cuerpo, fechaAlta, idPublicacion, id);
 
             modelo.put("exito", "Campaña Creada Exitosamente");
 
-            ///// REVIZAR ACA COMO PUSIERON LOS CHICOS A LA CLASE EXCEPCION
+            
         } catch (Exception ex) {
             List<Empresa> empresas = empresaServicio.listarEmpresas();
             modelo.addAttribute("empresas", empresas);
 
             modelo.put("error", ex.getMessage());
 
-            return "campaña_form.html";  //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA CREAR LAS CAMPAÑAS
+            return "campaña_form.html";  
 
         }
-        return "index.html"; ////PREGUNTAR SI LE PONEMOS QUE DESPUES DE REGISTRASE SE DEVUELVA AL INDEX
+        return "index.html"; 
 
     }
 
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
-        List<Campaña> campañas = campañaServicio.listarCampañas()
-        :
+        List<Campaña> campañas = campañaServicio.listarCampañas();
+        
         modelo.addAttribute("campañas", campañas);
-        return "campaña_list.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA LISTAR LAS campañas
+        return "campaña_list.html"; 
     }
 
     @GetMapping("/modificar/{idCampaña}")
@@ -71,7 +72,7 @@ public class CampañaControlador {
         List<Empresa> empresas = empresaServicio.listarEmpresas();
 
         modelo.addAttribute("empresas", empresas);
-        return "campaña_modificar.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS campañas
+        return "campaña_modificar.html"; 
     }
 
     @PostMapping("/modificar/{idCampaña}")
@@ -83,20 +84,20 @@ public class CampañaControlador {
 
             campañaServicio.actualizarCampaña(archivo, idCampaña, titulo, cuerpo, fechaAlta, idPublicacion, id);
             return "redirect:../lista";
-        } catch (MiException ex) {
+        } catch (Exception ex) {
             List<Empresa> empresas = empresaServicio.listarEmpresas();
             modelo.addAttribute("empresas", empresas);
             modelo.put("error", ex.getMessage());
-            return "campaña_modificar.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS campañas
+            return "campaña_modificar.html"; 
         }
 
     }
     
-    
+   
     
 
     @GetMapping("/eliminar/{id}")
-    public String darDeBajaCamapña(@PathVariable String idCampaña) {
+    public String darDeBajaCamapña(@PathVariable String idCampaña) throws Exception {
         campañaServicio.darDeBajaCampaña(idCampaña);
 
         return "redirec.../lista";
