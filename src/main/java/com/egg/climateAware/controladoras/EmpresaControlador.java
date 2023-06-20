@@ -1,4 +1,4 @@
-package com.egg.climateAware.controladores;
+package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.servicios.EmpresaServicio;
@@ -74,7 +74,7 @@ public class EmpresaControlador {
     }
 
     @GetMapping("/eliminar/{id}")
-    public String darDeBajaEmpresa(@PathVariable String id) {
+    public String darDeBajaEmpresa(@PathVariable String id) throws Exception {
         empresaServicio.darDeBajaEmpresa(id);
         
         return"redirec.../lista";

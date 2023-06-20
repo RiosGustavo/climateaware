@@ -2,6 +2,7 @@ package com.egg.climateAware.servicios;
 
 import com.egg.climateAware.entidades.Campaña;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.repositorios.CampañaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class CampañaServicio {
     /// recordar que id es el id de empresa heredado de usuario
     /// FALTA AGREGAR TAMBIEN EL throws MiExcepcion
     @Transactional
-    public void crearCampaña(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) {
+    public void crearCampaña(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         validar(titulo, cuerpo, fechaAlta, idPublicacion, id);
 
@@ -72,12 +73,12 @@ public class CampañaServicio {
 
     @Transactional
     public void actualizarCampaña(MultipartFile archivo, String idCampaña, String titulo,
-            String cuerpo, Date fechaAlta, String idPublicacion, String id) {
+            String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         Optional<Campaña> respuesta = campañaRepositorio.findById(idCampaña);
 
         if (idCampaña == null || idCampaña.isEmpty()) {
-            throw new MiExcepcion("Debe ingrear el id de la Campaña");
+            throw new Exception("Debe ingrear el id de la Campaña");
 
         }
 
@@ -139,11 +140,11 @@ public class CampañaServicio {
     }
     
     @Transactional
-    public void darDeBajaCampaña(String idCampaña){
+    public void darDeBajaCampaña(String idCampaña) throws Exception{
         Optional<Campaña> respuesta = campañaRepositorio.findById(idCampaña);
         
         if(idCampaña == null || idCampaña.isEmpty()){
-            throw new MiExcepcion("Debe ingrear el id de la Campaña");
+            throw new Exception("Debe ingrear el id de la Campaña");
         }
         
         if(respuesta.isPresent()){
@@ -162,27 +163,27 @@ public class CampañaServicio {
 
  ///// FALTA AGREGAR EL throws MiExcepcion
 //// REVIZAR COMO ES EL id DE PUBLICACIN
-    public void validar(String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) {
+    public void validar(String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         if (titulo.isEmpty() || titulo == null) {
-            throw new MiExcepcion("Debe ingrear un Titulo de la Campaña");
+            throw new Exception("Debe ingrear un Titulo de la Campaña");
         }
 
         if (cuerpo.isEmpty() || cuerpo == null) {
-            throw new MiExcepcion("Debe ingrear un Cuerpo de la Campaña");
+            throw new Exception("Debe ingrear un Cuerpo de la Campaña");
         }
 
         if (idPublicacion.isEmpty() || idPublicacion == null) {
-            throw new MiException("La publicacion no puede ser nulo o estar vacio");
+            throw new Exception("La publicacion no puede ser nulo o estar vacio");
         }
 
         if (fechaAlta == null) {
-            throw new MIExcepcion("fecha puede ser nulo o estar vacio");
+            throw new Exception("fecha puede ser nulo o estar vacio");
 
         }
 
         if (id.isEmpty() || id == null) {
-            throw new MiException("La Empresa no puede ser nula o estar vacia");
+            throw new Exception("La Empresa no puede ser nula o estar vacia");
         }
 
     }
