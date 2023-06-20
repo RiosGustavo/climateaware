@@ -28,7 +28,10 @@ public class VotanteControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(MultipartFile archivo, String mail, String nombreApellido, String dni, String contrasena, String contrasena2, ModelMap modelo) {
+    public String registro(@RequestParam(required = false)MultipartFile archivo,@RequestParam(required = false) String mail,
+            @RequestParam(required = false)String nombreApellido,@RequestParam(required = false) String dni,
+            @RequestParam(required = false)String contrasena,@RequestParam(required = false) String contrasena2,
+            ModelMap modelo) {
         try {
 //            votanteServicio.crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email, String password, String password2);
             modelo.put("exito", "La Empresa ha sido registrada Exitosamente");
@@ -45,7 +48,7 @@ public class VotanteControlador {
     }
 
     @GetMapping("/modificarPerfil/{id}")
-    public String modificiarPerfil(@PathVariable String id, ModelMap modelo) {
+    public String modificiarPerfil(@RequestParam @PathVariable String id, ModelMap modelo) {
 //        modelo.put("votante", votanteRepositorio.getOne(id));
         return "modificar_votante.html";
     }
@@ -65,7 +68,7 @@ public class VotanteControlador {
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable String id){
+    public String eliminar(@RequestParam @PathVariable String id){
 //        votanteServicio.bajaVotante(id);
         return "index.html";
     }

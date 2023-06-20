@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -36,7 +38,8 @@ public class AdministradorControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(String email, MultipartFile archivo, String contrasena, String contrasena2, ModelMap modelo) {
+    public String registro(@RequestParam(required = false) String email, @RequestParam(required = false) MultipartFile archivo, 
+            @RequestParam(required = false) String contrasena, @RequestParam(required = false) String contrasena2, ModelMap modelo) {
 
         try {
 //            administradorServicio.crearUsuario(archivo, email, contrasena, contrasena2);
@@ -83,5 +86,9 @@ public class AdministradorControlador {
         return "lista_blogger.html";
     }
     
-    
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@RequestParam @PathVariable String id){
+//        usuario.cambiarEstado(id);
+        return "index.html";
+    }
 }

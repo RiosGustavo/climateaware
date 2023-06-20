@@ -23,7 +23,7 @@ public class PublicacionControlador {
 //    PublicacionServicio publicacionServicio = new PublicacionServicio();
 
     @GetMapping("/{id}")
-    public String id(@PathVariable String id, ModelMap modelo){
+    public String id(@RequestParam @PathVariable String id, ModelMap modelo){
 //        modelo.put("publicacion",publicacionServicio.getOne(id));
         return "publicacion.html";
     }
@@ -34,7 +34,8 @@ public class PublicacionControlador {
     }
 
     @PostMapping("creacion")
-    public String creacion(String cuerpo, MultipartFile archivo, String video, ModelMap modelo) {
+    public String creacion(@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
+            @RequestParam(required = false) String video, ModelMap modelo) {
         try {
 
 //        publicacionServicio.crearPublicacion(archivo, cuerpo, video);
@@ -56,7 +57,8 @@ public class PublicacionControlador {
     }
 
     @PostMapping("/modificacion/{id}")
-    public String modificacion(@PathVariable String id, MultipartFile archivo, String cuerpo, String video, ModelMap modelo) {
+    public String modificacion(@RequestParam @PathVariable String id,@RequestParam(required = false) MultipartFile archivo,
+            @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
 //               publicacionServicio.modificarPublicacion(archivo, id, cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
@@ -65,11 +67,11 @@ public class PublicacionControlador {
 //            modelo.put("publicacion",publicacionServicio.getOne(id));
             return "modificar.html";
         }
-        return "redirect:/publicacion/id ?";
+        return "redirect:/publicacion/id";
     }
     
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable String id){
+    public String eliminar(@RequestParam @PathVariable String id){
 //        publicacionServicio.bajaPublicacion(id);
         return "index.html";
     }
