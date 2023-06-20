@@ -1,7 +1,15 @@
 
-<html xmlns:th="https://www.thymeleaf.org/">
-   
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <head th:replace= "/fragments/head :: head" </head>
     <body>
-       
-    </body>
-</html>
+<!--en este header se encuentra el nav  <div class="hero"></div>-->
+<header> 
+    <nav th:replace= "/fragments/navbar :: nav" </nav>
+    <footer th:replace="/fragments/footer :: footer" </footer>
+</header>
