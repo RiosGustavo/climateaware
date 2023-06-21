@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
     //// REVIZAR CUAL ES EL ID DE USUARIO PUES POR HERENCIA ES EL MISMO DE LA EMPRESA
-    @Query("SELECT em FROM Empresa em WHERE em.id = :id")
+    /*@Query("SELECT em FROM Empresa em WHERE em.id = :id")
     public Empresa buscarPorId (@Param("id") String id );
     
     @Query("SELECT em FROM Empresa em WHERE em.nombreEmpresa = :nombreEmpresa")
@@ -30,8 +30,8 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
     
      @Query("SELECT ca FROM Campaña ca WHERE ca.idCampaña = :idcampaña")
-    public List<Campaña> buscarPorCampaña (@Param("idCampaña ") String idCampaña  );
-    
+    public List<Campaña> buscarPorCampaña (@Param("idCampaña") String idCampaña  );
+    */
     
     
     

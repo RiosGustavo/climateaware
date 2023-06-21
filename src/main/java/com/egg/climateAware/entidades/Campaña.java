@@ -39,9 +39,10 @@ public class Campaña {
     private Date fechaAlta;
 
     //////  ACA FALTA LE ENTIDAD PUBLICACION
+    @OneToOne
     private Publicacion publicaciones;
 
-    @ManyToOne
+    @OneToOne
     private Empresa empresa;
     //// ACA FALTA LA ENTIDAD IMAGEN
     @OneToOne
