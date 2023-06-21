@@ -1,12 +1,10 @@
 package com.egg.climateAware.entidades;
 
-import com.egg.climateAware.enumeraciones.Rol;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Getter
@@ -24,27 +23,29 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
-
-public class Usuario {
+public class Campaña {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-
-    protected String id;
-    protected String email;
-    protected String password;
-
-    @Enumerated(EnumType.STRING)
-    protected Rol roles;
+    private String idCampaña;
     
+    private String titulo;
+    private String cuerpo;
+    private Boolean altaBaja;
+
     @Temporal(TemporalType.DATE)
-    protected Date fechaAlta;
-    protected Boolean altaBaja;
-    
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private Date fechaAlta;
+
+    //////  ACA FALTA LE ENTIDAD PUBLICACION
+    private Publicacion publicaciones;
+
+    @ManyToOne
+    private Empresa empresa;
+    //// ACA FALTA LA ENTIDAD IMAGEN
     @OneToOne
-    protected Imagen imagen;
+    private Imagen imagen;
     
-
-
+    
 }
