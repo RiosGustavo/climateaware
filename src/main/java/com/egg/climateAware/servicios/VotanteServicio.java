@@ -99,8 +99,7 @@ public class VotanteServicio {
 
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
-            votante.setAltaBaja(Boolean.TRUE);
-
+            votante.setAltaBaja(false);
             votanteRepositorio.save(votante);
         }
 
@@ -115,7 +114,7 @@ public class VotanteServicio {
         votantes = votanteRepositorio.findAll();
         
          for (int j=0; j < votantes.size(); j++){
-            if(votantes.get(j).getAltaBaja()){
+            if(!votantes.get(j).getAltaBaja()){
                 votantes.remove(j);
             }
         }

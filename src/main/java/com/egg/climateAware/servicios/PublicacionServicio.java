@@ -31,6 +31,7 @@ public class PublicacionServicio {
         publicacion.setFechaAlta(new Date());
         Imagen imagen = imagenServicio.guardar(archivo);
         publicacion.setImagen(imagen);
+        publicacion.setAltaBaja(true);
         publicacion.setVideo(video);
         publicacionRepositorio.save(publicacion);
     }
@@ -73,7 +74,7 @@ public class PublicacionServicio {
         publicaciones = publicacionRepositorio.findAll();
         //intento solo traer las que no estan dadas de baja
         for (int j=0; j < publicaciones.size(); j++){
-            if(publicaciones.get(j).getAltaBaja()){
+            if(!publicaciones.get(j).getAltaBaja()){
                 publicaciones.remove(j);
             }
         }
@@ -87,7 +88,7 @@ public class PublicacionServicio {
 
         if (respuesta.isPresent()) {
             Publicacion publicacion = respuesta.get();
-            publicacion.setAltaBaja(Boolean.TRUE);
+            publicacion.setAltaBaja(false);
             publicacionRepositorio.save(publicacion);
         }
 
