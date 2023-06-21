@@ -5,7 +5,9 @@
  */
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.servicios.EmpresaServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
+import com.egg.climateAware.servicios.VotanteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,13 +24,12 @@ public class AdministradorControlador {
 
 //    @Autowired
 //    AdministadorServicio administradorServicio = new AdministradorServicio();
-    
-//    @Autowired
-//    VotanteServicio votanteServicio = new VotanteServicio();    
+    @Autowired
+    VotanteServicio votanteServicio = new VotanteServicio();
 
-//    @Autowired
-//    EmpresaServicio empresaServicio = new EmpresaServicio();    
-        
+    @Autowired
+    EmpresaServicio empresaServicio = new EmpresaServicio();
+
     @Autowired
     UsuarioServicio usuarioServicio = new UsuarioServicio();
 
@@ -38,7 +39,7 @@ public class AdministradorControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam(required = false) String email, @RequestParam(required = false) MultipartFile archivo, 
+    public String registro(@RequestParam(required = false) String email, @RequestParam(required = false) MultipartFile archivo,
             @RequestParam(required = false) String contrasena, @RequestParam(required = false) String contrasena2, ModelMap modelo) {
 
         try {
@@ -53,42 +54,42 @@ public class AdministradorControlador {
 
         return "index.html";
     }
-    
+
 //LISTA DE TODOS
     @GetMapping("/lista")
     public String lista(ModelMap modelo) {
-       modelo.put("usuarios",usuarioServicio.listaUsuarios());
-       return "lista.html";
+        modelo.put("usuarios", usuarioServicio.listaUsuarios());
+        return "lista.html";
     }
-    
+
 //LISTAS SEPARADAS  
-     @GetMapping("/listaAdministrador")
+    @GetMapping("/listaAdministrador")
     public String listaAdministradores(ModelMap modelo) {
-//       modelo.put("administradores".administradorServicio.listaAdministradores());
-       return "lista_admin.html";
+//       modelo.put("administradores",administradorServicio.listaAdministradores());
+        return "lista_admin.html";
     }
-    
-     @GetMapping("/listaEmpresas")
+
+    @GetMapping("/listaEmpresas")
     public String listaEmpresas(ModelMap modelo) {
-//       modelo.put("empresas".administradorServicio.listarEmpresas());
-       return "lista_empresa.html";
+//       modelo.put("empresas",administradorServicio.listarEmpresas());
+        return "lista_empresa.html";
     }
-    
-     @GetMapping("/listaVotantes")
+
+    @GetMapping("/listaVotantes")
     public String listaVotantes(ModelMap modelo) {
-//       modelo.put("votantes".votanteServicio.listarVotantes());
-       return "lista_votante.html";
+       modelo.put("votantes",votanteServicio.listarVotantes());
+        return "lista_votante.html";
     }
-    
+
     @GetMapping("/ListaBlogger")
-    public String listaBlogger(ModelMap modelo){
-//         modelo.put("bloggers".bloggerServicio.listarBloggers());
+    public String listaBlogger(ModelMap modelo) {
+//         modelo.put("bloggers",bloggerServicio.listarBloggers());
         return "lista_blogger.html";
     }
-    
+
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@RequestParam @PathVariable String id){
-//        usuario.cambiarEstado(id);
+    public String eliminar(@RequestParam @PathVariable String id) throws Exception {
+        usuarioServicio.cambiarEstado(id);
         return "index.html";
     }
 }

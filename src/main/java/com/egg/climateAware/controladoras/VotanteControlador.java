@@ -5,6 +5,7 @@
  */
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.servicios.VotanteServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class VotanteControlador {
 
     @Autowired
-//    VotanteServicio votanteServicio = new VotanteServicio();
+    VotanteServicio votanteServicio = new VotanteServicio();
 
     @GetMapping("/registrar")
     public String registrar() {
@@ -28,17 +29,18 @@ public class VotanteControlador {
     }
 
     @PostMapping("/registro")
-    public String registro(@RequestParam(required = false)MultipartFile archivo,@RequestParam(required = false) String mail,
-            @RequestParam(required = false)String nombreApellido,@RequestParam(required = false) String dni,
-            @RequestParam(required = false)String contrasena,@RequestParam(required = false) String contrasena2,
-            ModelMap modelo) {
+    public String registro(@RequestParam(required = false)MultipartFile archivo,@RequestParam(required = false) String idVotante, 
+            @RequestParam(required = false)String nombreApellido,@RequestParam(required = false)String dni, 
+            @RequestParam(required = false)Integer voto, @RequestParam(required = false)String direccion,
+            @RequestParam(required = false)String email, @RequestParam(required = false)String password, 
+            @RequestParam(required = false)String password2,@RequestParam(required = false)String idPublicacion, ModelMap modelo) {
         try {
-//            votanteServicio.crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email, String password, String password2);
+           votanteServicio.crearVotante(archivo, nombreApellido, dni, voto, direccion, email, password, password2, idPublicacion);
             modelo.put("exito", "La Empresa ha sido registrada Exitosamente");
 
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            modelo.put("mail", mail);
+            modelo.put("mail", email);
             modelo.put("nombreAprellido", nombreApellido);
             modelo.put("dni", dni);
 
@@ -49,27 +51,31 @@ public class VotanteControlador {
 
     @GetMapping("/modificarPerfil/{id}")
     public String modificiarPerfil(@RequestParam @PathVariable String id, ModelMap modelo) {
-//        modelo.put("votante", votanteRepositorio.getOne(id));
+       modelo.put("votante", votanteServicio.getOne(id));
         return "modificar_votante.html";
     }
 
     @PostMapping("/modificacionPerfil/{id}")
-    public String modificacionPerfil(@RequestParam String nombreUsuario, @RequestParam String password,
-            String password2, @PathVariable String id, ModelMap modelo) {
+    public String modificacionPerfil(@RequestParam(required = false)MultipartFile archivo,@RequestParam(required = false) String idVotante, 
+            @RequestParam(required = false)String nombreApellido,@RequestParam(required = false)String dni, 
+            @RequestParam(required = false)Integer voto, @RequestParam(required = false)String direccion,
+            @RequestParam(required = false)String email, @RequestParam(required = false)String password, 
+            @RequestParam(required = false)String password2,@RequestParam(required = false)String idPublicacion, ModelMap modelo) {
+        
         try {
-//            votanteServicio.modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2, String idPublicacion)<
+            votanteServicio.modificarVotante(archivo, idVotante, nombreApellido, dni, voto, direccion, email, password, password2, idPublicacion);
             modelo.put("exito", "El usuario se modifico exitosamente!");
             return "index.html";
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-//            modelo.put("votante", votanteRepositorio.getOne(id);
+           modelo.put("votante", votanteServicio.getOne(idVotante));
             return "modificacion_votante.html";
         }
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@RequestParam @PathVariable String id){
-//        votanteServicio.bajaVotante(id);
+    public String eliminar(@RequestParam @PathVariable String id)throws Exception{
+        votanteServicio.bajaVotante(id);
         return "index.html";
     }
 }

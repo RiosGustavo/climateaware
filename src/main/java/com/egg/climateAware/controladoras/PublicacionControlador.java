@@ -5,6 +5,7 @@
  */
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.servicios.PublicacionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class PublicacionControlador {
 
     @Autowired
-//    PublicacionServicio publicacionServicio = new PublicacionServicio();
+    PublicacionServicio publicacionServicio = new PublicacionServicio();
 
     @GetMapping("/{id}")
     public String id(@RequestParam @PathVariable String id, ModelMap modelo){
-//        modelo.put("publicacion",publicacionServicio.getOne(id));
+        modelo.put("publicacion",publicacionServicio.getOne(id));
         return "publicacion.html";
     }
     
@@ -38,7 +39,7 @@ public class PublicacionControlador {
             @RequestParam(required = false) String video, ModelMap modelo) {
         try {
 
-//        publicacionServicio.crearPublicacion(archivo, cuerpo, video);
+        publicacionServicio.crearPublicacion(archivo, cuerpo, video);
             modelo.put("exito", "Publicacion creada exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
@@ -52,7 +53,7 @@ public class PublicacionControlador {
 
     @GetMapping("/modificar/{id}")
     public String modificar(@RequestParam String id, ModelMap modelo) {
-//         modelo.put("publicacion",publicacionServicio.getOne(id));
+         modelo.put("publicacion",publicacionServicio.getOne(id));
         return "modificar_publicacion.html";
     }
 
@@ -60,19 +61,19 @@ public class PublicacionControlador {
     public String modificacion(@RequestParam @PathVariable String id,@RequestParam(required = false) MultipartFile archivo,
             @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-//               publicacionServicio.modificarPublicacion(archivo, id, cuerpo, video);
+               publicacionServicio.modificarPublicacion(archivo, id, cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-//            modelo.put("publicacion",publicacionServicio.getOne(id));
+           modelo.put("publicacion",publicacionServicio.getOne(id));
             return "modificar.html";
         }
         return "redirect:/publicacion/id";
     }
     
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@RequestParam @PathVariable String id){
-//        publicacionServicio.bajaPublicacion(id);
+    public String eliminar(@RequestParam @PathVariable String id) throws Exception{
+       publicacionServicio.bajaPublicacion(id);
         return "index.html";
     }
 
