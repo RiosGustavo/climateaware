@@ -62,8 +62,8 @@ public class CampañaServicio {
         campaña.setFechaAlta(new Date());
         campaña.setPublicaciones(publicacion);
         campaña.setEmpresa(empresa);
-        campaña.setAltaBaja(Boolean.FALSE);
-        ////// falta agregar la parete de la imagen 
+        campaña.setAltaBaja(Boolean.TRUE);
+        
         Imagen imagen = imagenServicio.guardar(archivo);
         campaña.setImagen(imagen);
 

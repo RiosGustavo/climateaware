@@ -38,10 +38,10 @@ public class Campaña {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
 
-    //////  ACA FALTA LE ENTIDAD PUBLICACION
+    @OneToOne
     private Publicacion publicaciones;
 
-    @ManyToOne
+    @OneToOne
     private Empresa empresa;
     //// ACA FALTA LA ENTIDAD IMAGEN
     @OneToOne

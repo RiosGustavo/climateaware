@@ -30,7 +30,7 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
     
      @Query("SELECT ca FROM Campaña ca WHERE ca.idCampaña = :idcampaña")
-    public List<Campaña> buscarPorCampaña (@Param("idCampaña ") String idCampaña  );
+    public List<Campaña> buscarPorCampaña (@Param("idCampaña") String idCampaña  );
     
     
     
