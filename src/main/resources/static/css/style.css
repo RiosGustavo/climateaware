@@ -1,5 +1,6 @@
 /* Reset CSS */
-html{
+
+html {
   margin: 0;
   padding: 0;
   border: 0;
@@ -7,115 +8,112 @@ html{
   font: inherit;
   vertical-align: baseline;
 }
+body {
+  background-color: #f9fff8 !important;
+}
 
-@font-face{
+@font-face {
   font-family: Rigtheous;
   src: url(../fonts/Righteous-Regular.ttf);
 }
-.hero-img {
- 
-  height: 100vh;
-  width: 100%;
-  display    : flex;
-  opacity    : 0.2;
-  background-size: cover;
-  position:fixed;
-  z-index: -1;
-  left: 0;
-  top: 0;
+@font-face {
+  font-family: "croogla";
+  src: url("../fonts/croogla.ttf") format("truetype");
+}
+.climateAware {
+  font-family: "croogla", Arial, sans-serif;
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
 }
 
-.imagenNavbar{
-  width: 170px;
-  height: 50px;
+.imagenNavbar {
+  width: 40px;
+  height: 40px;
+  margin-left: 0.5rem;
   padding: auto;
 }
-.navbar .container-fluid #navbarNav .nav-item .nav-link:hover{
-  text-decoration:none;
-  color: #80B918;
+.navbar .container-fluid #navbarNav .nav-item .nav-link:hover {
+  text-decoration: none;
+  color: #80b918;
   transition: 0.5s;
 }
-#navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover{
-  text-decoration:none;
-  color: #80B918;
+#navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
+  text-decoration: none;
+  color: #80b918;
   transition: 0.5s;
 }
 .custom-toggler.navbar-toggler {
-  border-color: #80B918;
+  border-color: #80b918;
   transition: 0.5s;
 }
 /* Setting the stroke to green using rgb values (0, 128, 0) */
 
-.custom-toggler .navbar-toggler-icon {
-  background-image; url(
-"data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' 
-xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 128, 0, 0.8)'
-stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 
-16h24M4 24h24'/%3E%3C/svg%3E");
-}
 /*PRESEENTACION*/
-.text-center{
+.text-center {
   transition: height 0.3s ease;
 }
-.text-pre{
-  font-family:"Rigtheous" ;
-  color:#80B918;
+.text-pre {
+  font-family: "Rigtheous";
+  color: #80b918;
   font-size: 70px;
   text-shadow: #020201;
   text-decoration: underline;
   text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
-.text-camp{
-  font-family:"Rigtheous" ;
-  color:#80B918;
+.text-camp {
+  font-family: "Rigtheous";
+  color: #80b918;
   font-size: 50px;
   text-shadow: #020201;
   text-decoration: underline;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
 }
-.text-center .col-lg-7 .lead{
+.text-center .col-lg-7 .lead {
   font-weight: bold;
 }
-#tituloPresentacion{
+#tituloPresentacion {
   animation: mover-abajo-arriba 2s 1;
 }
-.campañaPost.mover-izquierda-derecha{
+.campañaPost.mover-izquierda-derecha {
   animation: mover-derecha-izquierda 5s 1, forwards;
 }
-.campañaPost.mover-derecha-izquierda{
+.campañaPost.mover-derecha-izquierda {
   animation: mover-izquierda-derecha 5s 1, forwards;
 }
 
-
 /*FOOTER*/
-#footerClass .nav .nav-item .nav-link:hover{
-  text-decoration:none;
-  color: #80B918 !important;
+#footerClass .nav .nav-item .nav-link:hover {
+  text-decoration: none;
+  color: #80b918 !important;
   transition: 0.5s;
 }
 
 /*KEYFRAMES DE TRANCICIONES*/
 
 /*TRANSICION DE PRESENTACION*/
-@keyframes mover-abajo-arriba{
-  from{
-      transform: translatey(100px);
+@keyframes mover-abajo-arriba {
+  from {
+    transform: translatey(100px);
   }
-  to{transform: translatey(0px);
+  to {
+    transform: translatey(0px);
   }
 }
 /*TRANSICION DE NOTICIAS*/
-@keyframes mover-izquierda-derecha{
-  from{
-      transform: translatex(-100px);
+@keyframes mover-izquierda-derecha {
+  from {
+    transform: translatex(-100px);
   }
-  to{transform: translatex(0px);
+  to {
+    transform: translatex(0px);
   }
 }
-@keyframes mover-derecha-izquierda{
-  from{
-      transform: translatex(100px);
+@keyframes mover-derecha-izquierda {
+  from {
+    transform: translatex(100px);
   }
-  to{transform: translatex(0px);
+  to {
+    transform: translatex(0px);
   }
 }
