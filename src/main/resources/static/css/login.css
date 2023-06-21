@@ -1,0 +1,9 @@
+body {
+  background: #ffffff !important;
+  background: linear-gradient(to right, #ffffff, #bfd200) !important;
+}
+
+.bg {
+  background-image: url(../img/imagen-login5.jpg) !important;
+  background-position: center center !important;
+}
