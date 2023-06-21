@@ -3,6 +3,7 @@ package com.egg.climateAware.repositorios;
 
 import com.egg.climateAware.entidades.Campaña;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Publicacion;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
