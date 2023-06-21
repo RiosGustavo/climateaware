@@ -1,10 +1,8 @@
+
 package com.egg.climateAware.entidades;
 
-import com.egg.climateAware.enumeraciones.Rol;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -18,33 +16,30 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
+@Entity 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@ToString
 
-public class Usuario {
-
+public class Publicacion {
+    
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 
-    protected String id;
-    protected String email;
-    protected String password;
-
-    @Enumerated(EnumType.STRING)
-    protected Rol roles;
+    
+    private String idPublicacion;
+    private String cuerpo;
+    
     
     @Temporal(TemporalType.DATE)
-    protected Date fechaAlta;
-    protected Boolean altaBaja;
+    private Date fechaAlta;
     
-    @OneToOne
-    protected Imagen imagen;
+     @OneToOne
+    private Imagen imagen;
+    private String video;
+    private Boolean altaBaja;
     
-
-
 }
