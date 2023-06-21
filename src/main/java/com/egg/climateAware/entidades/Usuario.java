@@ -46,4 +46,5 @@ public class Usuario {
     protected Imagen imagen;
     
 
+
 }
