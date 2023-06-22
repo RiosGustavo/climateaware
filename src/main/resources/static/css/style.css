@@ -20,16 +20,19 @@ body {
   font-family: "croogla";
   src: url("../fonts/croogla.ttf") format("truetype");
 }
-.climateAware {
+.fs-4 {
   font-family: "croogla", Arial, sans-serif;
-  margin-left: 2rem;
+  font-size: 90px !important;
+  color: #80b918 !important;
+  margin-left: 1rem;
   display: flex;
   align-items: center;
+  text-decoration: underline;
 }
 
 .imagenNavbar {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   margin-left: 0.5rem;
   padding: auto;
 }
@@ -54,11 +57,10 @@ body {
   transition: height 0.3s ease;
 }
 .text-pre {
-  font-family: "Rigtheous";
+  font-family: "croogla";
   color: #80b918;
   font-size: 70px;
   text-shadow: #020201;
-  text-decoration: underline;
   text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 .text-camp {
