@@ -3,8 +3,10 @@ package com.egg.climateAware.servicios;
 import com.egg.climateAware.entidades.Campaña;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.repositorios.CampañaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
+import com.egg.climateAware.repositorios.PublicacionRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,23 +25,21 @@ public class CampañaServicio {
     @Autowired
     private EmpresaRepositorio empresaRepositorio;
 
-    //// FALTA IMPLEMENTAR LA ENTIDAD PUBLICACION
+    
     @Autowired
     private PublicacionRepositorio publicacionRepositorio;
 
-    //// falta implementar la entidad imagen
+   
     @Autowired
     private ImagenServicio imagenServicio;
 
-    //// idPublicacion hay que revisarlo cuidadosamente para ver como se creo en la entidad Publicacion
-    /// recordar que id es el id de empresa heredado de usuario
-    /// FALTA AGREGAR TAMBIEN EL throws MiExcepcion
+    
     @Transactional
     public void crearCampaña(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         validar(titulo, cuerpo, fechaAlta, idPublicacion, id);
 
-        //// implementar entidad Publicacion
+        
         Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
         Optional<Empresa> respuestaEmpresa = empresaRepositorio.findById(id);
 
@@ -109,11 +109,11 @@ public class CampañaServicio {
             campaña.setAltaBaja(Boolean.TRUE);
 
             String idImagen = null;
-            /// falta implementar la entidad imagen 
+           
             if (empresa.getImagen() != null) {
                 idImagen = empresa.getImagen().getId();
             }
-            //// falta implentar la entidad imagen
+           
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
             campaña.setImagen(imagen);
@@ -161,8 +161,7 @@ public class CampañaServicio {
     
     
 
- ///// FALTA AGREGAR EL throws MiExcepcion
-//// REVIZAR COMO ES EL id DE PUBLICACIN
+
     public void validar(String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         if (titulo.isEmpty() || titulo == null) {

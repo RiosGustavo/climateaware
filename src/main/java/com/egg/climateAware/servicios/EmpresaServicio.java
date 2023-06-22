@@ -24,11 +24,11 @@ public class EmpresaServicio {
     @Autowired
     private CampañaRepositorio campañaRepositorio;
 
-    //// falta implementar la entidad imagen
+    
     @Autowired
     private ImagenServicio imagenServicio;
 
-    ///// FALTA AGREGAR EL throws MiExcepcion
+   
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
             String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
@@ -57,10 +57,10 @@ public class EmpresaServicio {
         //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
         empresa.setPassword(password);
 
-        //// FALTA TRAER EL USUARIO ACUTALIZADO 
+        
         empresa.setRoles(Rol.EMP);
 
-        ////// falta agregar la parete de la imagen 
+        
         Imagen imagen = imagenServicio.guardar(archivo);
 
         empresa.setImagen(imagen);
@@ -107,11 +107,11 @@ public class EmpresaServicio {
             empresa.setRoles(Rol.EMP);
 
             String idImagen = null;
-            /// falta implementar la entidad imagen 
+           
             if (empresa.getImagen() != null) {
                 idImagen = empresa.getImagen().getId();
             }
-            //// falta implentar la entidad imagen
+           
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
             empresa.setImagen(imagen);
@@ -155,8 +155,7 @@ public class EmpresaServicio {
 
     }
 
-    //// FALTA IMPLEMENTAR LA SEGURIDAD PARA CUANDO SE LOGUE LA EMPRESA  "loadUserByUsername"
-///// FALTA AGREGAR EL throws MiExcepcion
+
     private void validar(String nombreEmpresa, String cuit, String direccion,
             String rubro, String email, String password, String password2, String idCampaña) throws Exception {
 

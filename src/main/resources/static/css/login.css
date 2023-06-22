@@ -1,0 +1,52 @@
+body {
+  background: #ffffff !important;
+  background: linear-gradient(to right, #ffffff, #bfd200) !important;
+}
+
+.bg {
+  background-image: url(../img/imagen-login5.jpg) !important;
+  background-position: center center !important;
+}
+
+
+
+/*-------------------Animación mensajes de error y/o exito  ------------------------------*/
+
+
+.alert {
+
+    display: none;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.alert.animated.fadeIn {
+    animation-name: fadeIn;
+}
+
+.alert.animated.fadeOut {
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+/*Muestra el mensaje por encima de los elementos*/
+.error-container {
+    position: absolute !important;
+    
+}
