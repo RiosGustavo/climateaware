@@ -24,10 +24,13 @@ public class PublicacionServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void crearPublicacion(MultipartFile archivo, String cuerpo, String video) throws Exception {
+    public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video) throws Exception {
         validar(cuerpo);
         Publicacion publicacion = new Publicacion();
+        publicacion.setTitulo(titulo);
+        publicacion.setDescripcion(descripcion);
         publicacion.setCuerpo(cuerpo);
+        //publicacion.setFechaAlta(new Date());
         publicacion.setFechaAlta(new Date());
         Imagen imagen = imagenServicio.guardar(archivo);
         publicacion.setImagen(imagen);
@@ -35,9 +38,9 @@ public class PublicacionServicio {
         publicacion.setVideo(video);
         publicacionRepositorio.save(publicacion);
     }
-
+//modificarPublicacion(archivo, id, titulo,descripcion,cuerpo, video);
     @Transactional
-    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String cuerpo, String video) throws Exception {
+    public void modificarPublicacion(MultipartFile archivo, String idPublicacion,String titulo,String descripcion, String cuerpo, String video) throws Exception {
 
         validar(cuerpo);
 
@@ -45,6 +48,8 @@ public class PublicacionServicio {
 
         if (respuesta.isPresent()) {
             Publicacion publicacion = respuesta.get();
+            publicacion.setTitulo(titulo);
+            publicacion.setDescripcion(descripcion);
             publicacion.setCuerpo(cuerpo);
             publicacion.setVideo(video);
             String idImagen = null;
@@ -71,13 +76,7 @@ public class PublicacionServicio {
     //@Transactional
     public List<Publicacion> listarPublicaciones() {
         List<Publicacion> publicaciones = new ArrayList<>();
-        publicaciones = publicacionRepositorio.findAll();
-        //intento solo traer las que no estan dadas de baja
-        for (int j=0; j < publicaciones.size(); j++){
-            if(!publicaciones.get(j).getAltaBaja()){
-                publicaciones.remove(j);
-            }
-        }
+        publicaciones = publicacionRepositorio.listadoPublicacionesActivas();        
         return publicaciones;
     }
 

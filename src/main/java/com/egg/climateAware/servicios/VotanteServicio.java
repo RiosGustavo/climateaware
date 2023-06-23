@@ -29,26 +29,20 @@ public class VotanteServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2, String idPublicacion) throws Exception {
+    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2) throws Exception {
         validar(nombreApellido, dni, direccion, email, password, password2);
 
-        Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
-        Publicacion publicacion = new Publicacion();
-        if (respuestaPublicacion.isPresent()) {
-            publicacion = respuestaPublicacion.get();
-        }
 
         Votante votante = new Votante();
         ///propios
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
-        
-        //votante.setPublicacion(publicacion);
+        votante.setVoto(voto);
 
         //heredados de Usuaio
         votante.setEmail(email);
-        votante.setAltaBaja(Boolean.FALSE);
+        votante.setAltaBaja(true);
         votante.setPassword(password);
         votante.setRoles(Rol.VOT);
         Imagen imagen = imagenServicio.guardar(archivo);
@@ -59,18 +53,14 @@ public class VotanteServicio {
     }
 
     @Transactional
-    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2, String idPublicacion) throws Exception {
-        //validar(String nombreApellido, String dni,String direccion,String email,String password, String password2 )
+    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2) throws Exception {
+        
 
         validar(nombreApellido, dni, direccion, email, password, password2);
 
         Optional<Votante> respuesta = votanteRepositorio.findById(idVotante);
 
-        Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
-        Publicacion publicacion = new Publicacion();
-        if (respuestaPublicacion.isPresent()) {
-            publicacion = respuestaPublicacion.get();
-        }
+        
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
 
@@ -78,11 +68,11 @@ public class VotanteServicio {
             votante.setNombreApellido(nombreApellido);
             votante.setDni(dni);
             votante.setDireccion(direccion);
-          //  votante.setPublicacion(publicacion);
+            votante.setVoto(voto);
+          
 
             //heredados de Usuaio
-            votante.setEmail(email);
-            //votante.setAltaBaja(Boolean.FALSE);
+            votante.setEmail(email);        
             votante.setPassword(password);
             votante.setRoles(Rol.VOT);
             Imagen imagen = imagenServicio.guardar(archivo);
@@ -112,13 +102,7 @@ public class VotanteServicio {
 
     public List<Votante> listarVotantes() {
         List<Votante> votantes = new ArrayList();
-        votantes = votanteRepositorio.findAll();
-        
-         for (int j=0; j < votantes.size(); j++){
-            if(!votantes.get(j).getAltaBaja()){
-                votantes.remove(j);
-            }
-        }
+        votantes = votanteRepositorio.listadoVotantesActivos();
         return votantes;
     }
 
