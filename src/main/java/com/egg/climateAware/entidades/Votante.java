@@ -1,8 +1,9 @@
 
 package com.egg.climateAware.entidades;
 
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Votante  extends Usuario {
     private String dni;
     private Integer voto;
     private String direccion;
-         @OneToOne
-    private Publicacion publicacion;
+    @OneToMany
+    private List<Publicacion> publicaciones;
 
 }

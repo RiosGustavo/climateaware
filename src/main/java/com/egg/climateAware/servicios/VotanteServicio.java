@@ -43,7 +43,8 @@ public class VotanteServicio {
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
-        votante.setPublicacion(publicacion);
+        
+        //votante.setPublicacion(publicacion);
 
         //heredados de Usuaio
         votante.setEmail(email);
@@ -77,7 +78,7 @@ public class VotanteServicio {
             votante.setNombreApellido(nombreApellido);
             votante.setDni(dni);
             votante.setDireccion(direccion);
-            votante.setPublicacion(publicacion);
+          //  votante.setPublicacion(publicacion);
 
             //heredados de Usuaio
             votante.setEmail(email);

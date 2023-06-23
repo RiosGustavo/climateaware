@@ -41,5 +41,6 @@ public class Publicacion {
     private Imagen imagen;
     private String video;
     private Boolean altaBaja;
-    
+    private String titulo;
+    private String descripcion;
 }

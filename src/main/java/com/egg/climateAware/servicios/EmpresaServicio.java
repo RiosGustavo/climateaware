@@ -52,7 +52,7 @@ public class EmpresaServicio {
         empresa.setRubro(rubro);
         empresa.setEmail(email);
         empresa.setAltaBaja(Boolean.FALSE);
-        empresa.setCampañas(campaña);
+        empresa.setCampañas((List<Campaña>) campaña);
 
         //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
         empresa.setPassword(password);
