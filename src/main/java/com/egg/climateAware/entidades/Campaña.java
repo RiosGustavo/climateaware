@@ -1,10 +1,12 @@
 package com.egg.climateAware.entidades;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,17 +38,21 @@ public class Campaña {
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    
     private Date fechaAlta;
 
     //////  ACA FALTA LE ENTIDAD PUBLICACION
-    @OneToOne
-    private Publicacion publicaciones;
+    @OneToMany
+    private List<Publicacion> publicaciones;
 
-    @OneToOne
+    @ManyToOne
     private Empresa empresa;
     //// ACA FALTA LA ENTIDAD IMAGEN
     @OneToOne
     private Imagen imagen;
     
+    private String descripcion;
     
-}
+    @OneToMany
+    private List<Votante> votantes; 
+    }

@@ -42,9 +42,11 @@ public class EmpresaServicio {
         empresa.setDireccion(direccion);
         empresa.setRubro(rubro);
         empresa.setEmail(email);
-        empresa.setAltaBaja(false);
 
-        //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
+        empresa.setAltaBaja(Boolean.FALSE);
+        empresa.setCampañas((List<Campaña>) campaña);
+
+        //// falta agregar la seguridad "new BCryptPasswordEncoder().encode(password)"
         empresa.setPassword(password);
 
         empresa.setRoles(Rol.EMP);
@@ -58,7 +60,8 @@ public class EmpresaServicio {
 
     @Transactional
     public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2, String idCampaña)
+            throws Exception {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
@@ -88,13 +91,13 @@ public class EmpresaServicio {
             empresa.setRubro(rubro);
             empresa.setEmail(email);
 
-            //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
+            //// falta agregar la seguridad "new BCryptPasswordEncoder().encode(password)"
             empresa.setPassword(password);
 
             empresa.setRoles(Rol.EMP);
 
             String idImagen = null;
-            /// falta implementar la entidad imagen 
+            /// falta implementar la entidad imagen
             if (empresa.getImagen() != null) {
                 idImagen = empresa.getImagen().getId();
             }
@@ -170,7 +173,7 @@ public class EmpresaServicio {
         if (email.isEmpty() || email == null) {
             throw new Exception("Debe debe ingresar email valido de su Empresa");
         }
-        
+
         if (password == null || password.isEmpty()) {
             throw new Exception("La contraseña no puede estar vacía");
         }

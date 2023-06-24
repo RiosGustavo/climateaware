@@ -1,9 +1,8 @@
 package com.egg.climateAware.entidades;
 
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +24,6 @@ public class Empresa extends Usuario {
     private String direccion;
     private String rubro;
 
-    @OneToOne
-    private Campaña campañas;
+    @OneToMany
+    private List<Campaña> campañas;
 }

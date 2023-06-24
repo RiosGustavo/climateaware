@@ -62,7 +62,7 @@ public class CampañaServicio {
         campaña.setCuerpo(cuerpo);
         campaña.setEmpresa(empresa);
         campaña.setFechaAlta(new Date());
-        campaña.setPublicaciones(publicacion);
+        campaña.setPublicaciones((List<Publicacion>) publicacion);
         campaña.setEmpresa(empresa);
         campaña.setAltaBaja(Boolean.FALSE);
         ////// falta agregar la parete de la imagen 
@@ -107,7 +107,7 @@ public class CampañaServicio {
             campaña.setTitulo(titulo);
             campaña.setCuerpo(cuerpo);
             campaña.setEmpresa(empresa);
-            campaña.setPublicaciones(publicacion);
+            campaña.setPublicaciones((List<Publicacion>) publicacion);
             campaña.setAltaBaja(Boolean.TRUE);
 
             String idImagen = null;

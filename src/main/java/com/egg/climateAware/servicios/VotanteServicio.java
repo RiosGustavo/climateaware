@@ -27,16 +27,16 @@ public class VotanteServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email, String password, String password2) throws Exception {
+    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email,
+            String password, String password2) throws Exception {
         validar(nombreApellido, dni, direccion, email, password, password2);
 
         Votante votante = new Votante();
-        ///propios
+        /// propios
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
-
-        //heredados de Usuaio
+        // heredados de Usuaio
         votante.setEmail(email);
         votante.setAltaBaja(true);
         votante.setPassword(password);
@@ -49,8 +49,11 @@ public class VotanteServicio {
     }
 
     @Transactional
-    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2, String idPublicacion) throws Exception {
-        //validar(String nombreApellido, String dni,String direccion,String email,String password, String password2 )
+    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni,
+            Integer voto, String direccion, String email, String password, String password2, String idPublicacion)
+            throws Exception {
+        // validar(String nombreApellido, String dni,String direccion,String
+        // email,String password, String password2 )
 
         validar(nombreApellido, dni, direccion, email, password, password2);
 
@@ -64,15 +67,15 @@ public class VotanteServicio {
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
 
-            ///propios
+            /// propios
             votante.setNombreApellido(nombreApellido);
             votante.setDni(dni);
             votante.setDireccion(direccion);
-            votante.setPublicacion(publicacion);
+            // votante.setPublicacion(publicacion);
 
-            //heredados de Usuaio
+            // heredados de Usuaio
             votante.setEmail(email);
-            //votante.setAltaBaja(Boolean.FALSE);
+            // votante.setAltaBaja(Boolean.FALSE);
             votante.setPassword(password);
             votante.setRoles(Rol.VOT);
             Imagen imagen = imagenServicio.guardar(archivo);
@@ -112,7 +115,8 @@ public class VotanteServicio {
         return votantes;
     }
 
-    private void validar(String nombreApellido, String dni, String direccion, String email, String password, String password2) throws Exception {
+    private void validar(String nombreApellido, String dni, String direccion, String email, String password,
+            String password2) throws Exception {
 
         // Verificar si el email ya existe en la base de datos
         Votante usuarioExistente = votanteRepositorio.buscarPorEmail(email);
