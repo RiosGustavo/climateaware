@@ -22,8 +22,7 @@ public class EmpresaControlador {
 
     @GetMapping("/registrar")
     public String registrar() {
-        return "empresa_form.html"; /// ACA CAMBIAR POR COMO LE PUSIERON LOS CHICOS
-        /// A ESTE ARCHIVO DE HTML PARA REGISTRAR LAS EMPRESAS
+        return "empresa_form.html"; 
     }
 
     @PostMapping("/registro")
@@ -34,13 +33,13 @@ public class EmpresaControlador {
             empresaServicio.registrarEmpresa(archivo, nombreEmpresa, cuit, direccion, rubro, email, password, password2, email);
             modelo.put("exito", "La Empresa ha sido registrada Exitosamente");
 
-            ///// REVIZAR ACA COMO PUSIERON LOS CHICOS A LA CLASE EXCEPCION
+            
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
             modelo.put("nombreEmpresa", nombreEmpresa);
-            return "empresa_form.html";  //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA REGISTRAR LAS EMPRESAS
+            return "empresa_form.html";  
         }
-        return "index.html"; ////PREGUNTAR SI LE PONEMOS QUE DESPUES DE REGISTRASE SE DEVUELVA AL INDEX
+        return "index.html"; 
     }
 
     @GetMapping("/lista")
@@ -53,7 +52,7 @@ public class EmpresaControlador {
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable String id, ModelMap modelo) {
         modelo.put("empresa", empresaServicio.getOne(id));
-        return "empresa_modificar.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS EMPRESAS
+        return "empresa_modificar.html"; 
 
     }
 
@@ -66,10 +65,10 @@ public class EmpresaControlador {
 
             return "redirect .../lista";
 
-            ///// REVIZAR ACA COMO PUSIERON LOS CHICOS A LA CLASE EXCEPCION
+            
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "empresa_modificar.html";  //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS EMPRESAS
+            return "empresa_modificar.html";  
         }
     }
 

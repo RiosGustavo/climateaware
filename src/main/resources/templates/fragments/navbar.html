@@ -1,50 +1,63 @@
 <nav class="navbar navbar-expand-md bg-body-tertiary shadow">
     <div class="container-fluid">
-  
+
         <a  class="fs-4 fw-bold text-black text-decoration-none" th:href="@{/}">Climate aware</a>
         <img src="/img/logo.png" class="imagenNavbar" >
-                <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-           <span class="navbar-toggler-icon"></span>
-         </button>
-      
-    
-     <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav ms-auto" >
-         <li class="nav-item">
-           <a class="nav-link" >Novedades</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" >Campañas</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link">Publicaciones</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" th:if="${session.usuariosession != null}" sec:authorize="hasRole('ADMIN', 'VOTANTE, 'EMPRESA')">Panel</a>
-         </li>
-         <div class="collapse navbar-collapse" th:if='${session.usuariosession != null}'>
-           <ul class="navbar-nav">
-             <li class="nav-item dropdown">
-               <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession == null}">
-                 Usuario
-               </button> 
-               <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession != null}" th:text="''+ ${session.usuariosession.nombre}">
-                <i class="bi bi-person"></i>
-            </button>
-               <ul class="dropdown-menu">
-                 <li><a class="dropdown-item" href="#"th:href="@{/registrar}" th:if="${session.usuariosession == null}" >Registro</a></li>
-                 <li><a class="dropdown-item" href=""th:href="@{/login}" th:if="${session.usuariosession == null}">Login</a></li>
-                  <li><a class="dropdown-item" th:href="@{/perfil}" th:if="${session.usuariosession != null}">Editar Perfil</a></li>
-                 <li><a class="dropdown-item" href="/logout" th:if="${session.usuariosession != null}">Cerrar Sesion</a></li>
-                 
-               </ul>
-                 
-             </li>
-           </ul>
-         </div>
-       </ul>
-     </div>
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto" >
+                <li class="nav-item">
+                    <a class="nav-link" >Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" >Campañas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Publicaciones</a>
+
+                </li>
+                
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Listar
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li class="nav-item"><a  class="nav-link" th:href="@{/empresa/lista}" >Listar Empresas</a></li>    
+                        <li class="nav-item"><a  class="nav-link" th:href="@{/campana/lista}" >Listar Campañas</a></li>    
+                        <li class="nav-item"><a  class="nav-link" th:href="@{/publicacion/lista}" >Listar Publicaciones</a></li>
+                    </ul>
+                </div>
+                
+               <li class="nav-item">
+                    <a class="nav-link" th:if="${session.usuariosession != null}" sec:authorize="hasRole('ADMIN', 'VOTANTE, 'EMPRESA')">Panel</a>
+                </li>
+                <div class="collapse navbar-collapse" th:if='${session.usuariosession != null}'>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession == null}">
+                                Usuario
+                            </button> 
+                            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession != null}" th:text="''+ ${session.usuariosession.nombre}">
+                                <i class="bi bi-person"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"th:href="@{/registrar}" th:if="${session.usuariosession == null}" >Registro</a></li>
+                                <li><a class="dropdown-item" href=""th:href="@{/login}" th:if="${session.usuariosession == null}">Login</a></li>
+                                <li><a class="dropdown-item" th:href="@{/perfil}" th:if="${session.usuariosession != null}">Editar Perfil</a></li>
+                                <li><a class="dropdown-item" href="/logout" th:if="${session.usuariosession != null}">Cerrar Sesion</a></li>
+
+                            </ul>
+
+                        </li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
         <a th:if='${session.usuariosession == null}' class="btn btn-outline-primary m-2" aria-current="page" th:href="@{/login}">Ingresar</a>
         <a th:if='${session.usuariosession == null}'  class="btn btn-outline-success m-2" aria-current="page" th:href="@{/registrar}">Registrarse</a>
-   </div>
-   </nav>  
+    </div>
+</nav>  

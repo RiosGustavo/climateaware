@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/campaña")
+@RequestMapping("/campana")
 public class CampañaControlador {
 
     @Autowired
@@ -60,15 +60,15 @@ public class CampañaControlador {
 
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
-        List<Campaña> campañas = campañaServicio.listarCampañas();
+        List<Campaña> campanas = campañaServicio.listarCampañas();
         
-        modelo.addAttribute("campañas", campañas);
+        modelo.addAttribute("campanas", campanas);
         return "campaña_list.html"; 
     }
 
     @GetMapping("/modificar/{idCampaña}")
     public String modificar(@PathVariable String idCampaña, ModelMap modelo) {
-        modelo.put("campaña", campañaServicio.getOne(idCampaña));
+        modelo.put("campana", campañaServicio.getOne(idCampaña));
         List<Empresa> empresas = empresaServicio.listarEmpresas();
 
         modelo.addAttribute("empresas", empresas);
