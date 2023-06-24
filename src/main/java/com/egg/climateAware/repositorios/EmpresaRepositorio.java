@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
+    
+    @Query("SELECT u FROM Usuario u WHERE u.email = :email")
+    public Empresa buscarPorEmail(@Param("email") String email);
+    
     //// REVIZAR CUAL ES EL ID DE USUARIO PUES POR HERENCIA ES EL MISMO DE LA EMPRESA
     /*@Query("SELECT em FROM Empresa em WHERE em.id = :id")
     public Empresa buscarPorId (@Param("id") String id );

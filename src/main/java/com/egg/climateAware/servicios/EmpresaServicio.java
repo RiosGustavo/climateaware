@@ -31,18 +31,9 @@ public class EmpresaServicio {
     ///// FALTA AGREGAR EL throws MiExcepcion
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2) throws Exception {
 
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
-
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(idCampaña);
-
-        Campaña campaña = new Campaña();
-
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
-
-        }
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Empresa empresa = new Empresa();
 
@@ -51,18 +42,14 @@ public class EmpresaServicio {
         empresa.setDireccion(direccion);
         empresa.setRubro(rubro);
         empresa.setEmail(email);
-        empresa.setAltaBaja(Boolean.FALSE);
-        empresa.setCampañas(campaña);
+        empresa.setAltaBaja(false);
 
         //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
         empresa.setPassword(password);
 
-        //// FALTA TRAER EL USUARIO ACUTALIZADO 
         empresa.setRoles(Rol.EMP);
 
-        ////// falta agregar la parete de la imagen 
         Imagen imagen = imagenServicio.guardar(archivo);
-
         empresa.setImagen(imagen);
 
         empresaRepositorio.save(empresa);
@@ -79,7 +66,7 @@ public class EmpresaServicio {
             throw new Exception("Debe ingrear el id de la Empresa");
 
         }
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(id);
 
@@ -155,13 +142,17 @@ public class EmpresaServicio {
 
     }
 
-    //// FALTA IMPLEMENTAR LA SEGURIDAD PARA CUANDO SE LOGUE LA EMPRESA  "loadUserByUsername"
-///// FALTA AGREGAR EL throws MiExcepcion
     private void validar(String nombreEmpresa, String cuit, String direccion,
-            String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String rubro, String email, String password, String password2) throws Exception {
+
+        // Verificar si el email ya existe en la base de datos
+        Empresa usuarioExistente = empresaRepositorio.buscarPorEmail(email);
+        if (usuarioExistente != null) {
+            throw new Exception("El email ingresado ya está registrado");
+        }
 
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
-            throw new Exception("Debe ingrear el Nombre de la Empresa");
+            throw new Exception("Debe ingrear el nombre de la Empresa");
         }
 
         if (cuit.isEmpty() || cuit == null) {
@@ -179,17 +170,17 @@ public class EmpresaServicio {
         if (email.isEmpty() || email == null) {
             throw new Exception("Debe debe ingresar email valido de su Empresa");
         }
-
-        if (password.isEmpty() || password == null || password.length() <= 8) {
-            throw new Exception("Debe ingrear un password y de mas de 8 caracteres");
+        
+        if (password == null || password.isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía");
         }
-
         if (!password.equals(password2)) {
-            throw new Exception("Los password ingresados deben ser iguales");
-        }
 
-        if (idCampaña.isEmpty() || idCampaña == null) {
-            throw new Exception("La campaña no puede ser nulo o estar vacia");
+            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
+
+        }
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres");
         }
 
     }

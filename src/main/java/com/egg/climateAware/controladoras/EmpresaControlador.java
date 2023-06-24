@@ -20,29 +20,6 @@ public class EmpresaControlador {
     @Autowired
     private EmpresaServicio empresaServicio;
 
-    @GetMapping("/registrar")
-    public String registrar() {
-        return "empresa_form.html"; /// ACA CAMBIAR POR COMO LE PUSIERON LOS CHICOS
-        /// A ESTE ARCHIVO DE HTML PARA REGISTRAR LAS EMPRESAS
-    }
-
-    @PostMapping("/registro")
-    public String registro(@RequestParam String nombreEmpresa, MultipartFile archivo, @RequestParam String cuit,
-            @RequestParam String direccion, @RequestParam String rubro, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
-        try {
-            empresaServicio.registrarEmpresa(archivo, nombreEmpresa, cuit, direccion, rubro, email, password, password2, email);
-            modelo.put("exito", "La Empresa ha sido registrada Exitosamente");
-
-            ///// REVIZAR ACA COMO PUSIERON LOS CHICOS A LA CLASE EXCEPCION
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            modelo.put("nombreEmpresa", nombreEmpresa);
-            return "empresa_form.html";  //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA REGISTRAR LAS EMPRESAS
-        }
-        return "index.html"; ////PREGUNTAR SI LE PONEMOS QUE DESPUES DE REGISTRASE SE DEVUELVA AL INDEX
-    }
-
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
         List<Empresa> empresas = empresaServicio.listarEmpresas();

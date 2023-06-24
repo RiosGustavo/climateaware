@@ -4,8 +4,11 @@ body {
 }
 
 .bg {
-  background-image: url(../img/imagen-login.jpg) !important;
+  background-image: url(../img/imagen-login7.jpg) !important;
   background-position: center center !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  
 }
 
 

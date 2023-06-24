@@ -24,7 +24,7 @@ public class Votante  extends Usuario {
     private String dni;
     private Integer voto;
     private String direccion;
-         @OneToOne
+    @OneToOne
     private Publicacion publicacion;
 
 }

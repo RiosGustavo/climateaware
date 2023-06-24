@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
-
 @Service
 public class VotanteServicio {
 
@@ -29,25 +27,18 @@ public class VotanteServicio {
     private ImagenServicio imagenServicio;
 
     @Transactional
-    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, Integer voto, String direccion, String email, String password, String password2, String idPublicacion) throws Exception {
+    public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email, String password, String password2) throws Exception {
         validar(nombreApellido, dni, direccion, email, password, password2);
-
-        Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
-        Publicacion publicacion = new Publicacion();
-        if (respuestaPublicacion.isPresent()) {
-            publicacion = respuestaPublicacion.get();
-        }
 
         Votante votante = new Votante();
         ///propios
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
-        votante.setPublicacion(publicacion);
 
         //heredados de Usuaio
         votante.setEmail(email);
-        votante.setAltaBaja(Boolean.FALSE);
+        votante.setAltaBaja(true);
         votante.setPassword(password);
         votante.setRoles(Rol.VOT);
         Imagen imagen = imagenServicio.guardar(archivo);
@@ -112,9 +103,9 @@ public class VotanteServicio {
     public List<Votante> listarVotantes() {
         List<Votante> votantes = new ArrayList();
         votantes = votanteRepositorio.findAll();
-        
-         for (int j=0; j < votantes.size(); j++){
-            if(!votantes.get(j).getAltaBaja()){
+
+        for (int j = 0; j < votantes.size(); j++) {
+            if (!votantes.get(j).getAltaBaja()) {
                 votantes.remove(j);
             }
         }
@@ -122,27 +113,38 @@ public class VotanteServicio {
     }
 
     private void validar(String nombreApellido, String dni, String direccion, String email, String password, String password2) throws Exception {
+
+        // Verificar si el email ya existe en la base de datos
+        Votante usuarioExistente = votanteRepositorio.buscarPorEmail(email);
+        if (usuarioExistente != null) {
+            throw new Exception("El email ingresado ya está registrado");
+        }
+
         if (nombreApellido.isEmpty() || nombreApellido == null) {
-            throw new Exception("Nombre y Apellido no puede ser nulo o estar vacío");
+            throw new Exception("Debe ingresar el nombre y apellido");
         }
 
         if (dni.isEmpty() || dni == null || !dni.chars().allMatch(Character::isDigit)) {
-            throw new Exception("DNI no puede ser nulo o estar vacío y debe ser numérico");
+            throw new Exception("Debe ingresar un DNI");
         }
         if (direccion.isEmpty() || direccion == null) {
-            throw new Exception("Dirección no puede ser nulo o estar vacío");
+            throw new Exception("Debe ingresar una dirección");
         }
 
         if (email.isEmpty() || email == null) {
-            throw new Exception("Dirección Mail no puede ser nulo o estar vacío");
+            throw new Exception("Debe ingresar un email");
         }
 
-        if (password.isEmpty() || password == null || password.length() <= 8) {
-            throw new Exception("Debe ingrear un password y de mas de 8 caracteres");
+        if (password == null || password.isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía");
         }
-
         if (!password.equals(password2)) {
-            throw new Exception("Los password ingresados deben ser iguales");
+
+            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
+
+        }
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres");
         }
 
     }
