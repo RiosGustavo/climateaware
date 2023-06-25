@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,7 +40,7 @@ public class UsuarioServicio implements UserDetailsService{
         Usuario usuario = new Usuario();
 
         usuario.setEmail(email);
-        usuario.setPassword(password);
+        usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setFechaAlta(new Date());
         usuario.setRoles(Rol.VOT);
         usuario.setAltaBaja(Boolean.TRUE);
@@ -62,7 +63,7 @@ public class UsuarioServicio implements UserDetailsService{
             Usuario usuario = respuesta.get();
 
             usuario.setEmail(email);
-            usuario.setPassword(password);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             String idImagen = null;
             
             if(usuario.getImagen() != null){
@@ -110,14 +111,26 @@ public class UsuarioServicio implements UserDetailsService{
 
     private void validar(String email, String password, String password2) throws Exception {
 
-        if (email.isEmpty() || email == null) {
-            throw new Exception("El email no puede ser nulo o estar vacío");
+        // Verificar si el email ya existe en la base de datos
+        Usuario usuarioExistente = usuarioRepositorio.buscarPorEmail(email);
+        if (usuarioExistente != null) {
+            throw new Exception("El email ingresado ya está registrado");
         }
-        if (password.isEmpty() || password == null || password.length() <= 5) {
-            throw new Exception("La contraseña no puede estar vacía, y debe tener más de 5 dígitos");
+
+        if (email.isEmpty() || email == null) {
+            throw new Exception("Debe ingresar un email");
+        }
+
+        if (password == null || password.isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía");
         }
         if (!password.equals(password2)) {
-            throw new Exception("Las contraseñas ingresadas deben ser iguales");
+
+            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
+
+        }
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres");
         }
 
     }

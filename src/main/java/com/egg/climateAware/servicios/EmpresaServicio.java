@@ -7,14 +7,15 @@ import com.egg.climateAware.enumeraciones.Rol;
 import com.egg.climateAware.repositorios.CampañaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-//import org.springframework.security.core.userdetails.UserDetailsService; /// ver si es necesario poner esto abjoa en el public class  implements UserDetailsService
 @Service
 public class EmpresaServicio {
 
@@ -24,11 +25,11 @@ public class EmpresaServicio {
     @Autowired
     private CampañaRepositorio campañaRepositorio;
 
-    //// falta implementar la entidad imagen
+
     @Autowired
     private ImagenServicio imagenServicio;
 
-    ///// FALTA AGREGAR EL throws MiExcepcion
+  
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
             String direccion, String rubro, String email, String password, String password2) throws Exception {
@@ -42,15 +43,10 @@ public class EmpresaServicio {
         empresa.setDireccion(direccion);
         empresa.setRubro(rubro);
         empresa.setEmail(email);
-
-        empresa.setAltaBaja(Boolean.FALSE);
-        empresa.setCampañas((List<Campaña>) campaña);
-
-        //// falta agregar la seguridad "new BCryptPasswordEncoder().encode(password)"
-        empresa.setPassword(password);
-
+        empresa.setAltaBaja(false);
+        empresa.setFechaAlta(new Date());
+        empresa.setPassword(new BCryptPasswordEncoder().encode(password));
         empresa.setRoles(Rol.EMP);
-
         Imagen imagen = imagenServicio.guardar(archivo);
         empresa.setImagen(imagen);
 
@@ -91,20 +87,19 @@ public class EmpresaServicio {
             empresa.setRubro(rubro);
             empresa.setEmail(email);
 
-            //// falta agregar la seguridad "new BCryptPasswordEncoder().encode(password)"
-            empresa.setPassword(password);
+            empresa.setPassword(new BCryptPasswordEncoder().encode(password));
 
             empresa.setRoles(Rol.EMP);
 
+          
             String idImagen = null;
-            /// falta implementar la entidad imagen
-            if (empresa.getImagen() != null) {
+            if (archivo.getSize() > 0) {
                 idImagen = empresa.getImagen().getId();
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                empresa.setImagen(imagen);
             }
-            //// falta implentar la entidad imagen
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
-            empresa.setImagen(imagen);
+           
 
             empresaRepositorio.save(empresa);
 

@@ -7,10 +7,12 @@ import com.egg.climateAware.enumeraciones.Rol;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
 import com.egg.climateAware.repositorios.VotanteRepositorio;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +40,9 @@ public class VotanteServicio {
         votante.setDireccion(direccion);
         // heredados de Usuaio
         votante.setEmail(email);
+        votante.setFechaAlta(new Date());
         votante.setAltaBaja(true);
-        votante.setPassword(password);
+        votante.setPassword(new BCryptPasswordEncoder().encode(password));
         votante.setRoles(Rol.VOT);
         Imagen imagen = imagenServicio.guardar(archivo);
         votante.setImagen(imagen);
@@ -76,7 +79,7 @@ public class VotanteServicio {
             // heredados de Usuaio
             votante.setEmail(email);
             // votante.setAltaBaja(Boolean.FALSE);
-            votante.setPassword(password);
+            votante.setPassword(new BCryptPasswordEncoder().encode(password));
             votante.setRoles(Rol.VOT);
             Imagen imagen = imagenServicio.guardar(archivo);
             votante.setImagen(imagen);
