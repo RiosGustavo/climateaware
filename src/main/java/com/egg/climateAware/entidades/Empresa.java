@@ -26,5 +26,5 @@ public class Empresa extends Usuario {
     private String rubro;
 
     @OneToOne
-    private Campaña campañas;
+    private Campana campanas;
 }

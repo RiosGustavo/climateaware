@@ -1,10 +1,10 @@
 package com.egg.climateAware.servicios;
 
-import com.egg.climateAware.entidades.Campaña;
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.enumeraciones.Rol;
-import com.egg.climateAware.repositorios.CampañaRepositorio;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class EmpresaServicio {
     private EmpresaRepositorio empresaRepositorio;
 
     @Autowired
-    private CampañaRepositorio campañaRepositorio;
+    private CampanaRepositorio campanaRepositorio;
 
     
     @Autowired
@@ -31,16 +31,16 @@ public class EmpresaServicio {
    
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2, String idCampana) throws Exception {
 
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampana);
 
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(idCampaña);
+        Optional<Campana> respuestaCampana = campanaRepositorio.findById(idCampana);
 
-        Campaña campaña = new Campaña();
+        Campana campana = new Campana();
 
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
+        if (respuestaCampana.isPresent()) {
+            campana = respuestaCampana.get();
 
         }
 
@@ -52,7 +52,7 @@ public class EmpresaServicio {
         empresa.setRubro(rubro);
         empresa.setEmail(email);
         empresa.setAltaBaja(Boolean.FALSE);
-        empresa.setCampañas(campaña);
+        empresa.setCampanas(campana);
 
         //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
         empresa.setPassword(password);
@@ -71,7 +71,7 @@ public class EmpresaServicio {
 
     @Transactional
     public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2, String idCampana) throws Exception {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
@@ -79,14 +79,14 @@ public class EmpresaServicio {
             throw new Exception("Debe ingrear el id de la Empresa");
 
         }
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampana);
 
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(id);
+        Optional<Campana> respuestaCampana = campanaRepositorio.findById(id);
 
-        Campaña campaña = new Campaña();
+        Campana campana = new Campana();
 
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
+        if (respuestaCampana.isPresent()) {
+            campana = respuestaCampana.get();
 
         }
 
@@ -157,7 +157,7 @@ public class EmpresaServicio {
 
 
     private void validar(String nombreEmpresa, String cuit, String direccion,
-            String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String rubro, String email, String password, String password2, String idCampana) throws Exception {
 
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
             throw new Exception("Debe ingrear el Nombre de la Empresa");
@@ -187,8 +187,8 @@ public class EmpresaServicio {
             throw new Exception("Los password ingresados deben ser iguales");
         }
 
-        if (idCampaña.isEmpty() || idCampaña == null) {
-            throw new Exception("La campaña no puede ser nulo o estar vacia");
+        if (idCampana.isEmpty() || idCampana == null) {
+            throw new Exception("La campana no puede ser nulo o estar vacia");
         }
 
     }

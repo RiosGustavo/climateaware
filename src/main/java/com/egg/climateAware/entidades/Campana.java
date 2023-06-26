@@ -23,12 +23,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
-public class Campaña {
+public class Campana {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String idCampaña;
+    private String idCampana;
     
     private String titulo;
     private String cuerpo;

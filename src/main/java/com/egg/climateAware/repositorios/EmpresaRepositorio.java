@@ -1,7 +1,7 @@
 
 package com.egg.climateAware.repositorios;
 
-import com.egg.climateAware.entidades.Campaña;
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,8 +29,8 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     public Empresa buscarPorRubro (@Param("rubro") String rubro );
     
     
-     @Query("SELECT ca FROM Campaña ca WHERE ca.idCampaña = :idCampaña")
-    public List<Campaña> buscarPorCampaña (@Param("idCampaña") String idCampaña  );
+     @Query("SELECT ca FROM Campana ca WHERE ca.idCampana = :idCampana")
+    public List<Campana> buscarPorCampana (@Param("idCampana") String idCampana  );
 
     
     
