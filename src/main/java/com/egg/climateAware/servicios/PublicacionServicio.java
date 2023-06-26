@@ -25,7 +25,7 @@ public class PublicacionServicio {
 
     @Transactional
     public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video) throws Exception {
-        validar(cuerpo);
+        validar(titulo,descripcion,cuerpo);
         Publicacion publicacion = new Publicacion();
         publicacion.setTitulo(titulo);
         publicacion.setDescripcion(descripcion);
@@ -42,7 +42,7 @@ public class PublicacionServicio {
     @Transactional
     public void modificarPublicacion(MultipartFile archivo, String idPublicacion,String titulo,String descripcion, String cuerpo, String video) throws Exception {
 
-        validar(cuerpo);
+        validar(titulo,descripcion,cuerpo);
 
         Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
 
@@ -93,7 +93,13 @@ public class PublicacionServicio {
 
     }
 
-    private void validar(String cuerpo) throws Exception {
+    private void validar(String titulo, String descripcion,String cuerpo) throws Exception {
+        if (titulo.isEmpty() || titulo == null) {
+            throw new Exception("El Título no puede ser nulo o estar vacío");
+        }
+        if (descripcion.isEmpty() || descripcion == null) {
+            throw new Exception("La Descripcion no puede ser nula o estar vacía");
+        }
         if (cuerpo.isEmpty() || cuerpo == null) {
             throw new Exception("El cuerpo no puede ser nulo o estar vacío");
         }
