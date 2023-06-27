@@ -60,10 +60,11 @@ public class CampanaServicio {
         campana.setCuerpo(cuerpo);
         campana.setEmpresa(empresa);
         campana.setFechaAlta(new Date());
-        campana.setPublicaciones(publicacion);
+        campana.setPublicaciones((List<Publicacion>) publicacion);
         campana.setEmpresa(empresa);
-        campana.setAltaBaja(Boolean.TRUE);
-        
+        campana.setAltaBaja(Boolean.FALSE);
+    
+
         Imagen imagen = imagenServicio.guardar(archivo);
         campana.setImagen(imagen);
 
@@ -102,11 +103,13 @@ public class CampanaServicio {
 
             Campana campana = respuesta.get();
 
+
             campana.setTitulo(titulo);
             campana.setCuerpo(cuerpo);
             campana.setEmpresa(empresa);
-            campana.setPublicaciones(publicacion);
+            campana.setPublicaciones((List<Publicacion>) publicacion);
             campana.setAltaBaja(Boolean.TRUE);
+
 
             String idImagen = null;
            

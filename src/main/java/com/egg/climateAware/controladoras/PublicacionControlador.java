@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.servicios.PublicacionServicio;
@@ -35,14 +31,16 @@ public class PublicacionControlador {
     }
 
     @PostMapping("creacion")
-    public String creacion(@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
+    public String creacion(@RequestParam() String titulo,@RequestParam() String descripcion,@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
             @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-
-        publicacionServicio.crearPublicacion(archivo, cuerpo, video);
+            // public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video)
+        publicacionServicio.crearPublicacion(archivo, titulo, descripcion, cuerpo, video);
             modelo.put("exito", "Publicacion creada exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
+            modelo.put("titulo", titulo);
+            modelo.put("descripcion", descripcion);
             modelo.put("cuerpo", cuerpo);
             modelo.put("archivo", archivo);
             modelo.put("video", video);
@@ -59,9 +57,9 @@ public class PublicacionControlador {
 
     @PostMapping("/modificacion/{id}")
     public String modificacion(@RequestParam @PathVariable String id,@RequestParam(required = false) MultipartFile archivo,
-            @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
+           @RequestParam() String titulo,@RequestParam() String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-               publicacionServicio.modificarPublicacion(archivo, id, cuerpo, video);
+               publicacionServicio.modificarPublicacion(archivo, id, titulo,descripcion,cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
@@ -76,5 +74,9 @@ public class PublicacionControlador {
        publicacionServicio.bajaPublicacion(id);
         return "index.html";
     }
-
+    @GetMapping("/listar")
+    public String listar() throws Exception{
+       publicacionServicio.listarPublicaciones();
+        return "publicacion_list.html";
+    }
 }
