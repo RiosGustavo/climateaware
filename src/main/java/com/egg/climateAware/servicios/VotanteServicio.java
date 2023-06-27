@@ -31,7 +31,7 @@ public class VotanteServicio {
     @Transactional
     public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email,
             String password, String password2) throws Exception {
-        validar(nombreApellido, dni, direccion, email, password, password2);
+        validarRegistro(nombreApellido, dni, direccion, email, password, password2);
 
         Votante votante = new Votante();
         /// propios
@@ -58,7 +58,7 @@ public class VotanteServicio {
         // validar(String nombreApellido, String dni,String direccion,String
         // email,String password, String password2 )
 
-        validar(nombreApellido, dni, direccion, email, password, password2);
+        validarModificar(nombreApellido, dni, direccion, email, password, password2);
 
         Optional<Votante> respuesta = votanteRepositorio.findById(idVotante);
 
@@ -118,7 +118,7 @@ public class VotanteServicio {
         return votantes;
     }
 
-    private void validar(String nombreApellido, String dni, String direccion, String email, String password,
+    private void validarRegistro(String nombreApellido, String dni, String direccion, String email, String password,
             String password2) throws Exception {
 
         // Verificar si el email ya existe en la base de datos
@@ -138,6 +138,37 @@ public class VotanteServicio {
             throw new Exception("Debe ingresar una dirección");
         }
 
+        if (email.isEmpty() || email == null) {
+            throw new Exception("Debe ingresar un email");
+        }
+
+        if (password == null || password.isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía");
+        }
+        if (!password.equals(password2)) {
+
+            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
+
+        }
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres");
+        }
+    }
+    
+    private void validarModificar(String nombreApellido, String dni, String direccion, String email, String password,
+            String password2) throws Exception {
+
+       
+        if (nombreApellido.isEmpty() || nombreApellido == null) {
+            throw new Exception("Debe ingresar el nombre y apellido");
+        }
+
+        if (dni.isEmpty() || dni == null || !dni.chars().allMatch(Character::isDigit)) {
+            throw new Exception("Debe ingresar un DNI");
+        }
+        if (direccion.isEmpty() || direccion == null) {
+            throw new Exception("Debe ingresar una dirección");
+        }
         if (email.isEmpty() || email == null) {
             throw new Exception("Debe ingresar un email");
         }
