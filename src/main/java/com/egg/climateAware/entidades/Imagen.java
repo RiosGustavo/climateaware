@@ -37,5 +37,5 @@ public class Imagen {
     @Basic(fetch = FetchType.LAZY)
     private byte[] contenido;
 
-
+   
 }

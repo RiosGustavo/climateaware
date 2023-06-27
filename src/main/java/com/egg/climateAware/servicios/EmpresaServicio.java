@@ -1,20 +1,21 @@
 package com.egg.climateAware.servicios;
 
-import com.egg.climateAware.entidades.Campaña;
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.enumeraciones.Rol;
-import com.egg.climateAware.repositorios.CampañaRepositorio;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-//import org.springframework.security.core.userdetails.UserDetailsService; /// ver si es necesario poner esto abjoa en el public class  implements UserDetailsService
 @Service
 public class EmpresaServicio {
 
@@ -22,27 +23,16 @@ public class EmpresaServicio {
     private EmpresaRepositorio empresaRepositorio;
 
     @Autowired
-    private CampañaRepositorio campañaRepositorio;
+    private CampanaRepositorio campanaRepositorio;
 
-    //// falta implementar la entidad imagen
     @Autowired
     private ImagenServicio imagenServicio;
 
-    ///// FALTA AGREGAR EL throws MiExcepcion
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2) throws Exception {
 
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
-
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(idCampaña);
-
-        Campaña campaña = new Campaña();
-
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
-
-        }
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Empresa empresa = new Empresa();
 
@@ -51,18 +41,11 @@ public class EmpresaServicio {
         empresa.setDireccion(direccion);
         empresa.setRubro(rubro);
         empresa.setEmail(email);
-        empresa.setAltaBaja(Boolean.FALSE);
-        empresa.setCampañas(campaña);
-
-        //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
-        empresa.setPassword(password);
-
-        //// FALTA TRAER EL USUARIO ACUTALIZADO 
+        empresa.setAltaBaja(false);
+        empresa.setFechaAlta(new Date());
+        empresa.setPassword(new BCryptPasswordEncoder().encode(password));
         empresa.setRoles(Rol.EMP);
-
-        ////// falta agregar la parete de la imagen 
         Imagen imagen = imagenServicio.guardar(archivo);
-
         empresa.setImagen(imagen);
 
         empresaRepositorio.save(empresa);
@@ -71,24 +54,12 @@ public class EmpresaServicio {
 
     @Transactional
     public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String direccion, String rubro, String email, String password, String password2)
+            throws Exception {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
-        if (id == null || id.isEmpty()) {
-            throw new Exception("Debe ingrear el id de la Empresa");
-
-        }
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2, idCampaña);
-
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(id);
-
-        Campaña campaña = new Campaña();
-
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
-
-        }
+        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         if (respuesta.isPresent()) {
 
@@ -101,20 +72,18 @@ public class EmpresaServicio {
             empresa.setRubro(rubro);
             empresa.setEmail(email);
 
-            //// falta agregar la seguridad  "new BCryptPasswordEncoder().encode(password)"
-            empresa.setPassword(password);
+            empresa.setPassword(new BCryptPasswordEncoder().encode(password));
 
             empresa.setRoles(Rol.EMP);
 
             String idImagen = null;
-            /// falta implementar la entidad imagen 
-            if (empresa.getImagen() != null) {
-                idImagen = empresa.getImagen().getId();
-            }
-            //// falta implentar la entidad imagen
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
-            empresa.setImagen(imagen);
+            if (archivo.getSize() > 0) {
+
+                idImagen = empresa.getImagen().getId();
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                empresa.setImagen(imagen);
+            }
 
             empresaRepositorio.save(empresa);
 
@@ -141,27 +110,40 @@ public class EmpresaServicio {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
-        if (id == null || id.isEmpty()) {
-            throw new Exception("Debe ingrear el id de la Empresa");
-
-        }
-
         if (respuesta.isPresent()) {
             Empresa empresa = respuesta.get();
-            empresa.setAltaBaja(Boolean.FALSE);
+            empresa.setAltaBaja(false);
 
             empresaRepositorio.save(empresa);
         }
 
     }
 
-    //// FALTA IMPLEMENTAR LA SEGURIDAD PARA CUANDO SE LOGUE LA EMPRESA  "loadUserByUsername"
-///// FALTA AGREGAR EL throws MiExcepcion
+    @Transactional
+    public void darDeAltaEmpresa(String id) throws Exception {
+
+        Optional<Empresa> respuesta = empresaRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Empresa empresa = respuesta.get();
+            empresa.setAltaBaja(true);
+
+            empresaRepositorio.save(empresa);
+        }
+
+    }
+
     private void validar(String nombreEmpresa, String cuit, String direccion,
-            String rubro, String email, String password, String password2, String idCampaña) throws Exception {
+            String rubro, String email, String password, String password2) throws Exception {
+
+        // Verificar si el email ya existe en la base de datos
+        Empresa usuarioExistente = empresaRepositorio.buscarPorEmail(email);
+        if (usuarioExistente != null) {
+            throw new Exception("El email ingresado ya está registrado");
+        }
 
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
-            throw new Exception("Debe ingrear el Nombre de la Empresa");
+            throw new Exception("Debe ingrear el nombre de la Empresa");
         }
 
         if (cuit.isEmpty() || cuit == null) {
@@ -180,16 +162,17 @@ public class EmpresaServicio {
             throw new Exception("Debe debe ingresar email valido de su Empresa");
         }
 
-        if (password.isEmpty() || password == null || password.length() <= 8) {
-            throw new Exception("Debe ingrear un password y de mas de 8 caracteres");
+        if (password == null || password.isEmpty()) {
+            throw new Exception("La contraseña no puede estar vacía");
         }
-
         if (!password.equals(password2)) {
-            throw new Exception("Los password ingresados deben ser iguales");
-        }
 
-        if (idCampaña.isEmpty() || idCampaña == null) {
-            throw new Exception("La campaña no puede ser nulo o estar vacia");
+            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
+
+        }
+        if (password.length() < 8) {
+            throw new Exception("La contraseña debe tener al menos 8 caracteres");
+
         }
 
     }

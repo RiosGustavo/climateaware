@@ -1,60 +1,44 @@
 <nav class="navbar navbar-expand-md bg-body-primary shadow">
     <div class="container-fluid">
-  
+
         <a  class="fs-4 fw-bold text-black text-decoration-none" th:href="@{/}">Climate aware</a>
         <img src="/img/logo.png" class="imagenNavbar" >
-                <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-           <span class="navbar-toggler-icon"></span>
-         </button>
-      
-    
-     <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav ms-auto py-2" >
-         <li class="nav-item ">
-           <a class="nav-link " th:href="@{/}" >Inicio</a>
-         </li>
-         <li class="nav-item ">
-           <a class="nav-link " th:href="@{/novedades/lista}" >Novedades</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" th:href="@{/campaña/lista}">Campañas</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" th:href="@{/empresa/lista}">Empresas</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" th:href="@{/publicaciones/lista}">Publicaciones</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link" th:if="${session.usuariosession != null}" sec:authorize="hasRole('ADMIN', 'VOTANTE, 'EMPRESA')">Panel</a>
-         </li>
-         <li class="nav-item">
-           <a class="btn btn-outline-success mx-1" th:if="${(session.usuariosession == null)}"   aria-current="page" th:href="@{/registrar}">Registrarse</a>
-         </li>
-         <li class="nav-item">
-           <a class="btn btn-outline-secondary mx-1" th:if="${(session.usuariosession == null )}"  aria-current="page" th:href="@{/login}" >Ingresar</a>
-         </li>
-         <li class="nav-item">
-            <a class="btn btn-outline-secondary mx-1" th:href="@{/perfil}" th:if="${session.usuariosession != null}">Editar Perfil</a>
-         </li>
-         <li class="nav-item">
-            <a class="btn btn-outline-secondary mx-1" href="/logout" th:if="${session.usuariosession != null}">Cerrar Sesion</a>
-         </li>
-    
-                
-                 
-                 
-                
+        <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                 
-                 
-          
-                 
-           
-         </div>
-       </ul>
-     </div>
-        
-       
-   </div>
-   </nav>  
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto" >
+                <li class="nav-item">
+                    <a class="nav-link" >Novedades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" >Campañas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Publicaciones</a>
+
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav justify-content-end">
+            <li th:if='${session.usuariosession != null}'  class="nav-item dropdown ml-auto">
+                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+
+                    <img th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li sec:authorize="hasRole('ADM')"><a class="dropdown-item" th:href="@{/admin/dashboard}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/panel-empresa}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/panel-votante}">Panel principal</a></li>
+
+                    <li><a class="dropdown-item" th:href="@{/perfil}">Perfil</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar cesión</a></li>
+                </ul>
+            </li>
+        </ul>
+        <a th:if='${session.usuariosession == null}' class="btn btn-outline-primary m-2" aria-current="page" th:href="@{/login}">Ingresar</a>
+        <a th:if='${session.usuariosession == null}'  class="btn btn-outline-success m-2" aria-current="page" th:href="@{/registrar}">Registrarse</a>
+    </div>
+</nav>  
