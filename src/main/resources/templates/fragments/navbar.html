@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md bg-body-tertiary shadow">
+<nav class="navbar navbar-expand-md bg-body-primary shadow">
     <div class="container-fluid">
   
         <a  class="fs-4 fw-bold text-black text-decoration-none" th:href="@{/}">Climate aware</a>
@@ -9,42 +9,52 @@
       
     
      <div class="collapse navbar-collapse" id="navbarNav">
-       <ul class="navbar-nav ms-auto" >
-         <li class="nav-item">
-           <a class="nav-link" >Novedades</a>
+       <ul class="navbar-nav ms-auto py-2" >
+         <li class="nav-item ">
+           <a class="nav-link " th:href="@{/}" >Inicio</a>
+         </li>
+         <li class="nav-item ">
+           <a class="nav-link " th:href="@{/novedades/lista}" >Novedades</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link" >Campañas</a>
+           <a class="nav-link" th:href="@{/campaña/lista}">Campañas</a>
          </li>
          <li class="nav-item">
-           <a class="nav-link">Publicaciones</a>
+           <a class="nav-link" th:href="@{/empresa/lista}">Empresas</a>
+         </li>
+         <li class="nav-item">
+           <a class="nav-link" th:href="@{/publicaciones/lista}">Publicaciones</a>
          </li>
          <li class="nav-item">
            <a class="nav-link" th:if="${session.usuariosession != null}" sec:authorize="hasRole('ADMIN', 'VOTANTE, 'EMPRESA')">Panel</a>
          </li>
-         <div class="collapse navbar-collapse" th:if='${session.usuariosession != null}'>
-           <ul class="navbar-nav">
-             <li class="nav-item dropdown">
-               <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession == null}">
-                 Usuario
-               </button> 
-               <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" th:if="${session.usuariosession != null}" th:text="''+ ${session.usuariosession.nombre}">
-                <i class="bi bi-person"></i>
-            </button>
-               <ul class="dropdown-menu">
-                 <li><a class="dropdown-item" href="#"th:href="@{/registrar}" th:if="${session.usuariosession == null}" >Registro</a></li>
-                 <li><a class="dropdown-item" href=""th:href="@{/login}" th:if="${session.usuariosession == null}">Login</a></li>
-                  <li><a class="dropdown-item" th:href="@{/perfil}" th:if="${session.usuariosession != null}">Editar Perfil</a></li>
-                 <li><a class="dropdown-item" href="/logout" th:if="${session.usuariosession != null}">Cerrar Sesion</a></li>
+         <li class="nav-item">
+           <a class="btn btn-outline-success mx-1" th:if="${(session.usuariosession == null)}"   aria-current="page" th:href="@{/registrar}">Registrarse</a>
+         </li>
+         <li class="nav-item">
+           <a class="btn btn-outline-secondary mx-1" th:if="${(session.usuariosession == null )}"  aria-current="page" th:href="@{/login}" >Ingresar</a>
+         </li>
+         <li class="nav-item">
+            <a class="btn btn-outline-secondary mx-1" th:href="@{/perfil}" th:if="${session.usuariosession != null}">Editar Perfil</a>
+         </li>
+         <li class="nav-item">
+            <a class="btn btn-outline-secondary mx-1" href="/logout" th:if="${session.usuariosession != null}">Cerrar Sesion</a>
+         </li>
+    
+                
                  
-               </ul>
                  
-             </li>
-           </ul>
+                
+
+                 
+                 
+          
+                 
+           
          </div>
        </ul>
      </div>
-        <a th:if='${session.usuariosession == null}' class="btn btn-outline-primary m-2" aria-current="page" th:href="@{/login}">Ingresar</a>
-        <a th:if='${session.usuariosession == null}'  class="btn btn-outline-success m-2" aria-current="page" th:href="@{/registrar}">Registrarse</a>
+        
+       
    </div>
    </nav>  

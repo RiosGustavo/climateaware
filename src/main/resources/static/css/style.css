@@ -37,14 +37,14 @@ body {
   padding: auto;
 }
 .navbar .container-fluid #navbarNav .nav-item .nav-link:hover {
-  text-decoration: none;
+  text-decoration: underline !important;
   color: #80b918;
-  transition: 0.5s;
+  transition: 0.5s !important;
 }
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
-  text-decoration: none;
+  text-decoration: underline !important;
   color: #80b918;
-  transition: 0.5s;
+  transition: 0.5s !important;
 }
 .custom-toggler.navbar-toggler {
   border-color: #80b918;
@@ -86,7 +86,7 @@ body {
 
 /*FOOTER*/
 #footerClass .nav .nav-item .nav-link:hover {
-  text-decoration: none;
+ 
   color: #80b918 !important;
   transition: 0.5s;
 }

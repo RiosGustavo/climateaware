@@ -60,9 +60,9 @@ public class CampañaControlador {
 
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
-        List<Campaña> campañas = campañaServicio.listarCampañas();
+        List<Campaña> campanas = campañaServicio.listarCampañas();
         
-        modelo.addAttribute("campañas", campañas);
+        modelo.addAttribute("campanas", campanas);
         return "campaña_list.html"; 
     }
 

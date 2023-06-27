@@ -5,7 +5,9 @@
  */
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.servicios.PublicacionServicio;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -69,6 +71,13 @@ public class PublicacionControlador {
             return "modificar.html";
         }
         return "redirect:/publicacion/id";
+    }
+        @GetMapping("/lista")
+    public String listar(ModelMap modelo) {
+        List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
+        
+        modelo.addAttribute("publicacion", publicacion);
+        return "publicacion_list.html"; 
     }
     
     @GetMapping("/eliminar/{id}")
