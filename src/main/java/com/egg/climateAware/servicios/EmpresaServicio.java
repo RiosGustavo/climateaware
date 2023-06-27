@@ -1,10 +1,10 @@
 package com.egg.climateAware.servicios;
 
-import com.egg.climateAware.entidades.Campaña;
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.enumeraciones.Rol;
-import com.egg.climateAware.repositorios.CampañaRepositorio;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,8 +23,7 @@ public class EmpresaServicio {
     private EmpresaRepositorio empresaRepositorio;
 
     @Autowired
-    private CampañaRepositorio campañaRepositorio;
-
+    private CampanaRepositorio campanaRepositorio;
 
     @Autowired
     private ImagenServicio imagenServicio;
@@ -33,7 +32,7 @@ public class EmpresaServicio {
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
             String direccion, String rubro, String email, String password, String password2) throws Exception {
-
+        
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Empresa empresa = new Empresa();
@@ -56,25 +55,14 @@ public class EmpresaServicio {
 
     @Transactional
     public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2, String idCampaña)
+            String direccion, String rubro, String email, String password, String password2)
             throws Exception {
+
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
-        if (id == null || id.isEmpty()) {
-            throw new Exception("Debe ingrear el id de la Empresa");
-
-        }
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
-        Optional<Campaña> respuestaCampaña = campañaRepositorio.findById(id);
-
-        Campaña campaña = new Campaña();
-
-        if (respuestaCampaña.isPresent()) {
-            campaña = respuestaCampaña.get();
-
-        }
 
         if (respuesta.isPresent()) {
 
@@ -93,13 +81,13 @@ public class EmpresaServicio {
 
           
             String idImagen = null;
+
             if (archivo.getSize() > 0) {
+
                 idImagen = empresa.getImagen().getId();
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 empresa.setImagen(imagen);
             }
-
-           
 
             empresaRepositorio.save(empresa);
 
@@ -149,6 +137,7 @@ public class EmpresaServicio {
             throw new Exception("El email ingresado ya está registrado");
         }
 
+
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
             throw new Exception("Debe ingrear el nombre de la Empresa");
         }
@@ -179,6 +168,7 @@ public class EmpresaServicio {
         }
         if (password.length() < 8) {
             throw new Exception("La contraseña debe tener al menos 8 caracteres");
+
         }
 
     }

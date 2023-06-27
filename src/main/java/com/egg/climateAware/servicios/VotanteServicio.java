@@ -33,16 +33,19 @@ public class VotanteServicio {
             String password, String password2) throws Exception {
         validarRegistro(nombreApellido, dni, direccion, email, password, password2);
 
+
         Votante votante = new Votante();
         /// propios
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
+
         // heredados de Usuaio
         votante.setEmail(email);
         votante.setFechaAlta(new Date());
         votante.setAltaBaja(true);
         votante.setPassword(new BCryptPasswordEncoder().encode(password));
+
         votante.setRoles(Rol.VOT);
         Imagen imagen = imagenServicio.guardar(archivo);
         votante.setImagen(imagen);
@@ -58,15 +61,12 @@ public class VotanteServicio {
         // validar(String nombreApellido, String dni,String direccion,String
         // email,String password, String password2 )
 
+
         validarModificar(nombreApellido, dni, direccion, email, password, password2);
 
         Optional<Votante> respuesta = votanteRepositorio.findById(idVotante);
 
-        Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
-        Publicacion publicacion = new Publicacion();
-        if (respuestaPublicacion.isPresent()) {
-            publicacion = respuestaPublicacion.get();
-        }
+        
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
 
@@ -74,12 +74,12 @@ public class VotanteServicio {
             votante.setNombreApellido(nombreApellido);
             votante.setDni(dni);
             votante.setDireccion(direccion);
-            // votante.setPublicacion(publicacion);
 
             // heredados de Usuaio
             votante.setEmail(email);
             // votante.setAltaBaja(Boolean.FALSE);
             votante.setPassword(new BCryptPasswordEncoder().encode(password));
+
             votante.setRoles(Rol.VOT);
             Imagen imagen = imagenServicio.guardar(archivo);
             votante.setImagen(imagen);
@@ -108,13 +108,7 @@ public class VotanteServicio {
 
     public List<Votante> listarVotantes() {
         List<Votante> votantes = new ArrayList();
-        votantes = votanteRepositorio.findAll();
-
-        for (int j = 0; j < votantes.size(); j++) {
-            if (!votantes.get(j).getAltaBaja()) {
-                votantes.remove(j);
-            }
-        }
+        votantes = votanteRepositorio.listadoVotantesActivos();
         return votantes;
     }
 

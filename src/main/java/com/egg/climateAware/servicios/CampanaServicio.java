@@ -1,10 +1,10 @@
 package com.egg.climateAware.servicios;
 
-import com.egg.climateAware.entidades.Campaña;
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.entidades.Publicacion;
-import com.egg.climateAware.repositorios.CampañaRepositorio;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
 import java.util.ArrayList;
@@ -17,31 +17,29 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class CampañaServicio {
+public class CampanaServicio {
 
     @Autowired
-    private CampañaRepositorio campañaRepositorio;
+    private CampanaRepositorio campanaRepositorio;
 
     @Autowired
     private EmpresaRepositorio empresaRepositorio;
 
-    //// FALTA IMPLEMENTAR LA ENTIDAD PUBLICACION
+    
     @Autowired
     private PublicacionRepositorio publicacionRepositorio;
 
-    //// falta implementar la entidad imagen
+   
     @Autowired
     private ImagenServicio imagenServicio;
 
-    //// idPublicacion hay que revisarlo cuidadosamente para ver como se creo en la entidad Publicacion
-    /// recordar que id es el id de empresa heredado de usuario
-    /// FALTA AGREGAR TAMBIEN EL throws MiExcepcion
+    
     @Transactional
-    public void crearCampaña(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
+    public void crearCampana(MultipartFile archivo, String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         validar(titulo, cuerpo, fechaAlta, idPublicacion, id);
 
-        //// implementar entidad Publicacion
+        
         Optional<Publicacion> respuestaPublicacion = publicacionRepositorio.findById(idPublicacion);
         Optional<Empresa> respuestaEmpresa = empresaRepositorio.findById(id);
 
@@ -56,31 +54,32 @@ public class CampañaServicio {
             empresa = respuestaEmpresa.get();
         }
 
-        Campaña campaña = new Campaña();
+        Campana campana = new Campana();
 
-        campaña.setTitulo(titulo);
-        campaña.setCuerpo(cuerpo);
-        campaña.setEmpresa(empresa);
-        campaña.setFechaAlta(new Date());
-        campaña.setPublicaciones((List<Publicacion>) publicacion);
-        campaña.setEmpresa(empresa);
-        campaña.setAltaBaja(Boolean.FALSE);
-        ////// falta agregar la parete de la imagen 
+        campana.setTitulo(titulo);
+        campana.setCuerpo(cuerpo);
+        campana.setEmpresa(empresa);
+        campana.setFechaAlta(new Date());
+        campana.setPublicaciones((List<Publicacion>) publicacion);
+        campana.setEmpresa(empresa);
+        campana.setAltaBaja(Boolean.FALSE);
+    
+
         Imagen imagen = imagenServicio.guardar(archivo);
-        campaña.setImagen(imagen);
+        campana.setImagen(imagen);
 
-        campañaRepositorio.save(campaña);
+        campanaRepositorio.save(campana);
 
     }
 
     @Transactional
-    public void actualizarCampaña(MultipartFile archivo, String idCampaña, String titulo,
+    public void actualizarCampana(MultipartFile archivo, String idCampana, String titulo,
             String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
-        Optional<Campaña> respuesta = campañaRepositorio.findById(idCampaña);
+        Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
 
-        if (idCampaña == null || idCampaña.isEmpty()) {
-            throw new Exception("Debe ingrear el id de la Campaña");
+        if (idCampana == null || idCampana.isEmpty()) {
+            throw new Exception("Debe ingrear el id de la Campana");
 
         }
 
@@ -102,58 +101,60 @@ public class CampañaServicio {
 
         if (respuesta.isPresent()) {
 
-            Campaña campaña = respuesta.get();
+            Campana campana = respuesta.get();
 
-            campaña.setTitulo(titulo);
-            campaña.setCuerpo(cuerpo);
-            campaña.setEmpresa(empresa);
-            campaña.setPublicaciones((List<Publicacion>) publicacion);
-            campaña.setAltaBaja(Boolean.TRUE);
+
+            campana.setTitulo(titulo);
+            campana.setCuerpo(cuerpo);
+            campana.setEmpresa(empresa);
+            campana.setPublicaciones((List<Publicacion>) publicacion);
+            campana.setAltaBaja(Boolean.TRUE);
+
 
             String idImagen = null;
-            /// falta implementar la entidad imagen 
+           
             if (empresa.getImagen() != null) {
                 idImagen = empresa.getImagen().getId();
             }
-            //// falta implentar la entidad imagen
+           
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
 
-            campaña.setImagen(imagen);
+            campana.setImagen(imagen);
 
-            campañaRepositorio.save(campaña);
+            campanaRepositorio.save(campana);
 
         }
 
     }
     
      @Transactional(readOnly = true)
-    public Campaña getOne(String id) {
-        return campañaRepositorio.getOne(id);
+    public Campana getOne(String id) {
+        return campanaRepositorio.getOne(id);
                 
     }
     
     @Transactional(readOnly = true)
-    public List<Campaña> listarCampañas(){
-        List<Campaña> campañas = new ArrayList();
+    public List<Campana> listarCampanas(){
+        List<Campana> campanas = new ArrayList();
         
-        campañas = campañaRepositorio.findAll();
+        campanas = campanaRepositorio.findAll();
         
-        return campañas;
+        return campanas;
     }
     
     @Transactional
-    public void darDeBajaCampaña(String idCampaña) throws Exception{
-        Optional<Campaña> respuesta = campañaRepositorio.findById(idCampaña);
+    public void darDeBajaCampana(String idCampana) throws Exception{
+        Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
         
-        if(idCampaña == null || idCampaña.isEmpty()){
-            throw new Exception("Debe ingrear el id de la Campaña");
+        if(idCampana == null || idCampana.isEmpty()){
+            throw new Exception("Debe ingrear el id de la Campana");
         }
         
         if(respuesta.isPresent()){
-            Campaña campaña = respuesta.get();
-            campaña.setAltaBaja(Boolean.FALSE);
+            Campana campana = respuesta.get();
+            campana.setAltaBaja(Boolean.FALSE);
             
-            campañaRepositorio.save(campaña);
+            campanaRepositorio.save(campana);
             
             
         }
@@ -163,16 +164,15 @@ public class CampañaServicio {
     
     
 
- ///// FALTA AGREGAR EL throws MiExcepcion
-//// REVIZAR COMO ES EL id DE PUBLICACIN
+
     public void validar(String titulo, String cuerpo, Date fechaAlta, String idPublicacion, String id) throws Exception {
 
         if (titulo.isEmpty() || titulo == null) {
-            throw new Exception("Debe ingrear un Titulo de la Campaña");
+            throw new Exception("Debe ingrear un Titulo de la Campana");
         }
 
         if (cuerpo.isEmpty() || cuerpo == null) {
-            throw new Exception("Debe ingrear un Cuerpo de la Campaña");
+            throw new Exception("Debe ingrear un Cuerpo de la Campana");
         }
 
         if (idPublicacion.isEmpty() || idPublicacion == null) {

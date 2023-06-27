@@ -22,6 +22,7 @@ public class VotanteControlador {
 
     @Autowired
     VotanteServicio votanteServicio = new VotanteServicio();
+
     @GetMapping("/modificarPerfil/{id}")
     public String modificiarPerfil(@RequestParam @PathVariable String id, ModelMap modelo) {
        modelo.put("votante", votanteServicio.getOne(id));
@@ -33,10 +34,10 @@ public class VotanteControlador {
             @RequestParam(required = false)String nombreApellido,@RequestParam(required = false)String dni, 
             @RequestParam(required = false)Integer voto, @RequestParam(required = false)String direccion,
             @RequestParam(required = false)String email, @RequestParam(required = false)String password, 
-            @RequestParam(required = false)String password2,@RequestParam(required = false)String idPublicacion, ModelMap modelo) {
+            @RequestParam(required = false)String password2, ModelMap modelo) {
         
         try {
-            votanteServicio.modificarVotante(archivo, idVotante, nombreApellido, dni, voto, direccion, email, password, password2, idPublicacion);
+            votanteServicio.modificarVotante(archivo, idVotante, nombreApellido, dni, voto, direccion, email, password, password2);
             modelo.put("exito", "El usuario se modifico exitosamente!");
             return "index.html";
         } catch (Exception ex) {
@@ -50,6 +51,11 @@ public class VotanteControlador {
     public String eliminar(@RequestParam @PathVariable String id)throws Exception{
         votanteServicio.bajaVotante(id);
         return "index.html";
+    }
+    @GetMapping("/listar")
+    public String listar() throws Exception{
+       votanteServicio.listarVotantes();
+        return "publicacion_list.html";
     }
 }
 

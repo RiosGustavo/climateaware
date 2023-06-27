@@ -31,16 +31,16 @@ public class Publicacion {
 
     
     private String idPublicacion;
-    private String cuerpo;
+    private String titulo;
+    private String descripcion;    
+    private String cuerpo;    
     
-    
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaAlta;
     
      @OneToOne
     private Imagen imagen;
     private String video;
     private Boolean altaBaja;
-    private String titulo;
-    private String descripcion;
+
 }

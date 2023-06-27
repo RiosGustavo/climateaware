@@ -20,6 +20,7 @@ public class EmpresaControlador {
     @Autowired
     private EmpresaServicio empresaServicio;
 
+
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
         List<Empresa> empresas = empresaServicio.listarEmpresas();
@@ -30,7 +31,7 @@ public class EmpresaControlador {
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable String id, ModelMap modelo) {
         modelo.put("empresa", empresaServicio.getOne(id));
-        return "empresa_modificar.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS EMPRESAS
+        return "empresa_modificar.html"; 
 
     }
 
@@ -43,10 +44,10 @@ public class EmpresaControlador {
 
             return "redirect .../lista";
 
-            ///// REVIZAR ACA COMO PUSIERON LOS CHICOS A LA CLASE EXCEPCION
+            
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "empresa_modificar.html";  //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA MODIFICAR LAS EMPRESAS
+            return "empresa_modificar.html";  
         }
     }
 
@@ -54,7 +55,7 @@ public class EmpresaControlador {
     public String darDeBajaEmpresa(@PathVariable String id) throws Exception {
         empresaServicio.darDeBajaEmpresa(id);
         
-        return"redirec.../lista";
+        return"redirect.../lista";
 
     }
 

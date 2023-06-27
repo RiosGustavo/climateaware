@@ -24,6 +24,8 @@ public class Empresa extends Usuario {
     private String direccion;
     private String rubro;
 
+
     @OneToMany
-    private List<Campaña> campañas;
+    private List<Campana> campanas;
+
 }

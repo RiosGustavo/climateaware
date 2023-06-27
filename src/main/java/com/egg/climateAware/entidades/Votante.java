@@ -1,4 +1,3 @@
-
 package com.egg.climateAware.entidades;
 
 import java.util.List;
@@ -27,5 +26,6 @@ public class Votante extends Usuario {
 
     @OneToMany
     private List<Publicacion> publicaciones;
+
 
 }
