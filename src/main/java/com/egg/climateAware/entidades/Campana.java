@@ -1,10 +1,12 @@
 package com.egg.climateAware.entidades;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,12 +25,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
-public class Campaña {
+public class Campana {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String idCampaña;
+    private String idCampana;
     
     private String titulo;
     private String cuerpo;
@@ -36,17 +38,23 @@ public class Campaña {
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    
     private Date fechaAlta;
 
-    //////  ACA FALTA LE ENTIDAD PUBLICACION
-    @OneToOne
-    private Publicacion publicaciones;
 
-    @OneToOne
+    
+    @OneToMany
+    private List<Publicacion> publicaciones;
+
+
+    @ManyToOne
     private Empresa empresa;
-    //// ACA FALTA LA ENTIDAD IMAGEN
+ 
     @OneToOne
     private Imagen imagen;
     
+    private String descripcion;
     
-}
+    @OneToMany
+    private List<Votante> votantes; 
+    }
