@@ -21,16 +21,6 @@
                 </li>
             </ul>
         </div>
-        <div class="dropdown" sec:authorize="hasRole('ADM')">
-            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                Listar
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li class="nav-item"><a  class="nav-link" th:href="@{/empresa/lista}" >Listar Empresas</a></li>    
-                <li class="nav-item"><a  class="nav-link" th:href="@{/campana/lista}" >Listar Campañas</a></li>    
-                <li class="nav-item"><a  class="nav-link" th:href="@{/publicacion/lista}" >Listar Publicaciones</a></li>
-            </ul>
-        </div>
         <ul class="navbar-nav justify-content-end">
             <li th:if='${session.usuariosession != null}'  class="nav-item dropdown ml-auto">
                 <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

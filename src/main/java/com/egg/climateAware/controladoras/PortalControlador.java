@@ -1,8 +1,10 @@
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
+import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
@@ -24,25 +26,26 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/")
 public class PortalControlador {
 
-//    @Autowired
-//    CampañaServicio campañaServicio = new CampañaServicio();
-//    @Autowired
-//    PublicacionServicio publicacionServicio = new PublicacionServicio();
     @Autowired
-    UsuarioServicio usuarioServicio = new UsuarioServicio();
+    UsuarioServicio usuarioServicio;
 
     @Autowired
-    VotanteServicio votanteServicio = new VotanteServicio();
+    VotanteServicio votanteServicio;
 
     @Autowired
-    EmpresaServicio empresaServicio = new EmpresaServicio();
+    EmpresaServicio empresaServicio;
+
+    @Autowired
+    CampanaServicio campanaServicio;
 
     @GetMapping("/")
     public String index(ModelMap modelo, HttpSession session) {
-//        modelo.put("campañas",campañaServicio.listarCampañas());
+
+        List<Campana> campanas = campanaServicio.listarCampanas();
+
+        modelo.put("campañas", campanas);
 //        moduleo.put("publicaciones",publicacionServicio.listarPublicaciones());
 
-       
         return "index.html";
     }
 
@@ -60,7 +63,7 @@ public class PortalControlador {
 
         return "register.html";
     }
-    
+
     @PostMapping("/registro")
     public String registro(MultipartFile archivo, @RequestParam String email, @RequestParam String password, @RequestParam String password2, @RequestParam String rol,
             @RequestParam(required = false) String nombreApellido, @RequestParam(required = false) String dni, @RequestParam(required = false) String direccionUsuario,
@@ -101,16 +104,15 @@ public class PortalControlador {
             return "redirect:/admin/dashboard";
         }
         if (logueado.getRoles().toString().equals("EMP")) {
-            return "redirect:/";
+            return "redirect:/panel-empresa";
         }
         if (logueado.getRoles().toString().equals("BLO")) {
             return "redirect:/";
         }
-      
-       
-        return "redirect:/";
+
+        return "redirect:/panel-votante";
     }
-    
+
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
     @GetMapping("/perfil")
     public String perfil(ModelMap modelo, HttpSession session) {
@@ -124,11 +126,11 @@ public class PortalControlador {
 
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
     @PostMapping("/perfil/{id}")
-    public String actualizar(MultipartFile archivo, @PathVariable String id,@RequestParam String email,
+    public String actualizar(MultipartFile archivo, @PathVariable String id, @RequestParam String email,
             @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
 
         try {
-            usuarioServicio.ModificarUsuario(archivo, id,email, password, password2);
+            usuarioServicio.ModificarUsuario(archivo, id, email, password, password2);
             modelo.put("exito", "Datos actualizados correctamente.");
             Usuario usuario = usuarioServicio.getOne(id);
             modelo.addAttribute("usuarioActualizado", usuario);
@@ -141,8 +143,7 @@ public class PortalControlador {
             return "perfil_usuario.html";
         }
     }
-    
-    
+
     //Panel votante
     @PreAuthorize("hasAnyRole('ROLE_VOT')")
     @GetMapping("/panel-votante")
@@ -153,22 +154,25 @@ public class PortalControlador {
         Votante votante = votanteServicio.getOne(logueado.getId());
 
         modelo.addAttribute("votante", votante);
-        
+
         return "panel_votante.html";
     }
-    
+
     //Panel empresa
     @PreAuthorize("hasAnyRole('ROLE_EMP')")
     @GetMapping("/panel-empresa")
     public String panelEmpresa(ModelMap modelo, HttpSession session) {
-        //Votante
+        //Empresa
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         Usuario usuario = usuarioServicio.getOne(logueado.getId());
         Empresa empresa = empresaServicio.getOne(logueado.getId());
 
+        //Campañas de la empresa
+        List<Campana> campanas = campanaServicio.campanasPorEmpresa(logueado.getId());
+        modelo.addAttribute("campanas", campanas);
         modelo.addAttribute("empresa", empresa);
-        
+
         return "panel_empresa.html";
     }
-    
+
 }

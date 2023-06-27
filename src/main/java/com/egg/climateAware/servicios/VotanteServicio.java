@@ -56,11 +56,9 @@ public class VotanteServicio {
 
     @Transactional
     public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni,
-            Integer voto, String direccion, String email, String password, String password2, String idPublicacion)
+            String direccion, String email, String password, String password2)
             throws Exception {
-        // validar(String nombreApellido, String dni,String direccion,String
-        // email,String password, String password2 )
-
+       
 
         validarModificar(nombreApellido, dni, direccion, email, password, password2);
 

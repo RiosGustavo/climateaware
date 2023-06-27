@@ -37,7 +37,7 @@ public class VotanteControlador {
             @RequestParam(required = false)String password2, ModelMap modelo) {
         
         try {
-            votanteServicio.modificarVotante(archivo, idVotante, nombreApellido, dni, voto, direccion, email, password, password2);
+            votanteServicio.modificarVotante(archivo, idVotante, nombreApellido, dni, direccion, email, password, password2);
             modelo.put("exito", "El usuario se modifico exitosamente!");
             return "index.html";
         } catch (Exception ex) {

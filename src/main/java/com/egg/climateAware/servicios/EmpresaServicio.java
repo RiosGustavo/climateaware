@@ -28,11 +28,10 @@ public class EmpresaServicio {
     @Autowired
     private ImagenServicio imagenServicio;
 
-  
     @Transactional
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
             String direccion, String rubro, String email, String password, String password2) throws Exception {
-        
+
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Empresa empresa = new Empresa();
@@ -58,11 +57,9 @@ public class EmpresaServicio {
             String direccion, String rubro, String email, String password, String password2)
             throws Exception {
 
-
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
         validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
-
 
         if (respuesta.isPresent()) {
 
@@ -79,7 +76,6 @@ public class EmpresaServicio {
 
             empresa.setRoles(Rol.EMP);
 
-          
             String idImagen = null;
 
             if (archivo.getSize() > 0) {
@@ -114,14 +110,23 @@ public class EmpresaServicio {
 
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
-        if (id == null || id.isEmpty()) {
-            throw new Exception("Debe ingrear el id de la Empresa");
+        if (respuesta.isPresent()) {
+            Empresa empresa = respuesta.get();
+            empresa.setAltaBaja(false);
 
+            empresaRepositorio.save(empresa);
         }
+
+    }
+
+    @Transactional
+    public void darDeAltaEmpresa(String id) throws Exception {
+
+        Optional<Empresa> respuesta = empresaRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
             Empresa empresa = respuesta.get();
-            empresa.setAltaBaja(Boolean.FALSE);
+            empresa.setAltaBaja(true);
 
             empresaRepositorio.save(empresa);
         }
@@ -136,7 +141,6 @@ public class EmpresaServicio {
         if (usuarioExistente != null) {
             throw new Exception("El email ingresado ya está registrado");
         }
-
 
         if (nombreEmpresa.isEmpty() || nombreEmpresa == null) {
             throw new Exception("Debe ingrear el nombre de la Empresa");
