@@ -14,7 +14,7 @@ public interface  PublicacionRepositorio extends JpaRepository<Publicacion, Stri
     
     
             
-     @Query("SELECT pu FROM Publicacion pu WHERE pu.altaBaja = :true")
+     @Query("SELECT pu FROM Publicacion pu WHERE pu.altaBaja = true")
     public List<Publicacion> listadoPublicacionesActivas();
     
 }

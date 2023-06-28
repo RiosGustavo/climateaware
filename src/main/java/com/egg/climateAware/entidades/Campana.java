@@ -2,6 +2,7 @@ package com.egg.climateAware.entidades;
 
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,6 +34,8 @@ public class Campana {
     private String idCampana;
     
     private String titulo;
+    
+    @Column(length=65535, columnDefinition="text")
     private String cuerpo;
     private Boolean altaBaja;
 

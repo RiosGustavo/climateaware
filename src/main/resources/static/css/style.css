@@ -37,14 +37,14 @@ body {
   padding: auto;
 }
 .navbar .container-fluid #navbarNav .nav-item .nav-link:hover {
-  text-decoration: none;
+  text-decoration: underline !important;
   color: #80b918;
-  transition: 0.5s;
+  transition: 0.5s !important;
 }
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
-  text-decoration: none;
+  text-decoration: underline !important;
   color: #80b918;
-  transition: 0.5s;
+  transition: 0.5s !important;
 }
 .custom-toggler.navbar-toggler {
   border-color: #80b918;
@@ -86,7 +86,7 @@ body {
 
 /*FOOTER*/
 #footerClass .nav .nav-item .nav-link:hover {
-  text-decoration: none;
+ 
   color: #80b918 !important;
   transition: 0.5s;
 }
@@ -118,4 +118,109 @@ body {
   to {
     transform: translatex(0px);
   }
+}
+
+
+/*-------------------Animación mensajes de error y/o exito  ------------------------------*/
+
+.alert {
+
+    display: none;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.alert.animated.fadeIn {
+    animation-name: fadeIn;
+}
+
+.alert.animated.fadeOut {
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+/*Muestra el mensaje por encima de los elementos*/
+.error-container {
+    position: absolute !important;
+  
+}
+.form-container {
+  position: absolute;
+}
+
+
+
+/*-------------------------------------------------------Cards----------------------------------------------------------*/
+
+/*Para mostrar todos los elementos hijos a la misma altura en todas las cards*/
+#body-card-tamaño-pequeño {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#img-card-tamaño-pequeño {
+    height: 250px; /* altura de imagen fija para todas las cards */
+    object-fit: cover; /* para asegurarte de que la imagen se ajuste al tamaño que necesitas */
+}
+#card-tamaño-pequeño {
+    height: 420px !important; /* altura de las cards fija */
+}
+
+/* Para todas las cards, aplicamos color negro en los textos y que no tenga ninguna decoracion */
+.a-card {
+    text-decoration: none !important;
+    color: black;
+}
+/* Al pasar el cursor se subraya el texto del titulo */
+.a-subrayado:hover {
+    text-decoration: underline !important;
+
+}
+
+/* Al pasar el cursor se subraya el periodista en otro color */
+.card-periodista:hover {
+    text-decoration: underline !important;
+    color: goldenrod;
+}
+
+
+/* La establecemos en none para que al principio no se visualice */
+.progress {
+    display: none;
+}
+
+.progress-bar {
+    height: 10px !important;
+    background-color: goldenrod !important;
+    border-radius: 5px !important;
+}
+
+
+
+/*-------------------------------------------------------Accordion cards panel admin----------------------------------------------------------*/
+button.accordion-button:not(.collapsed) {
+    background-color: transparent;
+}
+
+button.accordion-button:focus {
+    outline: none;
+    box-shadow: none;
 }

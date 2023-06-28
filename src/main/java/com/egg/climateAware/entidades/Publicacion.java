@@ -2,6 +2,7 @@
 package com.egg.climateAware.entidades;
 
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -33,6 +34,8 @@ public class Publicacion {
     private String idPublicacion;
     private String titulo;
     private String descripcion;    
+    
+    @Column(length=65535, columnDefinition="text")
     private String cuerpo;    
     
     @Temporal(TemporalType.TIMESTAMP)

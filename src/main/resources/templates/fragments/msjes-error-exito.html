@@ -1,7 +1,7 @@
 
-<div th:if="${error != null}" class="alert alert-danger text-center error-container" role="alert" id="alerta">
-    <p th:text="${error}"></p>
-</div>
-<div th:if="${exito != null }" class="alert alert-success text-center error-container" role="alert" id="alerta">
-    <p th:text="${exito}" ></p>
-</div>
+    <div th:if="${error != null}" class="alert alert-danger text-center error-container" role="alert" id="alerta">
+      <p th:text="${error}"><i class="bi bi-exclamation-triangle-fill"></i></p>
+  </div>
+  <div th:if="${exito != null }" class="alert alert-success text-center error-container" role="alert" id="alerta">
+      <p th:text="${exito}"><i class="bi bi-check-circle-fill"></i></p>
+  </div>

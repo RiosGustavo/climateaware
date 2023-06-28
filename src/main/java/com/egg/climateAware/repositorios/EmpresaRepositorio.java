@@ -13,8 +13,9 @@ import org.springframework.stereotype.Repository;
 public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
     
-    @Query("SELECT em FROM Empresa em WHERE em.id = :id")
-    public Empresa buscarPorId (@Param("id") String id );
+
+    @Query("SELECT u FROM Usuario u WHERE u.email = :email")
+    public Empresa buscarPorEmail(@Param("email") String email);
     
     @Query("SELECT em FROM Empresa em WHERE em.nombreEmpresa = :nombreEmpresa")
     public Empresa buscarPorNombre (@Param("nombreEmpresa") String nombreEmpresa );
@@ -27,7 +28,6 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
     
      @Query("SELECT em FROM Empresa em WHERE em.rubro = :rubro")
     public Empresa buscarPorRubro (@Param("rubro") String rubro );
-    
     
      @Query("SELECT ca FROM Campana ca WHERE ca.idCampana = :idCampana")
     public List<Campana> buscarPorCampana (@Param("idCampana") String idCampana  );

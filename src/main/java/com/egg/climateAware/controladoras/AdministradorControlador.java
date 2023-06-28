@@ -33,26 +33,10 @@ public class AdministradorControlador {
     @Autowired
     UsuarioServicio usuarioServicio = new UsuarioServicio();
 
-    @GetMapping("/registro")
-    public String registrar() {
-        return "usuario_form.html";
-    }
+    @GetMapping("/dashboard")
+    public String panelAdministrativo() {
 
-    @PostMapping("/registro")
-    public String registro(@RequestParam(required = false) String email, @RequestParam(required = false) MultipartFile archivo,
-            @RequestParam(required = false) String contrasena, @RequestParam(required = false) String contrasena2, ModelMap modelo) {
-
-        try {
-//            administradorServicio.crearUsuario(archivo, email, contrasena, contrasena2);
-            modelo.put("exito", "Usuario regristrado correctamente");
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-            modelo.put("error", ex.getMessage());
-            modelo.put("email", email);
-            return "usuario_form.html";
-        }
-
-        return "index.html";
+        return "panel_admin.html";
     }
 
 //LISTA DE TODOS
@@ -77,7 +61,7 @@ public class AdministradorControlador {
 
     @GetMapping("/listaVotantes")
     public String listaVotantes(ModelMap modelo) {
-       modelo.put("votantes",votanteServicio.listarVotantes());
+        modelo.put("votantes", votanteServicio.listarVotantes());
         return "lista_votante.html";
     }
 

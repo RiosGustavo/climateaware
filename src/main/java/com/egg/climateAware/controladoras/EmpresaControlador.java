@@ -20,39 +20,19 @@ public class EmpresaControlador {
     @Autowired
     private EmpresaServicio empresaServicio;
 
-    @GetMapping("/registrar")
-    public String registrar() {
-        return "empresa_form.html"; 
-    }
-
-    @PostMapping("/registro")
-    public String registro(@RequestParam String nombreEmpresa, MultipartFile archivo, @RequestParam String cuit,
-            @RequestParam String direccion, @RequestParam String rubro, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
-        try {
-            empresaServicio.registrarEmpresa(archivo, nombreEmpresa, cuit, direccion, rubro, email, password, password2, email);
-            modelo.put("exito", "La Empresa ha sido registrada Exitosamente");
-
-            
-        } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            modelo.put("nombreEmpresa", nombreEmpresa);
-            return "empresa_form.html";  
-        }
-        return "index.html"; 
-    }
-
-    @GetMapping("/lista")
+    
+    
+    @GetMapping("/listado")
     public String listar(ModelMap modelo) {
         List<Empresa> empresas = empresaServicio.listarEmpresas();
         modelo.addAttribute("empresas", empresas);
-        return "empresa_list.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA LISTAR LAS EMPRESAS
+        return "empresa_list.html";
     }
 
     @GetMapping("/modificar/{id}")
     public String modificar(@PathVariable String id, ModelMap modelo) {
         modelo.put("empresa", empresaServicio.getOne(id));
-        return "empresa_modificar.html"; 
+        return "empresa_modificar.html";
 
     }
 
@@ -61,23 +41,40 @@ public class EmpresaControlador {
             String direccion, String rubro, String email, String password, String password2, ModelMap modelo) {
 
         try {
-            empresaServicio.actualizarEmpresa(archivo, id, nombreEmpresa, cuit, direccion, rubro, email, password, password2, email);
+            empresaServicio.actualizarEmpresa(archivo, id, nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
             return "redirect .../lista";
 
-            
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            return "empresa_modificar.html";  
+            return "empresa_modificar.html";
         }
     }
 
-    @GetMapping("/eliminar/{id}")
-    public String darDeBajaEmpresa(@PathVariable String id) throws Exception {
-        empresaServicio.darDeBajaEmpresa(id);
-        
-        return"redirec.../lista";
+    //Dar de baja una empresa
+    @GetMapping("/baja/{id}")
+    public String darDeBajaEmpresa(@PathVariable String id) {
 
+        try {
+            empresaServicio.darDeBajaEmpresa(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:../listado";
+    }
+
+    //Dar de alta una empresa
+    @GetMapping("/alta/{id}")
+    public String darDeAlta(@PathVariable String id) {
+         try {
+            empresaServicio.darDeAltaEmpresa(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:../listado";
+        
+
+        
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +73,15 @@ public class PublicacionServicio {
         return publicacionRepositorio.getOne(idPublicacion);
     }
 
-    //@Transactional
+//        @Transactional(readOnly = true)
+//    public List<Publicacion> listarPublicaciones(){
+//        List<Publicacion> publicacion = new ArrayList();
+//        
+//        publicacion = publicacionRepositorio.findAll();
+//        
+//        return publicacion;
+//    }
+    @Transactional(readOnly = true)
     public List<Publicacion> listarPublicaciones() {
         List<Publicacion> publicaciones = new ArrayList<>();
         publicaciones = publicacionRepositorio.listadoPublicacionesActivas();        

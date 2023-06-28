@@ -1,0 +1,49 @@
+<div class="modal fade" id="crearCampana" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crear Campaña</h5>
+
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/campana/creacion}" method="POST" enctype="multipart/form-data">
+                    <div th:replace="/fragments/msjes-error-exito :: div"></div>
+                    <div class="mb-3">
+
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="cuerpo" class="form-label">Cuerpo</label>
+                        <textarea style="resize: none; height: 200px;" type="text" class="form-control"
+                            name="cuerpo" th:field="${cuerpo}"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">Descripcion</label>
+                        <textarea style="resize: none; height: 100px;" type="text" class="form-control"
+                            name="descripcion" th:field="${campana.descripcion}"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Seleccionar imagen</label>
+                        <input name="archivo" class="form-control" type="file">
+
+                    </div>
+
+
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success">
+                            Enviar
+                        </button>
+
+                </form>
+            </div>
+            <div class="modal-footer mb-0 pe-0">
+                <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

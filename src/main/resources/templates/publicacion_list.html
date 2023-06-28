@@ -28,13 +28,13 @@
                             <th scope="col">Imagen</th>
                             <th scope="col">video</th>
                             <th scope="col">Estado</th>
-                            <th scope="col" sec:authorize="hasRole('ADMIN')">Acciones</th>
+                            <th scope="col" sec:authorize="hasRole('ADM')">Acciones</th>
                         </tr>
                     </thead>
                     <tbody th:each="publicacion : ${publicaciones}">
                         <tr class="table-light">
                             <th scope="row" th:text="${publicacion.idPublicacion}"></th>
-                            <td th:text="${publicacion.Cuerpo}"></td>
+                            <td th:text="${publicacion.cuerpo}"></td>
                             <td th:text="${publicacion.fechaAlta}"></td>
                             <td>
                                 <a><img th:if="${publicacion.imagen != null}" class="logo"
@@ -45,7 +45,7 @@
                             <td th:text="${publicacion.video}"></td>
                             <td th:text="${publicacion.altaBaja}"></td>
                             <td>
-                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}"><i
+                                <a sec:authorize="hasRole('ADM')" th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}"><i
                                         class="fas fa-feather-alt"></i> Modificar </a>
                             </td>
                         </tr>
@@ -73,7 +73,7 @@
                     <th scope="col">Direccion</th>
                     <th scope="col">Rubro</th>
                     <th scope="col">Foto de Perfil</th>
-                    <th scope="col" sec:authorize="hasRole('ADMIN')">Acciones</th>
+                    <th scope="col" sec:authorize="hasRole('ADM')">Acciones</th>
 
                 </tr>
             </thead>

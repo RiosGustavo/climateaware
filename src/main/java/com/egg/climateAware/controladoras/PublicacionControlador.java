@@ -1,7 +1,9 @@
 
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.servicios.PublicacionServicio;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -68,6 +70,13 @@ public class PublicacionControlador {
         }
         return "redirect:/publicacion/id";
     }
+        @GetMapping("/lista")
+    public String listar(ModelMap modelo) {
+        List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
+        
+        modelo.addAttribute("publicacion", publicacion);
+        return "publicacion_list.html"; 
+    }
     
     @GetMapping("/eliminar/{id}")
     public String eliminar(@RequestParam @PathVariable String id) throws Exception{
@@ -77,6 +86,7 @@ public class PublicacionControlador {
     @GetMapping("/listar")
     public String listar() throws Exception{
        publicacionServicio.listarPublicaciones();
-        return "publicacion_list.html";
+       
+       return "publicacion_list.html";
     }
 }
