@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-//import org.springframework.security.core.userdetails.UserDetailsService; /// ver si es necesario poner esto abjoa en el public class  implements UserDetailsService
+
 @Service
 public class EmpresaServicio {
 

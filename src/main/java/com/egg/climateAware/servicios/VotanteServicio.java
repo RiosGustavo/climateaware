@@ -34,7 +34,7 @@ public class VotanteServicio {
 
 
         Votante votante = new Votante();
-        ///propios
+    
         votante.setNombreApellido(nombreApellido);
         votante.setDni(dni);
         votante.setDireccion(direccion);
