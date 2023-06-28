@@ -86,6 +86,7 @@ public class PublicacionControlador {
     @GetMapping("/listar")
     public String listar() throws Exception{
        publicacionServicio.listarPublicaciones();
-        return "publicacion_list.html";
+       
+       return "publicacion_list.html";
     }
 }

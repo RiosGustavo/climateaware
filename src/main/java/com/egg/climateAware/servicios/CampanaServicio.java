@@ -107,7 +107,7 @@ public class CampanaServicio {
     public List<Campana> listarCampanas(){
         List<Campana> campanas = new ArrayList();
         
-        campanas = campanaRepositorio.findAll();
+        campanas = (List<Campana>) campanaRepositorio.buscarPorEstado();
         
         return campanas;
     }

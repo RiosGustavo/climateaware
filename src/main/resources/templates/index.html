@@ -68,46 +68,21 @@
 
         <div class="">
             <div class="row ps-4 m-4">
-
                 <div class="col-md-7">
                     <h3 class="text-camp text-center pb-4">Campañas</h1>
-                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                        <div class="row row-cols-1 row-cols-md-2 g-4" th:each="campana : ${campanas}">
                             <div class="col">
                                 <div class="card">
-                                    <img src="../img/pexels-tom-fisk-2283496.jpg" class="card-img-top" alt="...">
+                                    <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top" alt="...">
                                     <div class="card-body">
-                                        <h5 class="card-title">Titulo de Campaña</h5>
-                                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                        <h5 class="card-title" th:text="${campana.titulo}">Titulo de Campaña</h5>
+                                        <p class="card-text" th:text="${campana.descripcion}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                         <p class="text-campañaList text-secondary" ><i>Fecha de inicio:</i></p> 
+                                         <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"><i>20/20/20</i></p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img src="../img/pexels-pixabay-414807.jpg" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Titulo de Campaña</h5>
-                                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img src="../img/pexels-pixabay-159397.jpg" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Titulo de Campaña</h5>
-                                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img src="../img/pexels-cats-coming-421999.jpg" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Titulo de Campaña</h5>
-                                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                 </div>
                 <div class="col-md-4">

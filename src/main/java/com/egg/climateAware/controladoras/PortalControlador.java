@@ -43,7 +43,7 @@ public class PortalControlador {
 
         List<Campana> campanas = campanaServicio.listarCampanas();
 
-        modelo.put("campañas", campanas);
+        modelo.addAttribute("campanas", campanas);
 //        moduleo.put("publicaciones",publicacionServicio.listarPublicaciones());
 
         return "index.html";
