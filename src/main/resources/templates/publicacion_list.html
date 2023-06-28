@@ -34,7 +34,7 @@
                     <tbody th:each="publicacion : ${publicaciones}">
                         <tr class="table-light">
                             <th scope="row" th:text="${publicacion.idPublicacion}"></th>
-                            <td th:text="${publicacion.Cuerpo}"></td>
+                            <td th:text="${publicacion.cuerpo}"></td>
                             <td th:text="${publicacion.fechaAlta}"></td>
                             <td>
                                 <a><img th:if="${publicacion.imagen != null}" class="logo"
@@ -73,7 +73,7 @@
                     <th scope="col">Direccion</th>
                     <th scope="col">Rubro</th>
                     <th scope="col">Foto de Perfil</th>
-                    <th scope="col" sec:authorize="hasRole('ADMIN')">Acciones</th>
+                    <th scope="col" sec:authorize="hasRole('ADM')">Acciones</th>
 
                 </tr>
             </thead>
