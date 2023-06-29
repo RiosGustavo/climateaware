@@ -22,7 +22,7 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
     public Campana buscarPorTitulo (@Param("titulo") String titulo );
     
     @Query("SELECT ca FROM Campana ca WHERE ca.fechaAlta = :fechaAlta")
-    public Campana buscarPorFecha (@Param("fechaAlta") Date fechaAlta );
+    public List<Campana> buscarPorFecha (@Param("fechaAlta") Date fechaAlta );
     
      @Query("SELECT ca FROM Campana ca WHERE ca.altaBaja = true")
     public List<Campana> buscarPorEstado ();
