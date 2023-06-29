@@ -1,61 +1,65 @@
-<div class="modal fade" id="modificarPublicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modificar Publicación</h5>
-                
-            </div>
-            <div class="modal-body">
-                <form th:action="@{/publicacion/modificacion}" method="POST" enctype="multipart/form-data">
-                    <div th:replace="/fragments/msjes-error-exito :: div"></div>
-                    <div class="mb-3">
 
-                        <input th:value="${publicacion.id}" hidden name="id" />
-                        <input th:value="${publicacion.fechaAlta}" hidden name="fechaAlta" />
-                        <input th:value="${publicacion.altaBaja}" hidden name="altaBaja" />
+<content>
+    <div class="modal fade" id="modificarPublicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modificar Publicación</h5>
 
-                        <label for="titulo" class="form-label">Título</label>
-                        <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
-                    </div>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/publicacion/modificacion}" method="POST" enctype="multipart/form-data">
+                        <div th:replace="/fragments/msjes-error-exito :: div"></div>
+                        <div class="mb-3">
 
-                    <div class="mb-3">
-                        <label for="cuerpo" class="form-label">Cuerpo</label>
-                        <textarea style="resize: none; height: 200px;" type="text" class="form-control"
-                            name="cuerpo" th:field="${publicacion.cuerpo}"></textarea>
-                    </div>
+                            <input th:value="${publicacion.id}" hidden name="id" />
+                            <input th:value="${publicacion.fechaAlta}" hidden name="fechaAlta" />
+                            <input th:value="${publicacion.altaBaja}" hidden name="altaBaja" />
 
-                    <div class="mb-3">
-                        <label for="descripcion" class="form-label">Descripcion</label>
-                        <textarea style="resize: none; height: 100px;" type="text" class="form-control"
-                            name="descripcion" th:field="${publicaciondescripcion}"></textarea>
-                    </div>
+                            <label for="titulo" class="form-label">Título</label>
+                            <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="video" class="form-label">Link Video</label>
-                        <input name="video" class="form-control" type="text">
+                        <div class="mb-3">
+                            <label for="cuerpo" class="form-label">Cuerpo</label>
+                            <textarea style="resize: none; height: 200px;" type="text" class="form-control"
+                                      name="cuerpo" th:field="${publicacion.cuerpo}"></textarea>
+                        </div>
 
-                    </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripcion</label>
+                            <textarea style="resize: none; height: 100px;" type="text" class="form-control"
+                                      name="descripcion" th:field="${publicaciondescripcion}"></textarea>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="archivo" class="form-label">Seleccionar imagen</label>
-                        <input name="archivo" class="form-control" type="file">
+                        <div class="mb-3">
+                            <label for="video" class="form-label">Link Video</label>
+                            <input name="video" class="form-control" type="text">
 
-                    </div>
+                        </div>
 
-                    
+                        <div class="mb-3">
+                            <label for="archivo" class="form-label">Seleccionar imagen</label>
+                            <input name="archivo" class="form-control" type="file">
+
+                        </div>
 
 
 
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-success">
-                            Enviar
-                        </button>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-success">
+                                Enviar
+                            </button>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+</content>
