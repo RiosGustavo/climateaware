@@ -44,7 +44,7 @@
         <div class="container my-5">
             <div class="row" >
                 <div class="col-md-6 col-lg-4 mb-4" th:each="campana :${campanas}">
-                    <a th:href="@{/campana/__${campana.idCampana}__}" target="_blank" class="a-card">
+                    <a th:href= "@{/campana/campana_one/__${campana.idCampana}__} " target="_blank" class="a-card">
                         <div class="card shadow">
                             <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
                             <div class="card-body">

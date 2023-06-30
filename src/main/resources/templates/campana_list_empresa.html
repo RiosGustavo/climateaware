@@ -19,7 +19,8 @@
         <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${campana.descripcion}">aca va la descripcion </h4>
         <p class="lead" th:text="${campana.cuerpo}">aca va el texto limitado, texto limitado, texto limitado, texto limitado, texto limitado, texto limitado, texto limitado</p>
         <button type="button" class="btn btn-outline-secondary btn-sm px-4" th:href= "@{/campana/campana_one/__${campana.idCampana}__} ">Ver mas</button>
-        
+        <button type="button" class="btn btn-outline-secondary btn-sm px-4" th:href= "@{/campana_one/modificar/__${campana.idCampana}__} ">Editar</button>
+        <button type="button" class="btn btn-outline-danger btn-sm px-4" th:href= "@{/campana/eliminar/__${campana.idCampana}__} ">Eliminar</button>
         <br><br>
         <p class="text-campañaList text-secondary" ><i>Fecha de inicio:</i></p> 
         <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"><i>20/20/20</i></p>

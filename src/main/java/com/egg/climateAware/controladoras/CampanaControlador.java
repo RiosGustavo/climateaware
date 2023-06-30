@@ -3,6 +3,7 @@ package com.egg.climateAware.controladoras;
 import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
 import java.util.Date;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/campana")
@@ -28,6 +30,9 @@ public class CampanaControlador {
 
     @Autowired
     private EmpresaServicio empresaServicio;
+    
+    @Autowired
+    private CampanaRepositorio campanaRepositorio;
 
     @GetMapping("/registrar")
     public String registrar(ModelMap modelo) {
@@ -69,6 +74,14 @@ public class CampanaControlador {
 
         modelo.addAttribute("empresas", empresas);
         return "campana_modificar.html";
+    }
+    
+    
+    @GetMapping("/campana_one/{idCampana}")
+    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
+        
+        modelo.put("campana", campanaServicio.getOne(idCampana));
+        return "campana_one.html";
     }
 
     @PostMapping("/modificar/{idCampana}")
