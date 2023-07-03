@@ -26,7 +26,7 @@
                                             <button th:if='${session.usuariosession.altaBaja == true}' type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#crearCampana">
                                                 Lanzar campaña
                                             </button>
-
+                                             <content  th:replace = "/fragments/campana_form :: content"></content>
                                         </div>
 
                                     </div>

@@ -62,7 +62,6 @@ public class CampanaControlador {
     @GetMapping("/lista")
     public String listar(ModelMap modelo) {
         List<Campana> campanas = campanaServicio.listarCampanas();
-
         modelo.addAttribute("campanas", campanas);
         return "campana_list.html";
     }

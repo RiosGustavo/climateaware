@@ -42,10 +42,10 @@ public class PortalControlador {
     public String index(ModelMap modelo, HttpSession session) {
 
         List<Campana> campanas = campanaServicio.listarCampanas();
-
         modelo.addAttribute("campanas", campanas);
 //        moduleo.put("publicaciones",publicacionServicio.listarPublicaciones());
 
+         
         return "index.html";
     }
 

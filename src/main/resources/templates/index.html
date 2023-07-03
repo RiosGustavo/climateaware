@@ -22,44 +22,22 @@
         <h1 class="text-pre text-center">Novedades</h1>
         <div class="container marketing">
 
-            <div class="row featurette py-5 campañaPost ">
-                <div class=" col-md-6">
-                    <h2 class="featurette-heading fw-normal lh-1 text-center"><strong>First featurette heading.</strong> </h2>
+            <div class="row featurette py-3 campanaPost" th:each="noticia : ${noticias}">
+                <div class=" col-md-3">
+                    <h2 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"><strong>First featurette heading.</strong> </h2>
                     <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Ver mas</button>
+                    <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} "> 
+                     <button type="button" class="btn btn-outline-secondary btn-sm px-4" >Ver mas</button>   
+                    </a>
+                                                            
                 </div>
                 <div class="col-md-5">
-                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" src="../img/pexels-pixabay-159397.jpg" alt="">
+                    <img th:src="@{/imagen/noticia/__${noticia.idNoticia}__}"class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" alt="">
                 </div>
             </div>
 
             <hr class="featurette-divider">
 
-            <div class="row featurette py-5 campañaPost">
-                <div class="col-md-6 order-md-2">
-                    <h2 class="featurette-heading fw-normal lh-1 text-center"><strong>Oh yeah, it’s that good.</strong>  </h2>
-                    <p class="lead">Another featurette? Of course. More placeholder content here to give you an idea of how this layout would work with some actual real-world content in place.</p>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Ver mas</button>
-                </div>
-                <div class="col-md-5 order-md-1">
-                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" src="../img/pexels-tom-fisk-2283496.jpg" alt="">
-                </div>
-            </div>
-
-            <hr class="featurette-divider">
-
-            <div class="row featurette py-5 campañaPost">
-                <div class="col-md-6 ">
-                    <h2 class="featurette-heading fw-normal lh-1 text-center"><strong>And lastly, this one.</strong> </h2>
-                    <p class="lead">And yes, this is the last block of representative placeholder content. Again, not really intended to be actually read, simply here to give you a better view of what this would look like with some actual content. Your content.</p>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Ver mas</button>
-                </div>
-                <div class="col-md-5">
-                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" src="../img/pexels-cats-coming-421999.jpg" alt="">
-                </div>
-            </div>
-
-            <hr class="featurette-divider">
 
             <!-- /END THE FEATURETTES -->
 
@@ -68,64 +46,36 @@
 
         <div class="">
             <div class="row ps-4 m-4">
-                <div class="col-md-7">
-                    <h3 class="text-camp text-center pb-4">Campañas</h1>
-                        <div class="row row-cols-1 row-cols-md-2 g-4" th:each="campana : ${campanas}">
-                            <div class="col">
+                <div class="col-md-6">
+                    <h3 class="text-camp text-center pb-4">Campañas</h3>
+                        <div class="row row-cols-1 row-cols-md-2 g-4" >
+                            <div class="col" th:each="campana : ${campanas}">
                                 <div class="card">
-                                    <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top" alt="...">
-                                    <div class="card-body">
+                                    <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top img-fluid mx-auto card-image" width="50" height="50" alt="...">
+                                    <div class="card-body ">
                                         <h5 class="card-title" th:text="${campana.titulo}">Titulo de Campaña</h5>
-                                        <p class="card-text" th:text="${campana.descripcion}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                        <p class="card-text" th:text="${#strings.substring(campana.descripcion, 0, 100) + '...'}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
                                          <p class="text-campañaList text-secondary" ><i>Fecha de inicio:</i></p> 
                                          <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"><i>20/20/20</i></p>
+                                              <a th:href="@{/campana/campana_one/__${campana.idCampana}__}">
+                                              <button type="button" class="btn btn-outline-secondary btn-sm px-4">Ver más</button>
+                                                </a>
                                     </div>
                                 </div>
-                            </div>
-                            
+                            </div>  
                         </div>
                 </div>
                 <div class="col-md-4">
                     <div>
                         <h4 class="fst-italic">Publicaciones recientes</h4>
                         <hr class="featurette-divider">
-                        <ul class="list-unstyled ">
+                        <ul class="list-unstyled " th:each="publicacion : ${publicaciones}">
                             <li>
-                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" href="#">
-                                    <img src="../img/pexels-pixabay-414807.jpg" alt="" width="140px" height="90px">
+                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" th:href= "@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__} ">
+                                    <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="" width="140px" height="90px">
                                     <div class="col-lg-8">
-                                        <h6 class="mb-0">Example blog post title</h6>
-                                        <small class="text-body-secondary">January 15, 2023</small>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="featurette-divider">
-                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" href="#">
-                                    <img src="../img/pexels-cats-coming-421999.jpg" alt="" width="140px" height="90px">
-                                    <div class="col-lg-8">
-                                        <h6 class="mb-0">This is another blog post title</h6>
-                                        <small class="text-body-secondary">January 14, 2023</small>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="featurette-divider">
-                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" href="#">
-                                    <img src="../img/pexels-pixabay-159397.jpg" alt="" width="140px" height="90px">
-                                    <div class="col-lg-8">
-                                        <h6 class="mb-0">Longer blog post title: This one has multiple lines!</h6>
-                                        <small class="text-body-secondary">January 13, 2023</small>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="featurette-divider">
-                                <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" href="#">
-                                    <img src="../img/pexels-pixabay-159397.jpg" alt="" width="140px" height="90px">
-                                    <div class="col-lg-8">
-                                        <h6 class="mb-0">Longer blog post title: This one has multiple lines!</h6>
-                                        <small class="text-body-secondary">January 13, 2023</small>
+                                        <h6 class="mb-0" th:text="${publicacion.titulo}" >Example blog post title</h6>
+                                        <small class="text-body-secondary" th:text="${publicacion.fechaAlta}">January 15, 2023</small>
                                     </div>
                                 </a>
                             </li>
@@ -134,8 +84,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <footer th:replace="/fragments/footer :: footer" ></footer>
             <!-- SCRIPTS -->
