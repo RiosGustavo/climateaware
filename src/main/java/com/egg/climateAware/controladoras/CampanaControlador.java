@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/campana")
@@ -34,12 +35,14 @@ public class CampanaControlador {
     
     @Autowired
     private CampanaRepositorio campanaRepositorio;
+
     
     @Autowired
     private PublicacionServicio publicacionServicio;
     
     
     @PreAuthorize("hasAnyRole('ROLE_EMP')")
+
     @GetMapping("/registrar")
     public String registrar(HttpSession session) {
         if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
@@ -73,6 +76,14 @@ public class CampanaControlador {
 
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_modificar.html";
+    }
+    
+    
+    @GetMapping("/campana_one/{idCampana}")
+    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
+        
+        modelo.put("campana", campanaServicio.getOne(idCampana));
+        return "campana_one.html";
     }
 
     @PostMapping("/modificar/{idCampana}")
