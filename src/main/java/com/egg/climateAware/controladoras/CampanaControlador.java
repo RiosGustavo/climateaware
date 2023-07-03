@@ -77,15 +77,7 @@ public class CampanaControlador {
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_modificar.html";
     }
-    
-    
-    @GetMapping("/campana_one/{idCampana}")
-    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
-        
-        modelo.put("campana", campanaServicio.getOne(idCampana));
-        return "campana_one.html";
-    }
-
+  
     @PostMapping("/modificar/{idCampana}")
     public String modificar(MultipartFile archivo, @PathVariable String idCampana, String titulo,
             String cuerpo, String descripcion, ModelMap modelo) {
