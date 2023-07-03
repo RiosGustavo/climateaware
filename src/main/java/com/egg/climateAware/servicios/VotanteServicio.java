@@ -33,7 +33,6 @@ public class VotanteServicio {
             String password, String password2) throws Exception {
         validarRegistro(nombreApellido, dni, direccion, email, password, password2);
 
-
         Votante votante = new Votante();
         /// propios
         votante.setNombreApellido(nombreApellido);
@@ -47,40 +46,51 @@ public class VotanteServicio {
         votante.setPassword(new BCryptPasswordEncoder().encode(password));
 
         votante.setRoles(Rol.VOT);
-        Imagen imagen = imagenServicio.guardar(archivo);
-        votante.setImagen(imagen);
+
+        String idImagen = null;
+        if (archivo.getSize() == 0) {
+           
+            Imagen imagen = imagenServicio.obtenerImagenPorDefecto();
+            votante.setImagen(imagen);
+        }
 
         votanteRepositorio.save(votante);
 
     }
 
     @Transactional
-    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String dni,
-            String direccion, String email, String password, String password2)
+    public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String direccion)
             throws Exception {
-       
 
-        validarModificar(nombreApellido, dni, direccion, email, password, password2);
+        validarModificar(archivo, nombreApellido, direccion);
 
         Optional<Votante> respuesta = votanteRepositorio.findById(idVotante);
 
-        
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
 
-            /// propios
             votante.setNombreApellido(nombreApellido);
-            votante.setDni(dni);
             votante.setDireccion(direccion);
 
-            // heredados de Usuaio
-            votante.setEmail(email);
-            // votante.setAltaBaja(Boolean.FALSE);
-            votante.setPassword(new BCryptPasswordEncoder().encode(password));
+            String idImagen = null;
+            if (archivo.getSize() > 0) {
+                idImagen = votante.getImagen().getId();
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                votante.setImagen(imagen);
+            }
+            votanteRepositorio.save(votante);
+        }
 
-            votante.setRoles(Rol.VOT);
-            Imagen imagen = imagenServicio.guardar(archivo);
-            votante.setImagen(imagen);
+    }
+
+    @Transactional
+    public void darDeBajaVotante(String id) throws Exception {
+
+        Optional<Votante> respuesta = votanteRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+            Votante votante = respuesta.get();
+            votante.setAltaBaja(false);
 
             votanteRepositorio.save(votante);
         }
@@ -88,13 +98,14 @@ public class VotanteServicio {
     }
 
     @Transactional
-    public void bajaVotante(String idVotante) throws Exception {
+    public void darDeAltaVotante(String id) throws Exception {
 
-        Optional<Votante> respuesta = votanteRepositorio.findById(idVotante);
+        Optional<Votante> respuesta = votanteRepositorio.findById(id);
 
         if (respuesta.isPresent()) {
             Votante votante = respuesta.get();
-            votante.setAltaBaja(false);
+            votante.setAltaBaja(true);
+
             votanteRepositorio.save(votante);
         }
 
@@ -106,7 +117,14 @@ public class VotanteServicio {
 
     public List<Votante> listarVotantes() {
         List<Votante> votantes = new ArrayList();
-        votantes = votanteRepositorio.listadoVotantesActivos();
+        votantes = votanteRepositorio.findAll();
+        return votantes;
+    }
+
+    public List<Votante> buscarVotantesPorTermino(String termino) {
+
+        List<Votante> votantes = new ArrayList();
+        votantes = votanteRepositorio.buscarVotantesPorTermino(termino);
         return votantes;
     }
 
@@ -146,37 +164,20 @@ public class VotanteServicio {
             throw new Exception("La contraseña debe tener al menos 8 caracteres");
         }
     }
-    
-    private void validarModificar(String nombreApellido, String dni, String direccion, String email, String password,
-            String password2) throws Exception {
 
-       
+    private void validarModificar(MultipartFile archivo, String nombreApellido, String direccion) throws Exception {
+
         if (nombreApellido.isEmpty() || nombreApellido == null) {
-            throw new Exception("Debe ingresar el nombre y apellido");
+            throw new Exception("El nombre y apellido no puede estar vacío.");
         }
 
-        if (dni.isEmpty() || dni == null || !dni.chars().allMatch(Character::isDigit)) {
-            throw new Exception("Debe ingresar un DNI");
-        }
         if (direccion.isEmpty() || direccion == null) {
-            throw new Exception("Debe ingresar una dirección");
-        }
-        if (email.isEmpty() || email == null) {
-            throw new Exception("Debe ingresar un email");
+            throw new Exception("La dirección no puede estar vacía.");
         }
 
-        if (password == null || password.isEmpty()) {
-            throw new Exception("La contraseña no puede estar vacía");
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+            throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
         }
-        if (!password.equals(password2)) {
-
-            throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente");
-
-        }
-        if (password.length() < 8) {
-            throw new Exception("La contraseña debe tener al menos 8 caracteres");
-        }
-
     }
 
 }

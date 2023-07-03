@@ -1,16 +1,19 @@
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
-import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
-import java.util.Date;
+import com.egg.climateAware.servicios.PublicacionServicio;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +31,21 @@ public class CampanaControlador {
 
     @Autowired
     private EmpresaServicio empresaServicio;
-
+    
+    @Autowired
+    private CampanaRepositorio campanaRepositorio;
+    
+    @Autowired
+    private PublicacionServicio publicacionServicio;
+    
+    
+    @PreAuthorize("hasAnyRole('ROLE_EMP')")
     @GetMapping("/registrar")
-    public String registrar(ModelMap modelo) {
-        List<Empresa> empresas = empresaServicio.listarEmpresas();
-        modelo.addAttribute("empresas", empresas);
-        return "campana_form.html"; //// PONER ACA EL NOMBRE DEL ARCHIVO HTML QUE LOS CHICOS HICIERON PARA CREAR LAS CAMPAÑAS
+    public String registrar(HttpSession session) {
+        if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
+            return "redirect:/empresa/panel-principal";
+        }
+        return "campana_form.html";
     }
 
     @PostMapping("/registro")
@@ -44,57 +56,81 @@ public class CampanaControlador {
 
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             campanaServicio.crearCampana(archivo, titulo, cuerpo, descripcion, logueado.getId());
-            modelo.addAttribute("exito", "La campaña fue cargada correctamente");
+            modelo.put("exito", "La campaña fue creada correctamente");
         } catch (Exception ex) {
-
             modelo.put("error", ex.getMessage());
-            return "campana_form.html";
+            modelo.addAttribute("titulo", titulo);
+            modelo.addAttribute("cuerpo", cuerpo);
+            modelo.addAttribute("descripcion", descripcion);
         }
-        return "redirect:../campana/lista";
+         return "campana_form.html";
 
     }
 
-    @GetMapping("/lista")
-    public String listar(ModelMap modelo) {
-        List<Campana> campanas = campanaServicio.listarCampanas();
-
-        modelo.addAttribute("campanas", campanas);
-        return "campana_list.html";
-    }
 
     @GetMapping("/modificar/{idCampana}")
     public String modificar(@PathVariable String idCampana, ModelMap modelo) {
-        modelo.put("campana", campanaServicio.getOne(idCampana));
-        List<Empresa> empresas = empresaServicio.listarEmpresas();
 
-        modelo.addAttribute("empresas", empresas);
+        modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_modificar.html";
     }
 
     @PostMapping("/modificar/{idCampana}")
-    public String modificar(MultipartFile archivo, String idCampana, String titulo,
-            String cuerpo, Date fechaAlta, String idPublicacion, String id, ModelMap modelo) {
+    public String modificar(MultipartFile archivo, @PathVariable String idCampana, String titulo,
+            String cuerpo, String descripcion, ModelMap modelo) {
         try {
-            List<Empresa> empresas = empresaServicio.listarEmpresas();
-            modelo.addAttribute("empresas", empresas);
-
-            campanaServicio.actualizarCampana(archivo, titulo, cuerpo, idPublicacion, idCampana);
-            return "redirect:../lista";
+            campanaServicio.actualizarCampana(archivo, titulo, cuerpo, descripcion, idCampana);
+            modelo.put("exito", "Campaña actualizada correctamente");
+            return "redirect:/campana/lista";
         } catch (Exception ex) {
-            List<Empresa> empresas = empresaServicio.listarEmpresas();
-            modelo.addAttribute("empresas", empresas);
+            modelo.put("campana", campanaServicio.getOne(idCampana));
             modelo.put("error", ex.getMessage());
             return "campana_modificar.html";
         }
 
     }
 
-    @GetMapping("/eliminar/{id}")
+    @GetMapping("/baja/{idCampana}")
     public String darDeBajaCamapna(@PathVariable String idCampana) throws Exception {
         campanaServicio.darDeBajaCampana(idCampana);
-
-        return "redirect.../lista";
-
+        return "redirect:/campana/lista";
     }
+    
+     @GetMapping("/alta/{idCampana}")
+    public String darDeAltaCamapna(@PathVariable String idCampana) throws Exception {
+        campanaServicio.darDeAltaCampana(idCampana);
+        return "redirect:/campana/lista";
+    }
+    
+    
+    
+    @GetMapping("/campana_one/{idCampana}")
+    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
+        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampana(idCampana);
+        
+        modelo.put("publicaciones", publicaciones);
+        modelo.put("campana", campanaServicio.getOne(idCampana));
+        return "campana_one.html";
+    }
+    
+        //-----------------------------MOTOR BUSQUEDA---------------------------------
+    @GetMapping("/lista")
+    public String busquedaVotantes(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+        
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        List<Campana> campanas = new ArrayList<>();
+
+        if (termino != null && !termino.isEmpty()) {
+            campanas = campanaServicio.buscarCampanasPorTitulo(termino.toLowerCase());
+        }else{
+        
+            campanas = campanaServicio.listarCampanas();
+        }
+
+        modelo.addAttribute("campanas", campanas);
+
+        return "campana_list.html";
+    }
+    
 
 }

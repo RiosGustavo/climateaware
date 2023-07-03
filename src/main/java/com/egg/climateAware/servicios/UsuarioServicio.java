@@ -24,13 +24,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UsuarioServicio implements UserDetailsService{
+public class UsuarioServicio implements UserDetailsService {
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
     @Autowired
     private ImagenServicio imagenServicio;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
     public void crearUsuario(MultipartFile archivo, String email, String password, String password2) throws Exception {
@@ -65,15 +67,48 @@ public class UsuarioServicio implements UserDetailsService{
             usuario.setEmail(email);
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             String idImagen = null;
-            
-            if(usuario.getImagen() != null){
+
+            if (usuario.getImagen() != null) {
                 idImagen = usuario.getImagen().getId();
             }
-            
+
             Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            
+
             usuario.setImagen(imagen);
             usuarioRepositorio.save(usuario);
+        }
+
+    }
+
+    @Transactional
+    public void cambiarClave(String claveActual, String id, String clave, String clave2) throws Exception {
+
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+
+        if (respuesta.isPresent()) {
+           
+            if (clave.isEmpty() || clave == null) {
+                throw new Exception("La contraseña no puede ser vacía.");
+            }
+             if (clave.length() < 8) {
+                throw new Exception("La contraseña nueva debe tener al menos 8 caracteres");
+            }
+            if (!clave.equals(clave2)) {
+                throw new Exception("Las contraseñas no coinciden. Por favor introduzcalas correctamente.");
+            }
+
+            Usuario usuario = respuesta.get();
+
+            String encodedPassword = usuario.getPassword();
+
+            if (bCryptPasswordEncoder.matches(claveActual, encodedPassword)) {
+                usuario.setPassword(new BCryptPasswordEncoder().encode(clave));
+
+                usuarioRepositorio.save(usuario);
+            } else {
+                throw new Exception("La contraseña actual no es válida.");
+            }
+
         }
 
     }
@@ -137,28 +172,28 @@ public class UsuarioServicio implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-     Usuario usuario = usuarioRepositorio.buscarPorEmail(email);
-     
-     if(usuario != null){
-         
-         List<GrantedAuthority> permisos = new ArrayList();
-         
-         GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRoles().toString());
-         
-         permisos.add(p);
-         
-         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-         
-         HttpSession session = attr.getRequest().getSession(true);
-         
-         session.setAttribute("usuariosession", usuario);
-         
-         return new User(usuario.getEmail(), usuario.getPassword(), permisos);
-         
-     }else{
-         return null;
-     }
-     
+        Usuario usuario = usuarioRepositorio.buscarPorEmail(email);
+
+        if (usuario != null) {
+
+            List<GrantedAuthority> permisos = new ArrayList();
+
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + usuario.getRoles().toString());
+
+            permisos.add(p);
+
+            ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+            HttpSession session = attr.getRequest().getSession(true);
+
+            session.setAttribute("usuariosession", usuario);
+
+            return new User(usuario.getEmail(), usuario.getPassword(), permisos);
+
+        } else {
+            return null;
+        }
+
     }
 
 }

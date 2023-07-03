@@ -29,11 +29,15 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
      @Query("SELECT em FROM Empresa em WHERE em.rubro = :rubro")
     public Empresa buscarPorRubro (@Param("rubro") String rubro );
     
-     @Query("SELECT ca FROM Campana ca WHERE ca.idCampana = :idCampana")
-    public List<Campana> buscarPorCampana (@Param("idCampana") String idCampana  );
+    
+     @Query("SELECT em FROM Empresa em WHERE ((:termino IS NULL OR LOWER(em.nombreEmpresa) LIKE %:termino%) OR "
+            + "(:termino IS NULL OR em.fechaAlta LIKE %:termino%) OR "
+            + "(:termino IS NULL OR em.rubro LIKE %:termino%) OR "
+            + "(:termino IS NULL OR em.cuit LIKE %:termino%) OR "
+            + "(:termino IS NULL OR em.email LIKE %:termino%) OR "
+            + "(:termino IS NULL OR LOWER(em.id) LIKE %:termino%))")
+    List<Empresa> buscarEmpresasPorTermino(@Param("termino") String termino);
 
-    
-    
     
     
     
