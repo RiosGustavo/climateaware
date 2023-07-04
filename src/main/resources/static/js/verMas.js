@@ -2,7 +2,7 @@
 var cantidadInicial = 4;
 
 // Obtener todas las publicaciones y ocultar las que excedan la cantidad inicial
-var publicaciones = document.querySelectorAll('.row');
+var publicaciones = document.querySelectorAll('.campanas-list');
 for (var i = cantidadInicial; i < publicaciones.length; i++) {
   publicaciones[i].style.display = 'none';
 }

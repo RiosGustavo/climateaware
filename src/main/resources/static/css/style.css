@@ -95,12 +95,12 @@ body {
 /*ACA SE CENTRA EL BOTON DE CARGAR MAS LISTAS*/
 
 #btn-cargar-mas {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 40px;
-  padding:10px;
-  margin-left: 70px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    padding:10px;
+    margin-left: 70px;
 }
 
 /*FOOTER*/
@@ -187,6 +187,39 @@ body {
 
 /*-------------------------------------------------------Cards----------------------------------------------------------*/
 
+
+/*aca se controla la imagen del listado de campañas en el campana_list*/
+.row .col-md-5 .bd-placeholder-img{
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+
+}
+.row .col-md-5 .imagen-container {
+    width: 100%;
+    height: 200px; /* Ajusta el tamaño deseado para las imágenes */
+    overflow: hidden;
+}
+
+.row .col-md-5 .imagen-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+
+/*aca se controla la imagen del listado de campañas en el index*/
+.row .col-md-6 .row-cols-1 .col .card .card-image {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    max-width: 100%;
+    max-height: 100%;
+}
+
 /*Para mostrar todos los elementos hijos a la misma altura en todas las cards*/
 #body-card-tamaño-pequeño {
     display: flex;
@@ -194,43 +227,13 @@ body {
     justify-content: space-between;
     height: 100%;
 }
-/*aca se controla la imagen del listado de campañas en el campana_list*/
-.row .col-md-5 .bd-placeholder-img{
-  width: 400px;
-  height: 300px;
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 100%; 
-  border-radius: 10px;
-    
-}
-.row .col-md-5 .imagen-container {
-  width: 100%;
-  height: 200px; /* Ajusta el tamaño deseado para las imágenes */
-  overflow: hidden;
-}
 
-.row .col-md-5 .imagen-container img {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-
-/*aca se controla la imagen del listado de campañas en el index*/
-.row .col-md-6 .row-cols-1 .col .card .card-image {
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 100%;
-}
 #img-card-tamaño-pequeño {
     height: 250px; /* altura de imagen fija para todas las cards */
     object-fit: cover; /* para asegurarte de que la imagen se ajuste al tamaño que necesitas */
 }
 #card-tamaño-pequeño {
-    height: 420px !important; /* altura de las cards fija 
+    height: 420px !important; /* altura de las cards fija */
 }
 
 /* Para todas las cards, aplicamos color negro en los textos y que no tenga ninguna decoracion */
@@ -238,10 +241,9 @@ body {
     text-decoration: none !important;
     color: black;
 }
-/* Al pasar el cursor se subraya el texto del titulo*/
+/* Al pasar el cursor se subraya el texto del titulo */
 .a-subrayado:hover {
     text-decoration: underline !important;
-    
 }
 
 /* Al pasar el cursor se subraya el periodista en otro color */
@@ -250,16 +252,10 @@ body {
     color: goldenrod;
 }
 
-/* La establecemos en none para que al principio no se visualice*/ 
-.progress {
-    display: none;
-}
 
-.progress-bar {
-    height: 10px !important;
-    background-color: goldenrod !important;
-    border-radius: 5px !important;
-}
+
+
+
 
 
 /*-------------------------------------------------------Accordion cards panel admin----------------------------------------------------------*/
@@ -270,7 +266,7 @@ button.accordion-button:not(.collapsed) {
 button.accordion-button:focus {
     outline: none;
     box-shadow: none;
-    
+
 }
 
 /*-------------------------------------------------------Texto cambiar foto perfil en perfil de usuario----------------------------------------------------------*/
@@ -279,7 +275,7 @@ button.accordion-button:focus {
     display: inline-block;
     cursor: pointer;
     color: blue ;
-   
+
 }
 
 .custom-file-input input[type="file"] {
@@ -291,5 +287,6 @@ button.accordion-button:focus {
     height: 100%;
     cursor: pointer;
 }
+
 
 
