@@ -53,40 +53,26 @@ public class EmpresaServicio {
     }
 
     @Transactional
-    public void actualizarEmpresa(MultipartFile archivo, String id, String nombreEmpresa, String cuit,
-            String direccion, String rubro, String email, String password, String password2)
+    public void modificarEmpresa(MultipartFile archivo, String id, String nombre, String direccion)
             throws Exception {
 
+        validarModificar(archivo, nombre, direccion);
         Optional<Empresa> respuesta = empresaRepositorio.findById(id);
-
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         if (respuesta.isPresent()) {
 
             Empresa empresa = respuesta.get();
 
-            empresa.setNombreEmpresa(nombreEmpresa);
-            empresa.setAltaBaja(Boolean.TRUE);
-            empresa.setCuit(cuit);
+            empresa.setNombreEmpresa(nombre);
             empresa.setDireccion(direccion);
-            empresa.setRubro(rubro);
-            empresa.setEmail(email);
-
-            empresa.setPassword(new BCryptPasswordEncoder().encode(password));
-
-            empresa.setRoles(Rol.EMP);
 
             String idImagen = null;
-
             if (archivo.getSize() > 0) {
-
                 idImagen = empresa.getImagen().getId();
                 Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
                 empresa.setImagen(imagen);
             }
-
             empresaRepositorio.save(empresa);
-
         }
 
     }
@@ -102,6 +88,13 @@ public class EmpresaServicio {
 
         empresas = empresaRepositorio.findAll();
 
+        return empresas;
+    }
+    
+    public List<Empresa> buscarEmpresasPorTermino(String termino) {
+
+        List<Empresa> empresas = new ArrayList();
+        empresas = empresaRepositorio.buscarEmpresasPorTermino(termino);
         return empresas;
     }
 
@@ -175,6 +168,21 @@ public class EmpresaServicio {
 
         }
 
+    }
+
+    private void validarModificar(MultipartFile archivo, String nombreApellido, String direccion) throws Exception {
+
+        if (nombreApellido.isEmpty() || nombreApellido == null) {
+            throw new Exception("El nombre y apellido no puede estar vacío.");
+        }
+
+        if (direccion.isEmpty() || direccion == null) {
+            throw new Exception("La dirección no puede estar vacía.");
+        }
+
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+            throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
+        }
     }
 
 }

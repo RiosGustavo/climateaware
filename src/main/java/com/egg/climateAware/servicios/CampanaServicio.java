@@ -27,19 +27,17 @@ public class CampanaServicio {
     @Autowired
     private EmpresaRepositorio empresaRepositorio;
 
-    
     @Autowired
     private PublicacionRepositorio publicacionRepositorio;
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
-    
+
     @Autowired
     private ImagenServicio imagenServicio;
 
-    
     @Transactional
-    public void crearCampana(MultipartFile archivo, String titulo, String cuerpo,String descripcion ,String id) throws Exception {
+    public void crearCampana(MultipartFile archivo, String titulo, String cuerpo, String descripcion, String id) throws Exception {
 
         validar(archivo, titulo, cuerpo, descripcion);
 
@@ -53,8 +51,7 @@ public class CampanaServicio {
         campana.setAltaBaja(true);
         Imagen imagen = imagenServicio.guardar(archivo);
         campana.setImagen(imagen);
-        
-        
+
         if (respuesta.isPresent()) {
 
             Usuario usuario = respuesta.get();
@@ -65,26 +62,25 @@ public class CampanaServicio {
             }
         }
 
-        
         campanaRepositorio.save(campana);
 
     }
 
     @Transactional
-    public void actualizarCampana(MultipartFile archivo, String titulo, String cuerpo,String descripcion ,String idCampana) throws Exception {
-        
-        
+    public void actualizarCampana(MultipartFile archivo, String titulo, String cuerpo, String descripcion, String idCampana) throws Exception {
+
         validar(archivo, titulo, cuerpo, descripcion);
-        
+
         Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
 
         if (respuesta.isPresent()) {
 
             Campana campana = respuesta.get();
-            
+
             campana.setTitulo(titulo);
+            campana.setDescripcion(descripcion);
             campana.setCuerpo(cuerpo);
-            
+
             String idImagen = null;
             if (archivo.getSize() > 0) {
                 idImagen = campana.getImagen().getId();
@@ -96,62 +92,87 @@ public class CampanaServicio {
         }
 
     }
-    
-     @Transactional(readOnly = true)
+
+    @Transactional(readOnly = true)
     public Campana getOne(String id) {
         return campanaRepositorio.getOne(id);
-                
+
     }
-    
+
     @Transactional(readOnly = true)
-    public List<Campana> listarCampanas(){
+    public List<Campana> listarCampanas() {
         List<Campana> campanas = new ArrayList();
-        
-        campanas = (List<Campana>) campanaRepositorio.buscarPorEstado();
-        
+
+        campanas = (List<Campana>) campanaRepositorio.findAll();
+
         return campanas;
     }
-    
+
+    @Transactional(readOnly = true)
+    public List<Campana> listarCampanasActivas() {
+        List<Campana> campanas = new ArrayList();
+
+        campanas = (List<Campana>) campanaRepositorio.buscarPorEstado();
+
+        return campanas;
+    }
+
+    public List<Campana> buscarCampanasPorTitulo(String titulo) {
+
+        List<Campana> campanas = new ArrayList();
+        campanas = campanaRepositorio.buscarPorTitulo(titulo);
+        return campanas;
+    }
+
     @Transactional
-    public void darDeBajaCampana(String idCampana) throws Exception{
+    public void darDeBajaCampana(String idCampana) throws Exception {
         Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
-       
-        if(respuesta.isPresent()){
+
+        if (respuesta.isPresent()) {
             Campana campana = respuesta.get();
-            campana.setAltaBaja(Boolean.FALSE);
-            
+            campana.setAltaBaja(false);
+
             campanaRepositorio.save(campana);
-            
+
         }
     }
     
-    
-     public List<Campana> campanasPorEmpresa(String id) {
+     @Transactional
+    public void darDeAltaCampana(String idCampana) throws Exception {
+        Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
+
+        if (respuesta.isPresent()) {
+            Campana campana = respuesta.get();
+            campana.setAltaBaja(true);
+
+            campanaRepositorio.save(campana);
+
+        }
+    }
+
+    public List<Campana> campanasPorEmpresa(String id) {
 
         List<Campana> campanas = new ArrayList();
 
         campanas = campanaRepositorio.campanasPorEmpresa(id);
         return campanas;
     }
-    
-    
 
-
-    public void validar(MultipartFile archivo, String titulo, String cuerpo,String descripcion) throws Exception {
+    public void validar(MultipartFile archivo, String titulo, String cuerpo, String descripcion) throws Exception {
 
         if (titulo.isEmpty() || titulo == null) {
-            throw new Exception("Debe ingrear un titulo en la Campana");
+            throw new Exception("El título de la campaña no puede estar vacío.");
         }
 
         if (cuerpo.isEmpty() || cuerpo == null) {
-            throw new Exception("Debe ingrear un cuerpo en la Campana");
-        }
-        
-        if (descripcion.isEmpty() || descripcion == null) {
-            throw new Exception("Debe ingrear una descripción en la Campana");
+            throw new Exception("El cuerpo de la campaña no puede estar vacío.");
         }
 
-         if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+        if (descripcion.isEmpty() || descripcion == null) {
+            throw new Exception("La descripción de la campaña no puede estar vacío.");
+        }
+
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
             throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
         }
 

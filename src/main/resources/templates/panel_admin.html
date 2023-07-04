@@ -22,11 +22,9 @@
                                     </h2>
                                     <div id="flush-noticias" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body row m-1">
-                                            <a th:href="@{/campana/lista}" class="btn btn-primary mt-2">Buscar</a>
-                                            <button th:if='${session.usuariosession.altaBaja == true}' type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#crearCampana">
-                                                Lanzar campaña
-                                            </button>
-                                             <content  th:replace = "/fragments/campana_form :: content"></content>
+
+                                            <a th:href="@{/campana/lista}" class="btn btn-primary mt-2">Buscar</a> 
+
                                         </div>
 
                                     </div>
@@ -46,12 +44,12 @@
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-usuarios" aria-expanded="false" aria-controls="flush-collapseOne">
-                                            <h1 class="fs-5">Usuarios</h1>
+                                            <h1 class="fs-5">Votantes</h1>
                                         </button>
                                     </h2>
                                     <div id="flush-usuarios" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body row m-1">
-                                            <a th:href="@{/admin/usuarios}" class="btn btn-primary mt-2">Buscar</a>
+                                            <a th:href="@{/admin/votantes}" class="btn btn-primary mt-2">Buscar</a>
 
                                         </div>
 
@@ -78,7 +76,7 @@
                                     </h2>
                                     <div id="flush-periodistas" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body row m-1">
-                                            <a th:href="@{/empresa/listado}" class="btn btn-success mt-2">Listado</a>
+                                            <a th:href="@{/admin/empresas}" class="btn btn-success mt-2">Buscar</a>
 
                                         </div>
 
@@ -93,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <content  th:replace = "/fragments/campana_form :: content"></content>
+       
         <!-- JS Boostrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 

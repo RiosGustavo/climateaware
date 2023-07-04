@@ -2,10 +2,12 @@ package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
+import com.egg.climateAware.servicios.PublicacionServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
 import java.util.List;
@@ -27,23 +29,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class PortalControlador {
 
     @Autowired
-    UsuarioServicio usuarioServicio;
+    private UsuarioServicio usuarioServicio;
 
     @Autowired
-    VotanteServicio votanteServicio;
+    private VotanteServicio votanteServicio;
 
     @Autowired
-    EmpresaServicio empresaServicio;
+    private EmpresaServicio empresaServicio;
 
     @Autowired
-    CampanaServicio campanaServicio;
+    private CampanaServicio campanaServicio;
+    
+    @Autowired
+    private PublicacionServicio publicacionServicio;
 
     @GetMapping("/")
     public String index(ModelMap modelo, HttpSession session) {
 
         List<Campana> campanas = campanaServicio.listarCampanas();
         modelo.addAttribute("campanas", campanas);
-//        moduleo.put("publicaciones",publicacionServicio.listarPublicaciones());
+
+        List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
+        modelo.addAttribute("publicaciones", publicacion);
 
          
         return "index.html";
@@ -104,75 +111,38 @@ public class PortalControlador {
             return "redirect:/admin/dashboard";
         }
         if (logueado.getRoles().toString().equals("EMP")) {
-            return "redirect:/panel-empresa";
+            return "redirect:empresa/panel-principal";
         }
         if (logueado.getRoles().toString().equals("BLO")) {
             return "redirect:/";
         }
 
-        return "redirect:/panel-votante";
+        return "redirect:votante/panel-principal";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
-    @GetMapping("/perfil")
+    @GetMapping("/perfil/changePassword")
     public String perfil(ModelMap modelo, HttpSession session) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuariosession");
         Usuario usuarioActualizado = usuarioServicio.getOne(usuario.getId());
         modelo.put("usuario", usuario);
         modelo.addAttribute("usuarioActualizado", usuarioActualizado);
-        return "perfil_usuario.html";
+        return "change_password.html";
     }
-
+    
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
-    @PostMapping("/perfil/{id}")
-    public String actualizar(MultipartFile archivo, @PathVariable String id, @RequestParam String email,
-            @RequestParam String password, @RequestParam String password2, ModelMap modelo) {
-
+    @PostMapping("/perfil/changePassword")
+    public String perfil(@RequestParam String claveActual, @RequestParam String id, @RequestParam String clave,
+            @RequestParam String clave2, ModelMap model) {
         try {
-            usuarioServicio.ModificarUsuario(archivo, id, email, password, password2);
-            modelo.put("exito", "Datos actualizados correctamente.");
-            Usuario usuario = usuarioServicio.getOne(id);
-            modelo.addAttribute("usuarioActualizado", usuario);
-            return "perfil_usuario.html";
+            usuarioServicio.cambiarClave(claveActual, id, clave, clave2);
+            model.put("exito", "La contraseña ha sido actualizada correctamente.");
+            return "change_password.html";
         } catch (Exception e) {
-            Usuario usuario = usuarioServicio.getOne(id);
-            modelo.addAttribute("usuarioActualizado", usuario);
-            modelo.put("error", e.getMessage());
-            modelo.put("email", email);
-            return "perfil_usuario.html";
+            model.put("error", e.getMessage());
+            return "change_password.html";
         }
-    }
-
-    //Panel votante
-    @PreAuthorize("hasAnyRole('ROLE_VOT')")
-    @GetMapping("/panel-votante")
-    public String panelVotante(ModelMap modelo, HttpSession session) {
-        //Votante
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        Usuario usuario = usuarioServicio.getOne(logueado.getId());
-        Votante votante = votanteServicio.getOne(logueado.getId());
-
-        modelo.addAttribute("votante", votante);
-
-        return "panel_votante.html";
-    }
-
-    //Panel empresa
-    @PreAuthorize("hasAnyRole('ROLE_EMP')")
-    @GetMapping("/panel-empresa")
-    public String panelEmpresa(ModelMap modelo, HttpSession session) {
-        //Empresa
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-        Usuario usuario = usuarioServicio.getOne(logueado.getId());
-        Empresa empresa = empresaServicio.getOne(logueado.getId());
-
-        //Campañas de la empresa
-        List<Campana> campanas = campanaServicio.campanasPorEmpresa(logueado.getId());
-        modelo.addAttribute("campanas", campanas);
-        modelo.addAttribute("empresa", empresa);
-
-        return "panel_empresa.html";
     }
 
 }

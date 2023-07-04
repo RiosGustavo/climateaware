@@ -1,87 +1,96 @@
 /* Reset CSS */
 
 html {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 body {
-  background-color: #f9fff8 !important;
+    background-color: #f9fff8 !important;
 }
 
 @font-face {
-  font-family: Rigtheous;
-  src: url(../fonts/Righteous-Regular.ttf);
+    font-family: Rigtheous;
+    src: url(../fonts/Righteous-Regular.ttf);
 }
 @font-face {
-  font-family: "croogla";
-  src: url("../fonts/croogla.ttf") format("truetype");
+    font-family: "croogla";
+    src: url("../fonts/croogla.ttf") format("truetype");
 }
 .fs-4 {
-  font-family: "croogla", Arial, sans-serif;
-  font-size: 90px !important;
-  color: #80b918 !important;
-  margin-left: 1rem;
-  display: flex;
-  align-items: center;
-  text-decoration: underline;
+    font-family: "croogla", Arial, sans-serif;
+    font-size: 90px !important;
+    color: #80b918 !important;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: underline;
 }
 
 .imagenNavbar {
-  width: 15px;
-  height: 15px;
-  margin-left: 0.5rem;
-  padding: auto;
+
+    width: 50px;
+    height: 50px;
+    margin-left: 0.5rem;
+    padding: auto;
+
 }
 .navbar .container-fluid #navbarNav .nav-item .nav-link:hover {
-  text-decoration: underline !important;
-  color: #80b918;
-  transition: 0.5s !important;
+    text-decoration: underline !important;
+    color: #80b918;
+    transition: 0.5s !important;
 }
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
-  text-decoration: underline !important;
-  color: #80b918;
-  transition: 0.5s !important;
+    text-decoration: underline !important;
+    color: #80b918;
+    transition: 0.5s !important;
 }
 .custom-toggler.navbar-toggler {
-  border-color: #80b918;
-  transition: 0.5s;
+    border-color: #80b918;
+    transition: 0.5s;
 }
 /* Setting the stroke to green using rgb values (0, 128, 0) */
 
 /*PRESEENTACION*/
 .text-center {
-  transition: height 0.3s ease;
+    transition: height 0.3s ease;
 }
 .text-pre {
-  font-family: "croogla";
-  color: #80b918;
-  font-size: 70px;
-  text-shadow: #020201;
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+    font-family: "croogla";
+    color: #80b918;
+    font-size: 70px;
+    text-shadow: #020201;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
+}
+.text-camp2 {
+    font-family: "Rigtheous";
+    color: #80b918;
+    font-size: 50px;
+    text-shadow: #020201;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
 }
 .text-camp {
-  font-family: "Rigtheous";
-  color: #80b918;
-  font-size: 50px;
-  text-shadow: #020201;
-  text-decoration: underline;
-  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
+    font-family: "Rigtheous";
+    color: #80b918;
+    font-size: 50px;
+    text-shadow: #020201;
+    text-decoration: underline;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
 }
 .text-center .col-lg-7 .lead {
-  font-weight: bold;
+    font-weight: bold;
 }
 #tituloPresentacion {
-  animation: mover-abajo-arriba 2s 1;
+    animation: mover-abajo-arriba 2s 1;
 }
 .campañaPost.mover-izquierda-derecha {
-  animation: mover-derecha-izquierda 5s 1, forwards;
+    animation: mover-derecha-izquierda 5s 1, forwards;
 }
 .campañaPost.mover-derecha-izquierda {
-  animation: mover-izquierda-derecha 5s 1, forwards;
+    animation: mover-izquierda-derecha 5s 1, forwards;
 }
 /*ACA SE CENTRA EL BOTON DE CARGAR MAS LISTAS*/
 
@@ -96,38 +105,38 @@ body {
 
 /*FOOTER*/
 #footerClass .nav .nav-item .nav-link:hover {
- 
-  color: #80b918 !important;
-  transition: 0.5s;
+
+    color: #80b918 !important;
+    transition: 0.5s;
 }
 
 /*KEYFRAMES DE TRANCICIONES*/
 
 /*TRANSICION DE PRESENTACION*/
 @keyframes mover-abajo-arriba {
-  from {
-    transform: translatey(100px);
-  }
-  to {
-    transform: translatey(0px);
-  }
+    from {
+        transform: translatey(100px);
+    }
+    to {
+        transform: translatey(0px);
+    }
 }
 /*TRANSICION DE NOTICIAS*/
 @keyframes mover-izquierda-derecha {
-  from {
-    transform: translatex(-100px);
-  }
-  to {
-    transform: translatex(0px);
-  }
+    from {
+        transform: translatex(-100px);
+    }
+    to {
+        transform: translatex(0px);
+    }
 }
 @keyframes mover-derecha-izquierda {
-  from {
-    transform: translatex(100px);
-  }
-  to {
-    transform: translatex(0px);
-  }
+    from {
+        transform: translatex(100px);
+    }
+    to {
+        transform: translatex(0px);
+    }
 }
 
 
@@ -168,10 +177,10 @@ body {
 /*Muestra el mensaje por encima de los elementos*/
 .error-container {
     position: absolute !important;
-  
+
 }
 .form-container {
-  position: absolute;
+    position: absolute;
 }
 
 
@@ -232,11 +241,11 @@ body {
 /* Al pasar el cursor se subraya el texto del titulo*/
 .a-subrayado:hover {
     text-decoration: underline !important;
-
+    
 }
 
 /* Al pasar el cursor se subraya el periodista en otro color */
-.card-periodista:hover {
+.card-votante:hover {
     text-decoration: underline !important;
     color: goldenrod;
 }
@@ -261,4 +270,26 @@ button.accordion-button:not(.collapsed) {
 button.accordion-button:focus {
     outline: none;
     box-shadow: none;
+    
 }
+
+/*-------------------------------------------------------Texto cambiar foto perfil en perfil de usuario----------------------------------------------------------*/
+.custom-file-input {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: blue ;
+   
+}
+
+.custom-file-input input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+

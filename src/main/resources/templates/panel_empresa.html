@@ -11,10 +11,8 @@
         <div class="container my-2">
 
             <h1 th:if='${session.usuariosession != null}'  th:text="'¡Hola de nuevo! ' +${empresa.nombreEmpresa}" class="display-6 mt-4" ></h1>
-            <button th:if='${session.usuariosession.altaBaja == true}' type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearCampana">
-                Lanzar campaña
-            </button>
-            <content  th:replace = "/fragments/campana_form :: content"></content>
+           
+           <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/registrar/}" target="_blank" type="button" class="btn btn-success">Lanzar campaña</a>
             <div th:if='${session.usuariosession.altaBaja == false}' class="accordion" id="accordionFlushExample">
                 <div class="accordion-item  mt-3">
                     <h2 class="accordion-header">
@@ -44,15 +42,21 @@
         <div class="container my-5">
             <div class="row" >
                 <div class="col-md-6 col-lg-4 mb-4" th:each="campana :${campanas}">
-                    <a th:href= "@{/campana/campana_one/__${campana.idCampana}__} " class="a-card">
-                        <div class="card shadow">
-                            <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
-                            <div class="card-body">
-                                <h1 class="fs-5 a-subrayado" th:text="${campana.titulo}"></h1>
-                                <p th:text="${campana.descripcion}"></p>
+
+                    <div class="card shadow">
+                        <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
+                        <div class="card-body">
+                            <h1 class="fs-5 a-subrayado" th:text="${campana.titulo}"></h1>
+                            <p th:text="${campana.descripcion}"></p>
+                            <div class="row m-1" >
+                               <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/modificar/__${campana.idCampana}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
+                                <a th:href= "@{/campana/campana_one/__${campana.idCampana}__} " target="_blank" class="btn btn-light mt-2">Ver más</a>
+
                             </div>
+                            
                         </div>
-                    </a>
+                    </div>
+                    
                 </div>
             </div>
         </div>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <head  th:replace = "/fragments/head :: head"> </head>
+    <body>
+        <!-- Navigation Bar -->
+        <nav th:replace = "/fragments/navbar :: nav"></nav>
+        <div class="container my-5">
+            <div class="row justify-content-center ">
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 th:text="'Error ' + ${codigo}" class="text-danger text-center"></h3>
+                        </div>
+
+
+                        <div class="card-body ">
+                             <h4 th:text="${mensaje}"  class="text-center" ></h4>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        
+        <!-- JS Boostrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    </body>
+</html>

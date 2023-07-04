@@ -18,8 +18,11 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
     @Query("SELECT ca FROM Campana ca WHERE ca.idCampana = :idCampana")
     public Campana buscarPorId (@Param("idCampana") String idCampana );
     
-    @Query("SELECT ca FROM Campana ca WHERE ca.titulo = :titulo")
-    public Campana buscarPorTitulo (@Param("titulo") String titulo );
+    @Query("SELECT ca FROM Campana ca WHERE ca.titulo LIKE %:titulo%")
+    public List<Campana> buscarPorTitulo (@Param("titulo") String titulo );
+    
+    @Query(value = "select * from Campana order by fecha_alta desc", nativeQuery = true)
+    List<Campana> findAllOrderByfecha_altaDesc();
     
     @Query("SELECT ca FROM Campana ca WHERE ca.fechaAlta = :fechaAlta")
     public List<Campana> buscarPorFecha (@Param("fechaAlta") Date fechaAlta );

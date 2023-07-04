@@ -54,9 +54,8 @@
                                     <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top img-fluid mx-auto card-image" width="50" height="50" alt="...">
                                     <div class="card-body ">
                                         <h5 class="card-title" th:text="${campana.titulo}">Titulo de Campaña</h5>
-                                        <p class="card-text" th:text="${#strings.substring(campana.descripcion, 0, 100) + '...'}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                         <p class="text-campañaList text-secondary" ><i>Fecha de inicio:</i></p> 
-                                         <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"><i>20/20/20</i></p>
+                                       <!-- <p class="card-text" th:text="${#strings.substring(campana.descripcion, 0, 100) + '...'}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
+                                       <p class="text-campañaList text-secondary" th:text="${'Fecha de Inicio: ' + campana.fechaAlta}"><i></i></p>
                                               <a th:href="@{/campana/campana_one/__${campana.idCampana}__}">
                                               <button type="button" class="btn btn-outline-secondary btn-sm px-4">Ver más</button>
                                                 </a>
@@ -76,6 +75,7 @@
                                     <div class="col-lg-8">
                                         <h6 class="mb-0" th:text="${publicacion.titulo}" >Example blog post title</h6>
                                         <small class="text-body-secondary" th:text="${publicacion.fechaAlta}">January 15, 2023</small>
+                                         <h7 class="card-votante">Por <span th:text="${publicacion.votante.nombreApellido}" class="fw-bold" ></span></h7>
                                     </div>
                                 </a>
                             </li>
