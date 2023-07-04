@@ -53,7 +53,7 @@ public class CampanaControlador {
         } catch (Exception ex) {
 
             modelo.put("error", ex.getMessage());
-            return "campana_form.html";
+            return "redirect:../panel-empresa";
         }
         return "redirect:../campana/lista";
 

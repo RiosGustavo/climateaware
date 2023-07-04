@@ -1,8 +1,9 @@
-
 package com.egg.climateAware.servicios;
 
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.entidades.Publicacion;
+import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Service
 public class PublicacionServicio {
 
@@ -21,11 +21,15 @@ public class PublicacionServicio {
     private PublicacionRepositorio publicacionRepositorio;
 
     @Autowired
+    private VotanteServicio votanteServicio;
+
+    @Autowired
     private ImagenServicio imagenServicio;
 
     @Transactional
     public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video) throws Exception {
-        validar(titulo,descripcion,cuerpo);
+        validar(titulo, descripcion, cuerpo);
+        List<Usuario> votos = new ArrayList();
         Publicacion publicacion = new Publicacion();
         publicacion.setTitulo(titulo);
         publicacion.setDescripcion(descripcion);
@@ -36,13 +40,15 @@ public class PublicacionServicio {
         publicacion.setImagen(imagen);
         publicacion.setAltaBaja(true);
         publicacion.setVideo(video);
+        publicacion.setVotos(votos);
         publicacionRepositorio.save(publicacion);
     }
 //modificarPublicacion(archivo, id, titulo,descripcion,cuerpo, video);
-    @Transactional
-    public void modificarPublicacion(MultipartFile archivo, String idPublicacion,String titulo,String descripcion, String cuerpo, String video) throws Exception {
 
-        validar(titulo,descripcion,cuerpo);
+    @Transactional
+    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String video) throws Exception {
+
+        validar(titulo, descripcion, cuerpo);
 
         Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
 
@@ -61,6 +67,25 @@ public class PublicacionServicio {
             publicacionRepositorio.save(publicacion);
         }
 
+    }
+    
+    @Transactional
+    public void votar(String idPublicacion, String idUsuario) {
+        Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
+        Votante votante = votanteServicio.getOne(idUsuario);
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            List votos = publicacion.getVotos();
+
+            if (publicacion.getVotos().contains(votante)) {
+                votos.remove(votante);
+                publicacion.setVotos(votos);
+            }else{
+                votos.add(votante);
+                publicacion.setVotos(votos);
+            }
+            publicacionRepositorio.save(publicacion);
+        }
     }
 
     /*
@@ -84,7 +109,7 @@ public class PublicacionServicio {
     @Transactional(readOnly = true)
     public List<Publicacion> listarPublicaciones() {
         List<Publicacion> publicaciones = new ArrayList<>();
-        publicaciones = publicacionRepositorio.listadoPublicacionesActivas();        
+        publicaciones = publicacionRepositorio.listadoPublicacionesActivas();
         return publicaciones;
     }
 
@@ -101,7 +126,7 @@ public class PublicacionServicio {
 
     }
 
-    private void validar(String titulo, String descripcion,String cuerpo) throws Exception {
+    private void validar(String titulo, String descripcion, String cuerpo) throws Exception {
         if (titulo.isEmpty() || titulo == null) {
             throw new Exception("El Título no puede ser nulo o estar vacío");
         }
