@@ -11,8 +11,8 @@
         <div class="container my-2">
 
             <h1 th:if='${session.usuariosession != null}'  th:text="'¡Hola de nuevo! ' +${empresa.nombreEmpresa}" class="display-6 mt-4" ></h1>
-           
-           <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/registrar/}" target="_blank" type="button" class="btn btn-success">Lanzar campaña</a>
+
+            <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/registrar/}" target="_blank" type="button" class="btn btn-success">Lanzar campaña</a>
             <div th:if='${session.usuariosession.altaBaja == false}' class="accordion" id="accordionFlushExample">
                 <div class="accordion-item  mt-3">
                     <h2 class="accordion-header">
@@ -24,7 +24,6 @@
                         <div class="accordion-body">Actualmente te encuentras inactivo. Estamos revisando tu solicitud de registro y en breve estarás habilitado para crear campañas.</div>
                     </div>
                 </div>
-
             </div>
             <hr class="my-4">
 
@@ -49,20 +48,14 @@
                             <h1 class="fs-5 a-subrayado" th:text="${campana.titulo}"></h1>
                             <p th:text="${campana.descripcion}"></p>
                             <div class="row m-1" >
-                               <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/modificar/__${campana.idCampana}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
+                                <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/campana/modificar/__${campana.idCampana}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
                                 <a th:href= "@{/campana/campana_one/__${campana.idCampana}__} " target="_blank" class="btn btn-light mt-2">Ver más</a>
-
-                            </div>
-                            
+                            </div>                         
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
-
-
-
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
         <script src="../js/mensajeFormulario.js"/></script>
