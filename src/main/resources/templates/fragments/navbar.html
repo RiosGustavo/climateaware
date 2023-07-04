@@ -29,10 +29,11 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li sec:authorize="hasRole('ADM')"><a class="dropdown-item" th:href="@{/admin/dashboard}">Panel principal</a></li>
-                    <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/panel-empresa}">Panel principal</a></li>
-                    <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/panel-votante}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/empresa/panel-principal}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/votante/panel-principal}">Panel principal</a></li>
 
-                    <li><a class="dropdown-item" th:href="@{/perfil}">Perfil</a></li>
+                    <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/votante/perfil}">Perfil</a></li>
+                    <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/empresa/perfil}">Perfil</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar cesión</a></li>
                 </ul>

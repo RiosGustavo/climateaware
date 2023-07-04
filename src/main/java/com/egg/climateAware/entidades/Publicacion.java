@@ -1,4 +1,3 @@
-
 package com.egg.climateAware.entidades;
 
 import java.util.Date;
@@ -7,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -18,8 +18,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity 
+
+
+@Entity
 @Getter
 @Setter
 @ToString
@@ -27,29 +30,34 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 
 public class Publicacion {
-    
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 
-    
     private String idPublicacion;
     private String titulo;
-    private String descripcion;    
-    
-    @Column(length=65535, columnDefinition="text")
-    private String cuerpo;    
-    
-    @Temporal(TemporalType.TIMESTAMP)
+    private String descripcion;
+
+    @Column(length = 65535, columnDefinition = "text")
+    private String cuerpo;
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
-    
-     @OneToOne
+
+    @OneToOne
     private Imagen imagen;
     private String video;
     private Boolean altaBaja;
-    
+
+    @ManyToOne
+    private Votante votante;
+
+    @OneToOne
+    private Campana campana;
+
     @OneToMany
     private List<Usuario> votos;
-    
 
 }

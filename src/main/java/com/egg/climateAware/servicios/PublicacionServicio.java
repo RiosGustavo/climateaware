@@ -1,14 +1,19 @@
 package com.egg.climateAware.servicios;
 
+import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
+import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
+import com.egg.climateAware.repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,24 +31,68 @@ public class PublicacionServicio {
     @Autowired
     private ImagenServicio imagenServicio;
 
+    @Autowired
+    private UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    private CampanaRepositorio campanaRepositorio;
+
     @Transactional
-    public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video) throws Exception {
+    public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String youtubeUrl, String idVotante, String idCampana) throws Exception {
         validar(titulo, descripcion, cuerpo);
-        List<Usuario> votos = new ArrayList();
+
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(idVotante);
+
+        Optional<Campana> respuestaCampana = campanaRepositorio.findById(idCampana);
+
         Publicacion publicacion = new Publicacion();
+        List <Usuario> votos = new ArrayList();
         publicacion.setTitulo(titulo);
         publicacion.setDescripcion(descripcion);
         publicacion.setCuerpo(cuerpo);
-        //publicacion.setFechaAlta(new Date());
         publicacion.setFechaAlta(new Date());
         Imagen imagen = imagenServicio.guardar(archivo);
         publicacion.setImagen(imagen);
         publicacion.setAltaBaja(true);
-        publicacion.setVideo(video);
         publicacion.setVotos(votos);
+        if (youtubeUrl != null) {
+            publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
+        }
+
+        if (respuesta.isPresent()) {
+
+            Usuario usuario = respuesta.get();
+
+            if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
+                Votante vo = (Votante) respuesta.get();
+                publicacion.setVotante(vo);
+            }
+        }
+        if (respuesta.isPresent()) {
+
+            publicacion.setCampana(respuestaCampana.get());
+        }
+
         publicacionRepositorio.save(publicacion);
     }
-//modificarPublicacion(archivo, id, titulo,descripcion,cuerpo, video);
+
+    public String getEmbeddedYouTubeUrl(String youtubeUrl) {
+        // Patron para buscar el identificador del video en la URL
+
+        Pattern pattern = Pattern.compile("(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*");
+
+        // Buscar el identificador del video en la URL
+        Matcher matcher = pattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            String videoId = matcher.group();
+
+            // Construir la URL de YouTube con el identificador del video en formato embed
+            return "https://www.youtube.com/embed/" + videoId;
+        } else {
+            // Si no se encuentra el identificador del video en la URL, devolvemos null
+            return null;
+        }
+    }
 
     @Transactional
     public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String video) throws Exception {
@@ -98,14 +147,22 @@ public class PublicacionServicio {
         return publicacionRepositorio.getOne(idPublicacion);
     }
 
-//        @Transactional(readOnly = true)
-//    public List<Publicacion> listarPublicaciones(){
-//        List<Publicacion> publicacion = new ArrayList();
-//        
-//        publicacion = publicacionRepositorio.findAll();
-//        
-//        return publicacion;
-//    }
+    @Transactional(readOnly = true)
+    public List<Publicacion> publicacionesPorCampana(String idCampana) {
+        List<Publicacion> publicaciones = new ArrayList();
+
+        publicaciones = publicacionRepositorio.buscarPorCampana(idCampana);
+
+        return publicaciones;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Publicacion> publicacionesPorVotante(String idCampana) {
+        List<Publicacion> publicaciones = new ArrayList();
+        publicaciones = publicacionRepositorio.publicacionesPorVotante(idCampana);
+        return publicaciones;
+    }
+
     @Transactional(readOnly = true)
     public List<Publicacion> listarPublicaciones() {
         List<Publicacion> publicaciones = new ArrayList<>();

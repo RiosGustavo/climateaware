@@ -6,6 +6,7 @@ import com.egg.climateAware.entidades.Publicacion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 //import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,17 @@ public interface  PublicacionRepositorio extends JpaRepository<Publicacion, Stri
     
     
             
-     @Query("SELECT pu FROM Publicacion pu WHERE pu.altaBaja = true")
+    @Query("SELECT pu FROM Publicacion pu WHERE pu.altaBaja = true")
     public List<Publicacion> listadoPublicacionesActivas();
     
+    @Query("SELECT pu FROM Publicacion pu WHERE pu.altaBaja = true")
+    public List<Publicacion> publicacionesPorCampana();
+    
+    
+    @Query("SELECT pu FROM Publicacion pu WHERE pu.votante.id = :id")
+    public List<Publicacion> publicacionesPorVotante(@Param("id") String id );
+    
+    
+    @Query("SELECT pu FROM Publicacion pu WHERE pu.campana.idCampana = :idCampana")
+    public List<Publicacion> buscarPorCampana (@Param("idCampana") String idCampana  );
 }
