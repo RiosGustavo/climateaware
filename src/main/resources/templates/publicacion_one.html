@@ -26,7 +26,12 @@
                                 </div>
                             </div>
                         </div>
-                       <i sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
+                        <form th:action="@{/publicacion/__${publicacion.idPublicacion}__/votar}" method="POST">
+                            <button type="submit" class="btn btn-light">
+                                <i sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
+                                <span class="ps-2" th:text="${publicacion.votos.size()}"></span>
+                            </button>
+                        </form>
                     </div>
                     
 

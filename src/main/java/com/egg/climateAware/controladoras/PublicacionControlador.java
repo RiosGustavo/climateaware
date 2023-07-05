@@ -1,4 +1,3 @@
-
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Publicacion;
@@ -24,33 +23,50 @@ public class PublicacionControlador {
 
     @Autowired
     PublicacionServicio publicacionServicio = new PublicacionServicio();
-    
+
     @Autowired
     private CampanaServicio campanaServicio;
 
     @GetMapping("/{id}")
-    public String publicacion_one(@PathVariable String id, ModelMap modelo){
-        modelo.put("publicacion",publicacionServicio.getOne(id));
+    public String publicacion_one(@PathVariable String id, ModelMap modelo) {
+        modelo.put("publicacion", publicacionServicio.getOne(id));
         return "publicacion_one.html";
     }
-    
+
+    @PostMapping("/{id}/votar")
+    public String vote(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            modelo.put("exito", "Publicacion creada exitosamente!");
+            modelo.put("usuairo",logueado);
+            if(logueado.getRoles().toString().equals("VOT")){
+            publicacionServicio.votar(id, logueado.getId());
+            }else{
+                modelo.put("error","Debe ser un usuario votante.");
+            }
+             return "redirect:/publicacion/{id}";
+        } catch (Exception ex) {
+            modelo.put("error",ex.getMessage());
+            return "redirect:/login";
+        }
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_VOT')")
     @GetMapping("campana/{idCampana}/crearPublicacion")
-    public String registrar(@PathVariable String idCampana,  ModelMap modelo,HttpSession session) {
+    public String registrar(@PathVariable String idCampana, ModelMap modelo, HttpSession session) {
         if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
             return "redirect:/votante/panel-principal";
         }
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "publicacion_form.html";
     }
-    
-    
+
     @PostMapping("campana/{idCampana}/creacion")
-    public String creacion(MultipartFile archivo, @PathVariable String idCampana,@RequestParam() String titulo,@RequestParam() String descripcion,
+    public String creacion(MultipartFile archivo, @PathVariable String idCampana, @RequestParam() String titulo, @RequestParam() String descripcion,
             @RequestParam() String cuerpo, @RequestParam() String video, ModelMap modelo, HttpSession session) {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            publicacionServicio.crearPublicacion(archivo, titulo, descripcion, cuerpo, video, logueado.getId(),idCampana);
+            publicacionServicio.crearPublicacion(archivo, titulo, descripcion, cuerpo, video, logueado.getId(), idCampana);
             modelo.put("exito", "Publicacion creada exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
@@ -67,40 +83,42 @@ public class PublicacionControlador {
 
     @GetMapping("/modificar/{id}")
     public String modificar(@RequestParam String id, ModelMap modelo) {
-         modelo.put("publicacion",publicacionServicio.getOne(id));
+        modelo.put("publicacion", publicacionServicio.getOne(id));
         return "modificar_publicacion.html";
     }
 
     @PostMapping("/modificacion/{id}")
-    public String modificacion(@RequestParam @PathVariable String id,@RequestParam(required = false) MultipartFile archivo,
-           @RequestParam() String titulo,@RequestParam() String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
+    public String modificacion(@RequestParam @PathVariable String id, @RequestParam(required = false) MultipartFile archivo,
+            @RequestParam() String titulo, @RequestParam() String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-               publicacionServicio.modificarPublicacion(archivo, id, titulo,descripcion,cuerpo, video);
+            publicacionServicio.modificarPublicacion(archivo, id, titulo, descripcion, cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-           modelo.put("publicacion",publicacionServicio.getOne(id));
+            modelo.put("publicacion", publicacionServicio.getOne(id));
             return "modificar.html";
         }
         return "redirect:/publicacion/id";
     }
-        @GetMapping("/lista")
+
+    @GetMapping("/lista")
     public String listar(ModelMap modelo) {
         List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
-        
+
         modelo.addAttribute("publicacion", publicacion);
-        return "publicacion_list.html"; 
+        return "publicacion_list.html";
     }
-    
+
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@RequestParam @PathVariable String id) throws Exception{
-       publicacionServicio.bajaPublicacion(id);
+    public String eliminar(@RequestParam @PathVariable String id) throws Exception {
+        publicacionServicio.bajaPublicacion(id);
         return "index.html";
     }
+
     @GetMapping("/listar")
-    public String listar() throws Exception{
-       publicacionServicio.listarPublicaciones();
-       
-       return "publicacion_list.html";
+    public String listar() throws Exception {
+        publicacionServicio.listarPublicaciones();
+
+        return "publicacion_list.html";
     }
 }
