@@ -62,11 +62,7 @@
                         <div id="campos-adicionales">
 
                         </div>
-                        <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-success">
-                                Registrarme
-                            </button>
-                        </div>
+
 
                         <div class="mb-3 text-center">
                             <p>¿Ya sos parte de <span class="fw-bold text-success">Climate Aware</span> ?</p>
@@ -84,7 +80,7 @@
 
         function mostrarCamposAdicionales() {
             camposAdicionales.innerHTML = ""; // Limpiamos los campos adicionales
-           
+
             if (rolSelect.value === "votante") {
                 camposAdicionales.innerHTML = `
                <div class="mb-3">
@@ -99,7 +95,11 @@
                     <label  class="form-label text-center" >Dirección</label>
                     <input name="direccionUsuario" type="text" class="form-control shadow" >
                 </div>
-              
+                   <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success">
+                            Registrarme
+                        </button>
+                </div>
                `;
             } else if (rolSelect.value === "empresa") {
                 camposAdicionales.innerHTML = `
@@ -119,7 +119,11 @@
                     <label class="form-label text-center" >Rubro</label>
                     <input name="rubro" type="text" class="form-control shadow" >
                 </div>
-                
+                <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-success">
+                            Registrarme
+                        </button>
+                </div>
                `;
             }
         }

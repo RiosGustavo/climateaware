@@ -23,16 +23,20 @@
                                 </a>
                                 <div>
                                     <h7 th:text="${publicacion.votante.email}"></h7>
+                                    <p sec:authorize="hasRole('ADM')" th:if="${publicacion.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                                    <p sec:authorize="hasRole('ADM')" th:if="${!publicacion.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
                                 </div>
                             </div>
                         </div>
-                       <i sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
+                        <a sec:authorize="hasRole('ADM')" th:if="${publicacion.altaBaja}"  type="button" class="btn btn-outline-warning btn-sm px-4" th:href= "@{/publicacion/baja/__${publicacion.idPublicacion}__} ">Dar de baja</a>
+                        <a sec:authorize="hasRole('ADM')" th:if="${!publicacion.altaBaja}"  type="button" class="btn btn-outline-success btn-sm px-4" th:href= "@{/publicacion/alta/__${publicacion.idPublicacion}__} ">Dar de alta</a>
+                        <i sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
                     </div>
-                    
+
 
                     <hr  class="my-4">
                     <!-- Imagen de la publicacion -->
-                    <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="Imagen de la publicacion" class="img-fluid mb-3 w-600 h-400 shadow-lg ">
+                    <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="Imagen de la publicacion" class="img-fluid mb-3 w-600 h-400 shadow-lg">
 
                     <div class="d-flex mb-3">
                         <p class="text-muted fw-bold" >Fecha de publicación: <span th:text="${publicacion.fechaAlta}"></span></p >

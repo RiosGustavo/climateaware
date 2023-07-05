@@ -43,11 +43,8 @@ public class Campana {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
 
-
-    
     @OneToMany
     private List<Publicacion> publicaciones;
-
 
     @ManyToOne
     private Empresa empresa;

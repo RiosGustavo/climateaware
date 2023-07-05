@@ -32,17 +32,10 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
     
     @Query("SELECT ca FROM Campana ca WHERE ca.empresa.id = :id")
     public List<Campana> campanasPorEmpresa(@Param("id") String id );
- 
-    
-    
-    
+
     @Query("SELECT em FROM Empresa em WHERE em.nombreEmpresa = :nombreEmpresa")
     public List<Campana> buscarPorNombreEmpresa (@Param("nombreEmpresa") String nombreEmpresa);
-    
    
-     @Query("SELECT pu FROM Publicacion pu WHERE pu.idPublicacion = :idPublicacion")
-    public List<Publicacion> buscarPorPublicacion (@Param("idPublicacion") String idPublicacion);
-    
     
     
 }

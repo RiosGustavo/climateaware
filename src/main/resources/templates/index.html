@@ -16,7 +16,7 @@
 
             </div>
         </div>
-        <hr class="featurette-divider">
+        <!--        <hr class="featurette-divider">-->
 
         <!--CARDS NOVEDADES-->
         <h1 class="text-pre text-center">Novedades</h1>
@@ -48,12 +48,11 @@
                 <div class="col-md-6">
                     <h3 class="text-camp text-center pb-4">Campañas</h3>
                     <div class="row row-cols-1 row-cols-md-2 g-4" >
-                        <div class="col" th:each="campana : ${campanas}">
+                        <div class="col" th:each="campana : ${campanas}" th:if="${campana.altaBaja == true}">
                             <div class="card">
                                 <img th:src="@{/imagen/campana/__${campana.idCampana}__}" class="card-img-top img-fluid mx-auto card-image" width="50" height="50" alt="...">
-                                <div class="card-body ">
+                                <div class="card-body">
                                     <h5 class="card-title" th:text="${campana.titulo}">Titulo de Campaña</h5>
-                                    <!-- <p class="card-text" th:text="${#strings.substring(campana.descripcion, 0, 100) + '...'}">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
                                     <p class="text-campañaList text-secondary" th:text="${'Fecha de Inicio: ' + campana.fechaAlta}"><i></i></p>
                                     <a th:href="@{/campana/campana_one/__${campana.idCampana}__}">
                                         <button type="button" class="btn btn-outline-secondary btn-sm px-4">Ver más</button>
@@ -63,11 +62,12 @@
                         </div>  
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div>
-                        <h4 class="fst-italic">Publicaciones recientes</h4>
-                        <hr class="featurette-divider">
-                        <ul class="list-unstyled " th:each="publicacion : ${publicaciones}">
+                        <h4 class="fst-italic text-center">Publicaciones recientes</h4>
+
+                        <ul class="list-unstyled " th:each="publicacion : ${publicaciones}" th:if="${publicacion.altaBaja == true}">
                             <li>
                                 <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" th:href= "@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__} ">
                                     <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="" width="140px" height="90px">

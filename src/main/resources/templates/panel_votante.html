@@ -25,7 +25,7 @@
                 </div>
             </div>
             <hr class="my-4">
-             <h1 th:if="${#lists.size(publicaciones) > 0}" class="fw-bold text-center" >Mis Publicaciones</h1>
+            <h1 th:if="${#lists.size(publicaciones) > 0}" class="fw-bold text-center" >Mis Publicaciones</h1>
             <!-- Seccion Publicaciones -->
             <div class="container my-5">
                 <div class="row" >
@@ -36,11 +36,14 @@
                                 <div class="card-body">
                                     <h1 class="fs-5 a-subrayado" th:text="${publicacion.titulo}"></h1>
                                     <p th:text="${publicacion.descripcion}"></p>
-                                    
+
                                     <a th:if='${publicacion.campana != null}' th:href="@{/campana/campana_one/__${publicacion.campana.idCampana}__}" target="_blank" class="a-card">
                                         <h7 class="card-votante">Campaña:  <span th:text="${publicacion.campana.titulo}" class="fw-bold" ></span></h7>
                                     </a>
-                                    
+                                    <div class="row m-1" >
+                                        <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </a>

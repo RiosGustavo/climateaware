@@ -20,11 +20,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 
-/**
- *
- * @author Cesar
- */
 @Entity
 @Getter
 @Setter
@@ -32,7 +29,7 @@ import org.hibernate.annotations.GenericGenerator;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Noticia {
-       @Id
+    @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
 
@@ -44,10 +41,11 @@ public class Noticia {
     @Column(length=65535, columnDefinition="text")
     private String cuerpo;    
     
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
     
-     @OneToOne
+    @OneToOne
     private Imagen imagen;
     private String video;
     private Boolean altaBaja;
