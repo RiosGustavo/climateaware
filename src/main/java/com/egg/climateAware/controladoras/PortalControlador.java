@@ -108,7 +108,7 @@ public class PortalControlador {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_EMP','ROLE_VOT', 'ROLE_VOT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_EMP','ROLE_VOT','ROLE_BLO')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session, ModelMap modelo) {
 
@@ -121,7 +121,7 @@ public class PortalControlador {
             return "redirect:empresa/panel-principal";
         }
         if (logueado.getRoles().toString().equals("BLO")) {
-            return "redirect:noticia/noticia_list";
+            return "redirect:/blogger/panel-principal";
         }
 
         return "redirect:votante/panel-principal";

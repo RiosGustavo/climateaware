@@ -13,27 +13,25 @@
                 <div class="col-md-6 ">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="text-center">Modificar campaña</h3>
+                            <h3 class="text-center">Crear campaña</h3>
                         </div>
                         <div class="card-body ">
                             <!-- Mensajes de error y exito -->
                             <div  th:replace = "/fragments/msjes-error-exito :: div"> </div>
                             <form th:action="@{/campana/registro}" method="POST" enctype="multipart/form-data">
-                                
+
                                 <div class="mb-3">
 
                                     <label for="titulo" class="form-label">Título</label>
                                     <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="cuerpo" class="form-label">Cuerpo</label>
-                                    <textarea style="resize: none; height: 200px;" type="text" class="form-control" name="cuerpo" th:text="${cuerpo}"></textarea>
-                                </div>
-
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripcion</label>
                                     <textarea style="resize: none; height: 100px;" type="text" class="form-control" name="descripcion" th:text="${descripcion}"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="cuerpo" class="form-label">Cuerpo</label>
+                                    <textarea style="resize: none; height: 200px;" type="text" class="form-control" name="cuerpo" th:text="${cuerpo}"></textarea>
                                 </div>
 
                                 <div class="mb-3">
@@ -51,7 +49,7 @@
                 </div>
             </div>
         </div>
-      
+
         <!-- JS Boostrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 

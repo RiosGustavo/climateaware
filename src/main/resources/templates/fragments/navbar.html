@@ -9,6 +9,18 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto" >
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/votantes}" >Votantes</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/empresas}" >Empresas</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/bloggers}" >Blogger</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/bloggers}" >/</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link"th:href="@{/noticia/lista}" >Novedades</a>
                 </li>
@@ -17,7 +29,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/publicacion/lista}">Publicaciones</a>
-
                 </li>
             </ul>
         </div>
@@ -28,12 +39,14 @@
                     <img th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li sec:authorize="hasRole('ADM')"><a class="dropdown-item" th:href="@{/admin/dashboard}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('ADM')"><a class="dropdown-item" th:href="@{/admin/dashboard}">Panel admin</a></li>
                     <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/empresa/panel-principal}">Panel principal</a></li>
                     <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/votante/panel-principal}">Panel principal</a></li>
+                    <li sec:authorize="hasRole('BLO')"><a class="dropdown-item" th:href="@{/blogger/panel-principal}">Panel principal</a></li>
 
                     <li sec:authorize="hasRole('VOT')"><a class="dropdown-item" th:href="@{/votante/perfil}">Perfil</a></li>
                     <li sec:authorize="hasRole('EMP')"><a class="dropdown-item" th:href="@{/empresa/perfil}">Perfil</a></li>
+                     <li sec:authorize="hasRole('BLO')"><a class="dropdown-item" th:href="@{/blogger/perfil}">Perfil</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar cesión</a></li>
                 </ul>

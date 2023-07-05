@@ -33,19 +33,21 @@ public class NoticiaControlador {
         return "noticia_one.html";
     }
     
+   
     @GetMapping("/crear")
-    public String crear() {
-        return "noticia_form.html";
+    public String crear(HttpSession session) {
+        if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
+            return "redirect:/blogger/panel-principal";
+        }
+         return "noticia_form.html";
     }
-    
     
    @PostMapping("creacion")
     public String creacion(@RequestParam() String titulo,@RequestParam() String descripcion,@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
             @RequestParam(required = false) String video, ModelMap modelo, HttpSession session) {
         try {
-             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            // public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video)
-        noticiaServicio.crearNoticia(archivo, titulo, descripcion, cuerpo, video);
+           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            noticiaServicio.crearNoticia(archivo, titulo, descripcion, cuerpo, video,logueado.getId());
             modelo.put("exito", "Noticia creada exitosamente!");
         } catch (Exception ex) {
             modelo.addAttribute("error", ex.getMessage());

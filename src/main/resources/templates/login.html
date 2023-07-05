@@ -36,7 +36,32 @@
                             <label for="password" class="form-label">Contraseña</label>
                             <input type="password" class="form-control" name="password" />
                         </div>
-                       
+                        <!-- Button trigger modal -->
+
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="text-primary mb-3">¿Olvidaste tu contraseña?</a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Reestablecer contraseña</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body fs-5">
+                                        Ingresa tu correo electrónico y te enviaremos un mail con las instrucciones para poder reestablecer tu contraseña
+                                        <div class="m-3">
+                                            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Restablecer contraseña</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary">
                                 Iniciar Sesión

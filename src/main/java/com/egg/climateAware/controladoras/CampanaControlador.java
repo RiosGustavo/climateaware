@@ -107,7 +107,7 @@ public class CampanaControlador {
     
     @GetMapping("/campana_one/{idCampana}")
     public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
-        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampana(idCampana);
+        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
         
         modelo.put("publicaciones", publicaciones);
         modelo.put("campana", campanaServicio.getOne(idCampana));
@@ -116,7 +116,7 @@ public class CampanaControlador {
     
         //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String busquedaVotantes(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+    public String listadoCampanas(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
         
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Campana> campanas = new ArrayList<>();

@@ -5,8 +5,10 @@
  */
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Blogger;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Votante;
+import com.egg.climateAware.servicios.BloggerServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
@@ -27,8 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin")
 public class AdministradorControlador {
 
-//    @Autowired
-//    AdministadorServicio administradorServicio = new AdministradorServicio();
+
     @Autowired
     VotanteServicio votanteServicio = new VotanteServicio();
 
@@ -37,7 +38,10 @@ public class AdministradorControlador {
 
     @Autowired
     UsuarioServicio usuarioServicio = new UsuarioServicio();
-
+    
+    @Autowired
+    BloggerServicio bloggerServicio = new BloggerServicio();
+    
     @GetMapping("/dashboard")
     public String panelAdministrativo() {
 
@@ -83,6 +87,25 @@ public class AdministradorControlador {
     }
     
     
+    //Cambiar usuario a blogger
+    @GetMapping("/rolBlogger/{id}")
+    public String rolBlogger(@PathVariable String id) {
+
+        bloggerServicio.crearBlogger(id);
+
+        return "redirect:/admin/bloggers";
+    }
+    
+    
+     //Cambiar blogger a votante
+    @GetMapping("/rolVotante/{id}")
+    public String bloggerAvotante(@PathVariable String id) {
+        bloggerServicio.bloggerAvotante(id);
+        return "redirect:/admin/votantes";
+    }
+    
+    
+    
     //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/votantes")
     public String busquedaVotantes(@RequestParam(required = false) String termino, Model modelo) {
@@ -102,7 +125,7 @@ public class AdministradorControlador {
     }
     
     
-     @GetMapping("/empresas")
+    @GetMapping("/empresas")
     public String busquedaEmpresas(@RequestParam(required = false) String termino, Model modelo) {
 
         List<Empresa> empresas = new ArrayList<>();
@@ -119,4 +142,21 @@ public class AdministradorControlador {
         return "empresa_list.html";
     }
     
+    
+     @GetMapping("/bloggers")
+    public String busquedaBloggers(@RequestParam(required = false) String termino, Model modelo) {
+
+        List<Blogger> bloggers = new ArrayList<>();
+
+        if (termino != null && !termino.isEmpty()) {
+            bloggers =bloggerServicio.buscarBloggersPorTermino(termino.toLowerCase());
+        }else{
+        
+            bloggers = bloggerServicio.listarBloggers();
+        }
+
+        modelo.addAttribute("bloggers", bloggers);
+
+        return "bloggers_list.html";
+    }
 }
