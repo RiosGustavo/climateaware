@@ -39,8 +39,8 @@
                     <a th:href="@{/campana/modificar/__${campana.idCampana}__}" class="btn btn-outline-secondary btn-sm px-4">Editar</a>
                     <a th:if="${campana.altaBaja}"  type="button" class="btn btn-outline-warning btn-sm px-4" th:href= "@{/campana/baja/__${campana.idCampana}__} ">Dar de baja</a>
                     <a th:if="${!campana.altaBaja}"  type="button" class="btn btn-outline-success btn-sm px-4" th:href= "@{/campana/alta/__${campana.idCampana}__} ">Dar de alta</a>
-                    <p th:if="${campana.altaBaja}" th:text="Activo" class="text-success fw-bold"></p>
-                    <p th:if="${!campana.altaBaja}" th:text="Inactivo" class="text-danger fw-bold"></p>
+                    <p th:if="${campana.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                    <p th:if="${!campana.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
                     <p class="text-campañaList text-secondary" ></p> 
                     <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"></p>
                 </div>

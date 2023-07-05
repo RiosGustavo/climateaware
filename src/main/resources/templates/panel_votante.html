@@ -40,9 +40,11 @@
                                     <a th:if='${publicacion.campana != null}' th:href="@{/campana/campana_one/__${publicacion.campana.idCampana}__}" target="_blank" class="a-card">
                                         <h7 class="card-votante">Campaña:  <span th:text="${publicacion.campana.titulo}" class="fw-bold" ></span></h7>
                                     </a>
-                                    <div class="row m-1" >
+                                    <p th:if="${publicacion.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                                    <p th:if="${!publicacion.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
+                                    <div class="row m-2" >
                                         <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
-                                        
+
                                     </div>
                                 </div>
                             </div>

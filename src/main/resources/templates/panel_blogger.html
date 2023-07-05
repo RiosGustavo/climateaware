@@ -11,8 +11,8 @@
         <div class="container my-2">
 
             <h1 th:if='${session.usuariosession != null}'  th:text="'¡Hola de nuevo! ' +${blogger.nombreApellido}" class="display-6 mt-4" ></h1>
-           
-           <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/noticia/crear/}" target="_blank" type="button" class="btn btn-success">Crear noticia</a>
+
+            <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/noticia/crear/}" target="_blank" type="button" class="btn btn-success">Crear noticia</a>
             <div th:if='${session.usuariosession.altaBaja == false}' class="accordion" id="accordionFlushExample">
                 <div class="accordion-item  mt-3">
                     <h2 class="accordion-header">
@@ -47,13 +47,15 @@
                         <div class="card-body">
                             <h1 class="fs-5 a-subrayado" th:text="${noticia.titulo}"></h1>
                             <p th:text="${noticia.descripcion}"></p>
+                            <p th:if="${noticia.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                            <p th:if="${!noticia.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
                             <div class="row m-1" >
-                               <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/noticia/modificar/__${noticia.idNoticia}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
+                                <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/noticia/modificar/__${noticia.idNoticia}__}" target="_blank" class="btn btn-warning mt-2">Modificar</a>
                                 <a th:href= "@{/noticia/__${noticia.idNoticia}__} " target="_blank" class="btn btn-light mt-2">Ver más</a>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

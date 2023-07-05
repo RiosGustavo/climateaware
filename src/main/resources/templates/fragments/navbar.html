@@ -9,6 +9,18 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto" >
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/votantes}" >Votantes</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/empresas}" >Empresas</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
+                    <a class="nav-link" th:href="@{/admin/bloggers}" >Blogger</a>
+                </li>
+                <li sec:authorize="hasRole('ADM')" class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/bloggers}" >/</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link"th:href="@{/noticia/lista}" >Novedades</a>
                 </li>
@@ -17,7 +29,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/publicacion/lista}">Publicaciones</a>
-
                 </li>
             </ul>
         </div>
