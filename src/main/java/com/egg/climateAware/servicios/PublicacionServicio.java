@@ -92,7 +92,7 @@ public class PublicacionServicio {
     }
 
     @Transactional
-    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String video) throws Exception {
+    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String youtubeUrl) throws Exception {
 
         validar(archivo, titulo, descripcion, cuerpo);
 
@@ -103,7 +103,9 @@ public class PublicacionServicio {
             publicacion.setTitulo(titulo);
             publicacion.setDescripcion(descripcion);
             publicacion.setCuerpo(cuerpo);
-            publicacion.setVideo(video);
+            if (youtubeUrl != null) {
+                publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
+            }
 
             String idImagen = null;
             if (archivo.getSize() > 0) {
@@ -128,8 +130,7 @@ public class PublicacionServicio {
 
         return publicaciones;
     }
-    
-    
+
     @Transactional(readOnly = true)
     public List<Publicacion> publicacionesPorCampanaActivas(String idCampana) {
         List<Publicacion> publicaciones = new ArrayList();
@@ -138,7 +139,7 @@ public class PublicacionServicio {
 
         return publicaciones;
     }
-    
+
     @Transactional(readOnly = true)
     public List<Publicacion> publicacionesPorVotante(String idCampana) {
         List<Publicacion> publicaciones = new ArrayList();

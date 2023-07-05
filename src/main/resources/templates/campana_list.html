@@ -17,9 +17,8 @@
                     <form th:action="@{/campana/lista}" method="get">
                         <div class="mb-3">
                             <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por titulo">
-                           
+                            
                         </div>
-                        
 
                         <div class="mb-3 d-flex justify-content-center">
                             <button type="submit" class="btn btn-primary ">Buscar </button>
@@ -28,6 +27,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container marketing campanas-list" th:each="campana : ${campanas}">
             <div sec:authorize="hasRole('ADM')" class="row featurette py-5 campañaPost" >
                 <div  class=" col-md-6">
