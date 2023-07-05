@@ -13,12 +13,12 @@
                 <div class="col-md-6 ">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="text-center">Modificar Noticia</h3>
+                            <h3 class="text-center">Crear Noticia</h3>
                         </div>
                         <div class="card-body ">
                             <!-- Mensajes de error y exito -->
                             <div  th:replace = "/fragments/msjes-error-exito :: div"> </div>
-                            <form th:action="@{/noticia/registro}" method="POST" enctype="multipart/form-data">
+                            <form th:action="@{/noticia/creacion}" method="POST" enctype="multipart/form-data">
                                 
                                 <div class="mb-3">
 
@@ -26,24 +26,25 @@
                                     <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
                                 </div>
 
+                                 <div class="mb-3">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <textarea style="resize: none; height: 100px;" type="text" class="form-control" name="descripcion" th:text="${descripcion}"></textarea>
+                                </div>
                                 <div class="mb-3">
                                     <label for="cuerpo" class="form-label">Cuerpo</label>
                                     <textarea style="resize: none; height: 200px;" type="text" class="form-control" name="cuerpo" th:text="${cuerpo}"></textarea>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="descripcion" class="form-label">Descripcion</label>
-                                    <textarea style="resize: none; height: 100px;" type="text" class="form-control" name="descripcion" th:text="${descripcion}"></textarea>
-                                </div>
-
                                 <div class="mb-3">
                                     <label for="formFile" class="form-label">Seleccionar imagen</label>
                                     <input name="archivo" class="form-control" type="file">
-
+                                </div>
+                                <div class="mb-3">
+                                    <label for="video" class="form-label">Video</label>
+                                    <textarea style="resize: none; height: 100px;" type="text" class="form-control" name="video" th:text="${video}"></textarea>
                                 </div>
                                 <div class="d-grid mb-3">
                                     <button type="submit" class="btn btn-success">
-                                        Crear campaña
+                                        Crear Noticia
                                     </button>
                             </form>
                         </div>

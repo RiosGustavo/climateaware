@@ -54,16 +54,16 @@ public class NoticiaControlador {
             modelo.addAttribute("cuerpo", cuerpo);
             modelo.addAttribute("archivo", archivo);
             modelo.addAttribute("video", video);
-            return "noticia_form.html";
+        
         }
-        return "noticia.html ? redirect:/noticia/id ? redirect:/noticia/id ?"; // aca puede haber error.. casi seguro...
+         return "noticia_form.html"; // aca puede haber error.. casi seguro...
     }
     
     
-    @GetMapping("/modificar/{id}")
+    @GetMapping("/modificar/{idNoticia}")
     public String modificar(@RequestParam String id, ModelMap modelo) {
          modelo.put("noticia",noticiaServicio.getOne(id));
-        return "noticia_modiificar.html"; //hasta definir el nombre del html
+        return "noticia_modidificar.html"; //hasta definir el nombre del html
     }
 
     @PostMapping("/modificacion/{id}")
@@ -83,22 +83,14 @@ public class NoticiaControlador {
    @GetMapping("/lista")
     public String listar(ModelMap modelo) {
         List<Noticia> noticias = noticiaServicio.listarNoticias();
-        
-        modelo.addAttribute("noticias", noticias);
-        return "noticias_list.html"; 
+        modelo.addAttribute("noticia", noticias);
+        return "noticia_list.html"; 
     }
     
     @GetMapping("/eliminar/{id}")
     public String eliminar(@RequestParam @PathVariable String id) throws Exception{
        noticiaServicio.bajaNoticia(id);
         return "index.html";
-    }
-    
-    @GetMapping("/listar")
-    public String listar() throws Exception{
-       noticiaServicio.listarNoticias();
-       
-       return "noticia_list.html";
     }
 
 }
