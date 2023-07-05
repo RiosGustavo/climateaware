@@ -2,9 +2,12 @@
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Noticia;
+import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.servicios.NoticiaServicio;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class NoticiaControlador {
     @Autowired
     NoticiaServicio noticiaServicio = new NoticiaServicio();
+    
+    @PreAuthorize("hasAnyRole('ROLE_BLO')")
 
     @GetMapping("/{id}")
     public String id(@RequestParam @PathVariable String id, ModelMap modelo){
@@ -36,18 +41,19 @@ public class NoticiaControlador {
     
    @PostMapping("creacion")
     public String creacion(@RequestParam() String titulo,@RequestParam() String descripcion,@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
-            @RequestParam(required = false) String video, ModelMap modelo) {
+            @RequestParam(required = false) String video, ModelMap modelo, HttpSession session) {
         try {
+             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             // public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video)
         noticiaServicio.crearNoticia(archivo, titulo, descripcion, cuerpo, video);
             modelo.put("exito", "Noticia creada exitosamente!");
         } catch (Exception ex) {
-            modelo.put("error", ex.getMessage());
-            modelo.put("titulo", titulo);
-            modelo.put("descripcion", descripcion);
-            modelo.put("cuerpo", cuerpo);
-            modelo.put("archivo", archivo);
-            modelo.put("video", video);
+            modelo.addAttribute("error", ex.getMessage());
+            modelo.addAttribute("titulo", titulo);
+            modelo.addAttribute("descripcion", descripcion);
+            modelo.addAttribute("cuerpo", cuerpo);
+            modelo.addAttribute("archivo", archivo);
+            modelo.addAttribute("video", video);
             return "noticia_form.html";
         }
         return "noticia.html ? redirect:/noticia/id ? redirect:/noticia/id ?"; // aca puede haber error.. casi seguro...
