@@ -43,6 +43,10 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
      @Query("SELECT pu FROM Publicacion pu WHERE pu.idPublicacion = :idPublicacion")
     public List<Publicacion> buscarPorPublicacion (@Param("idPublicacion") String idPublicacion);
     
+    /*
+    @Query(value="select * from publicacion where votante_id=:idcampana and campana_id_campana = :idCampana", nativeQuery = true)
+    public Campana buscarUsuarioEnCampana(@Param("idCampana") String idCampana, @Param("idVotante") String idVotante);
+    */
     
     
 }

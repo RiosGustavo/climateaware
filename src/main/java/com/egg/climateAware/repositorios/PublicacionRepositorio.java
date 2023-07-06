@@ -28,4 +28,8 @@ public interface  PublicacionRepositorio extends JpaRepository<Publicacion, Stri
     
     @Query("SELECT pu FROM Publicacion pu WHERE pu.campana.idCampana = :idCampana")
     public List<Publicacion> buscarPorCampana (@Param("idCampana") String idCampana  );
+    
+    @Query(value="select * from publicacion where votante_id=:id and campana_id_campana = :idCampana limit 1", nativeQuery = true)
+    public Publicacion  buscarPorCampanaporUsuario (@Param("idCampana") String idCampana,@Param("id") String id  );
+ 
 }
