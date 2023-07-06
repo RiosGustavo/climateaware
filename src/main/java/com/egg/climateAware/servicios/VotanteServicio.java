@@ -31,7 +31,7 @@ public class VotanteServicio {
     @Transactional
     public void crearVotante(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email,
             String password, String password2) throws Exception {
-        validarRegistro(nombreApellido, dni, direccion, email, password, password2);
+        validarRegistro(archivo, nombreApellido, dni, direccion, email, password, password2);
 
         Votante votante = new Votante();
         /// propios
@@ -47,10 +47,11 @@ public class VotanteServicio {
 
         votante.setRoles(Rol.VOT);
 
-        String idImagen = null;
         if (archivo.getSize() == 0) {
-           
             Imagen imagen = imagenServicio.obtenerImagenPorDefecto();
+            votante.setImagen(imagen);
+        } else {
+            Imagen imagen = imagenServicio.guardar(archivo);
             votante.setImagen(imagen);
         }
 
@@ -128,7 +129,7 @@ public class VotanteServicio {
         return votantes;
     }
 
-    private void validarRegistro(String nombreApellido, String dni, String direccion, String email, String password,
+    private void validarRegistro(MultipartFile archivo,String nombreApellido, String dni, String direccion, String email, String password,
             String password2) throws Exception {
 
         // Verificar si el email ya existe en la base de datos
@@ -162,6 +163,10 @@ public class VotanteServicio {
         }
         if (password.length() < 8) {
             throw new Exception("La contraseña debe tener al menos 8 caracteres");
+        }
+         
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+            throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
         }
     }
 

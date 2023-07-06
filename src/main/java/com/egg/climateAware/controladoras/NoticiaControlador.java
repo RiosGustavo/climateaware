@@ -2,8 +2,10 @@
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Noticia;
+import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.servicios.NoticiaServicio;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,18 +30,21 @@ public class NoticiaControlador {
         return "noticia_one.html";
     }
     
+   
     @GetMapping("/crear")
-    public String crear() {
-        return "noticia_form.html";
+    public String crear(HttpSession session) {
+        if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
+            return "redirect:/blogger/panel-principal";
+        }
+         return "noticia_form.html";
     }
-    
     
    @PostMapping("creacion")
     public String creacion(@RequestParam() String titulo,@RequestParam() String descripcion,@RequestParam(required = false) String cuerpo,@RequestParam(required = false) MultipartFile archivo,
-            @RequestParam(required = false) String video, ModelMap modelo) {
+            @RequestParam(required = false) String video, ModelMap modelo, HttpSession session) {
         try {
-            // public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String video)
-        noticiaServicio.crearNoticia(archivo, titulo, descripcion, cuerpo, video);
+           Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            noticiaServicio.crearNoticia(archivo, titulo, descripcion, cuerpo, video,logueado.getId());
             modelo.put("exito", "Noticia creada exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());

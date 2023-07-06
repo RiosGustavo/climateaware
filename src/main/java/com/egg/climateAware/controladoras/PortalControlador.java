@@ -2,10 +2,12 @@ package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
+import com.egg.climateAware.servicios.PublicacionServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
 import java.util.List;
@@ -37,15 +39,20 @@ public class PortalControlador {
 
     @Autowired
     private CampanaServicio campanaServicio;
+    
+    @Autowired
+    private PublicacionServicio publicacionServicio;
 
     @GetMapping("/")
     public String index(ModelMap modelo, HttpSession session) {
 
         List<Campana> campanas = campanaServicio.listarCampanas();
-
         modelo.addAttribute("campanas", campanas);
-//        moduleo.put("publicaciones",publicacionServicio.listarPublicaciones());
 
+        List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
+        modelo.addAttribute("publicaciones", publicacion);
+
+         
         return "index.html";
     }
 
@@ -94,7 +101,7 @@ public class PortalControlador {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_EMP','ROLE_VOT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_EMP','ROLE_VOT','ROLE_BLO')")
     @GetMapping("/inicio")
     public String inicio(HttpSession session, ModelMap modelo) {
 
@@ -107,7 +114,7 @@ public class PortalControlador {
             return "redirect:empresa/panel-principal";
         }
         if (logueado.getRoles().toString().equals("BLO")) {
-            return "redirect:/";
+            return "redirect:/blogger/panel-principal";
         }
 
         return "redirect:votante/panel-principal";

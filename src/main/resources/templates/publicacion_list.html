@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-     <head  th:replace = "/fragments/head :: head"> </head>
-     
-      <header> 
-            <nav th:replace= "/fragments/navbar :: nav"></nav>
-        </header>
+    <head  th:replace = "/fragments/head :: head"> </head>
 
-<body>
-  
+    <header> 
+        <nav th:replace= "/fragments/navbar :: nav"></nav>
+    </header>
+
+    <body>
+        <h1 class="text-pre text-center">Publicaciones</h1>
+        <div class="container my-5">
+            <div class="row justify-content-center ">
+                <div class="col-md-6 ">
+                    <form th:action="@{/publicacion/lista}" method="get">
+                        <div class="mb-3">
+                            <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por titulo">
+                        </div>
 
 
-
-    <div>
-        <h2>Publicaciones:</h2>
-        <ul>
-            <a th:href="@{/publicacion/lista}"></a>
-
-            <div class="container m-5">
-
-                <table class="table table-info ">
-                    <thead>
-                        <tr>
-                            <th scope="col">idPublicacion</th>
-                            <th scope="col">Cuerpo</th>
-                            <th scope="col">fecha de alta</th>
-                            <th scope="col">Imagen</th>
-                            <th scope="col">video</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col" sec:authorize="hasRole('ADM')">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody th:each="publicacion : ${publicaciones}">
-                        <tr class="table-light">
-                            <th scope="row" th:text="${publicacion.idPublicacion}"></th>
-                            <td th:text="${publicacion.cuerpo}"></td>
-                            <td th:text="${publicacion.fechaAlta}"></td>
-                            <td>
-                                <a><img th:if="${publicacion.imagen != null}" class="logo"
-                                        th:src="@{/imagen/perfil/__${publicacion.idPublicacion}__}"></a>
-
-                            </td>
-
-                            <td th:text="${publicacion.video}"></td>
-                            <td th:text="${publicacion.altaBaja}"></td>
-                            <td>
-                                <a sec:authorize="hasRole('ADM')" th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}"><i
-                                        class="fas fa-feather-alt"></i> Modificar </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <div class="mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary ">Buscar </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+        </div>
+
+        <div class="container">
+            <ul class="list-unstyled " th:each="publicacion : ${publicaciones}">
+                <li sec:authorize="hasRole('ADM')" >
+                    <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" th:href= "@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__} ">
+                        <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="" width="140px" height="90px">
+                        <div class="col-lg-8">
+                            <h6 class="mb-0" th:text="${publicacion.titulo}" ></h6>
+                            <small class="text-body-secondary" th:text="${publicacion.fechaAlta}"></small>
+                            <h7 class="card-votante">Por <span th:text="${publicacion.votante.nombreApellido}" class="fw-bold" ></span></h7>
+                            <p th:if="${publicacion.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                            <p th:if="${!publicacion.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
+                        </div>
+                        <a th:href="@{/publicacion/modificar/__${publicacion.idPublicacion}__}" class="btn btn-outline-secondary btn-sm px-4">Editar</a>
+                        <a th:if="${publicacion.altaBaja}"  type="button" class="btn btn-outline-warning btn-sm px-4" th:href= "@{/publicacion/baja/__${publicacion.idPublicacion}__} ">Dar de baja</a>
+                        <a th:if="${!publicacion.altaBaja}"  type="button" class="btn btn-outline-success btn-sm px-4" th:href= "@{/publicacion/alta/__${publicacion.idPublicacion}__} ">Dar de alta</a>
+                    </a>
+                </li>
+                <li th:if="${publicacion.altaBaja == true}"  sec:authorize="not(hasRole('ROLE_ADM'))" >
+                    <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-4 link-body-emphasis text-decoration-none border-top" th:href= "@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__} ">
+                        <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" alt="" width="140px" height="90px">
+                        <div class="col-lg-8">
+                            <h6 class="mb-0" th:text="${publicacion.titulo}" ></h6>
+                            <small class="text-body-secondary" th:text="${publicacion.fechaAlta}"></small>
+                            <h7 class="card-votante">Por <span th:text="${publicacion.votante.nombreApellido}" class="fw-bold" ></span></h7>
+
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
 
 
-
-          
-        </ul>
-    </div>
-     <footer th:replace="/fragments/footer :: footer" ></footer>
-            <!-- SCRIPTS -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-</body>
+        <footer th:replace="/fragments/footer :: footer" ></footer>
+        <!-- SCRIPTS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    </body>
 
 </html>

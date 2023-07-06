@@ -16,13 +16,15 @@
                             <div class="accordion" id="accordionFlushExample">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-noticias" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-campanas" aria-expanded="false" aria-controls="flush-collapseOne">
                                             <h1 class="fs-5">Campañas</h1>
                                         </button>
                                     </h2>
-                                    <div id="flush-noticias" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div id="flush-campanas" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body row m-1">
+
                                             <a th:href="@{/campana/lista}" class="btn btn-primary mt-2">Buscar</a> 
+
                                         </div>
 
                                     </div>
@@ -68,11 +70,11 @@
                             <div class="accordion" id="accordionFlushExample">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-periodistas" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-empresas" aria-expanded="false" aria-controls="flush-collapseOne">
                                             <h1 class="fs-5">Empresas</h1>
                                         </button>
                                     </h2>
-                                    <div id="flush-periodistas" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div id="flush-empresas" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body row m-1">
                                             <a th:href="@{/admin/empresas}" class="btn btn-success mt-2">Buscar</a>
 
@@ -87,9 +89,38 @@
                     </div>
 
                 </div>
+
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow">
+                        <img src="../img/imagen-login5.jpg"  class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
+
+                        <div class="card-body d-flex flex-column">
+                            <div class="accordion" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#flush-bloggers" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <h1 class="fs-5">Bloggers</h1>
+                                        </button>
+                                    </h2>
+                                    <div id="flush-bloggers" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body row m-1">
+                                            <a th:href="@{/admin/bloggers}" class="btn btn-success mt-2">Buscar</a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
         </div>
-       
+
         <!-- JS Boostrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 

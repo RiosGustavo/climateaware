@@ -39,8 +39,8 @@ public class PublicacionServicio {
 
     @Transactional
     public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String youtubeUrl, String idVotante, String idCampana) throws Exception {
-        validar(titulo, descripcion, cuerpo);
-
+        validar(archivo, titulo, descripcion, cuerpo);
+        validarNoRepiteUsuarioPublicacionCampana(idCampana,idVotante);   
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idVotante);
 
         Optional<Campana> respuestaCampana = campanaRepositorio.findById(idCampana);
@@ -57,17 +57,17 @@ public class PublicacionServicio {
         publicacion.setVotos(votos);
         if (youtubeUrl != null) {
             publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
-        }
-
+        }        
+        
         if (respuesta.isPresent()) {
 
             Usuario usuario = respuesta.get();
-
-            if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
-                Votante vo = (Votante) respuesta.get();
-                publicacion.setVotante(vo);
+                
+                if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
+                    Votante vo = (Votante) respuesta.get();
+                    publicacion.setVotante(vo);
+                }
             }
-        }
         if (respuesta.isPresent()) {
 
             publicacion.setCampana(respuestaCampana.get());
@@ -95,9 +95,9 @@ public class PublicacionServicio {
     }
 
     @Transactional
-    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String video) throws Exception {
+    public void modificarPublicacion(MultipartFile archivo, String idPublicacion, String titulo, String descripcion, String cuerpo, String youtubeUrl) throws Exception {
 
-        validar(titulo, descripcion, cuerpo);
+        validar(archivo, titulo, descripcion, cuerpo);
 
         Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
 
@@ -106,13 +106,16 @@ public class PublicacionServicio {
             publicacion.setTitulo(titulo);
             publicacion.setDescripcion(descripcion);
             publicacion.setCuerpo(cuerpo);
-            publicacion.setVideo(video);
-            String idImagen = null;
-            if (publicacion.getImagen() != null) {
-                idImagen = publicacion.getImagen().getId();
+            if (youtubeUrl != null) {
+                publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
             }
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            publicacion.setImagen(imagen);
+
+            String idImagen = null;
+            if (archivo.getSize() > 0) {
+                idImagen = publicacion.getImagen().getId();
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                publicacion.setImagen(imagen);
+            }
             publicacionRepositorio.save(publicacion);
         }
 
@@ -137,12 +140,6 @@ public class PublicacionServicio {
         }
     }
 
-    /*
-   @Transactional
-    public void eliminarPublicacion(String idPublicacion ) throws Exception { 
-            publicacionRepositorio.deleteById(idPublicacion);       
-    }
-     */
     public Publicacion getOne(String idPublicacion) {
         return publicacionRepositorio.getOne(idPublicacion);
     }
@@ -157,6 +154,15 @@ public class PublicacionServicio {
     }
 
     @Transactional(readOnly = true)
+    public List<Publicacion> publicacionesPorCampanaActivas(String idCampana) {
+        List<Publicacion> publicaciones = new ArrayList();
+
+        publicaciones = publicacionRepositorio.publicacionesActivasPorCampana(idCampana);
+
+        return publicaciones;
+    }
+
+    @Transactional(readOnly = true)
     public List<Publicacion> publicacionesPorVotante(String idCampana) {
         List<Publicacion> publicaciones = new ArrayList();
         publicaciones = publicacionRepositorio.publicacionesPorVotante(idCampana);
@@ -164,14 +170,35 @@ public class PublicacionServicio {
     }
 
     @Transactional(readOnly = true)
-    public List<Publicacion> listarPublicaciones() {
+    public List<Publicacion> listarPublicacionesActivas() {
         List<Publicacion> publicaciones = new ArrayList<>();
         publicaciones = publicacionRepositorio.listadoPublicacionesActivas();
         return publicaciones;
     }
 
+    @Transactional(readOnly = true)
+    public List<Publicacion> listarPublicaciones() {
+        List<Publicacion> publicaciones = new ArrayList<>();
+        publicaciones = publicacionRepositorio.findAll();
+        return publicaciones;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Publicacion> publicacionPorTitulo(String titulo) {
+        List<Publicacion> publicaciones = new ArrayList<>();
+        publicaciones = publicacionRepositorio.buscarPorTitulo(titulo);
+        return publicaciones;
+    }
+
+    @Transactional(readOnly = true)
+    public List<Publicacion> publicacionPorFecha() {
+        List<Publicacion> publicaciones = new ArrayList<>();
+        publicaciones = publicacionRepositorio.findAllOrderByfecha_altaDesc();
+        return publicaciones;
+    }
+
     @Transactional
-    public void bajaPublicacion(String idPublicacion) throws Exception {
+    public void darDeBajaPublicacion(String idPublicacion) throws Exception {
 
         Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
 
@@ -183,16 +210,38 @@ public class PublicacionServicio {
 
     }
 
-    private void validar(String titulo, String descripcion, String cuerpo) throws Exception {
-        if (titulo.isEmpty() || titulo == null) {
-            throw new Exception("El Título no puede ser nulo o estar vacío");
+    @Transactional
+    public void darDeAltaPublicacion(String idPublicacion) throws Exception {
+
+        Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
+
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            publicacion.setAltaBaja(true);
+            publicacionRepositorio.save(publicacion);
         }
-        if (descripcion.isEmpty() || descripcion == null) {
-            throw new Exception("La Descripcion no puede ser nula o estar vacía");
-        }
-        if (cuerpo.isEmpty() || cuerpo == null) {
-            throw new Exception("El cuerpo no puede ser nulo o estar vacío");
-        }
+
     }
 
+      private void validarNoRepiteUsuarioPublicacionCampana(String idCampana,String idVotante) throws Exception{          
+             Publicacion publicado = publicacionRepositorio.buscarPorCampanaporUsuario(idCampana,idVotante);
+             if(publicado != null){
+                     throw new Exception("UPS! Ya has genado una Publicación para esta campaña");                       
+             }               
+   }
+    
+    private void validar(MultipartFile archivo, String titulo, String descripcion, String cuerpo) throws Exception {
+        if (titulo.isEmpty() || titulo == null) {
+            throw new Exception("El título no puede estar vacío.");
+        }
+        if (descripcion.isEmpty() || descripcion == null) {
+            throw new Exception("La descripcion no puede estar vacía");
+        }
+        if (cuerpo.isEmpty() || cuerpo == null) {
+            throw new Exception("El cuerpo no puede estar vacío");
+        }
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+            throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
+        }
+    }
 }

@@ -4,11 +4,13 @@ import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,9 +30,10 @@ public class PublicacionControlador {
     @Autowired
     private CampanaServicio campanaServicio;
 
-    @GetMapping("/{id}")
-    public String publicacion_one(@PathVariable String id, ModelMap modelo) {
-        modelo.put("publicacion", publicacionServicio.getOne(id));
+
+    @GetMapping("publicacion_one/{idPublicacion}")
+    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo){
+        modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
         return "publicacion_one.html";
     }
 
@@ -85,43 +88,54 @@ public class PublicacionControlador {
         return "redirect:/campana/campana_one/{idCampana}";
     }
 
-    @GetMapping("/modificar/{id}")
-    public String modificar(@RequestParam String id, ModelMap modelo) {
-        modelo.put("publicacion", publicacionServicio.getOne(id));
-        return "modificar_publicacion.html";
+
+    @GetMapping("/modificar/{idPublicacion}")
+    public String modificar(@PathVariable String idPublicacion, ModelMap modelo) {
+         modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
+        return "publicacion_modificar.html";
     }
 
-    @PostMapping("/modificacion/{id}")
-    public String modificacion(@RequestParam @PathVariable String id, @RequestParam(required = false) MultipartFile archivo,
-            @RequestParam() String titulo, @RequestParam() String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
+    @PostMapping("/modificar/{idPublicacion}")
+    public String modificacion(@PathVariable String idPublicacion,@RequestParam(required = false) MultipartFile archivo,
+           @RequestParam(required = false)  String titulo,@RequestParam(required = false)  String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-            publicacionServicio.modificarPublicacion(archivo, id, titulo, descripcion, cuerpo, video);
+               publicacionServicio.modificarPublicacion(archivo, idPublicacion, titulo,descripcion,cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-            modelo.put("publicacion", publicacionServicio.getOne(id));
-            return "modificar.html";
+           modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
+            return "publicacion_modificar.html";
         }
-        return "redirect:/publicacion/id";
+        return "redirect:/publicacion/lista";
     }
-
+  
+    @GetMapping("/baja/{idPublicacion}")
+    public String darDeBajaPublicacion(@PathVariable String idPublicacion) throws Exception {
+        publicacionServicio.darDeBajaPublicacion(idPublicacion);
+        return "redirect:/publicacion/lista";
+    }
+    
+    @GetMapping("/alta/{idPublicacion}")
+    public String darDeAltaPublicacion(@PathVariable String idPublicacion) throws Exception {
+        publicacionServicio.darDeAltaPublicacion(idPublicacion);
+        return "redirect:/publicacion/lista";
+    }
+    
+         //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String listar(ModelMap modelo) {
-        List<Publicacion> publicacion = publicacionServicio.listarPublicaciones();
+    public String listadoPublicaciones(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+        
+        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+        List<Publicacion> publicaciones = new ArrayList<>();
 
-        modelo.addAttribute("publicacion", publicacion);
-        return "publicacion_list.html";
-    }
+        if (termino != null && !termino.isEmpty()) {
+            publicaciones = publicacionServicio.publicacionPorTitulo(termino.toLowerCase());
+        }else{
+        
+            publicaciones = publicacionServicio.publicacionPorFecha();
+        }
 
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@RequestParam @PathVariable String id) throws Exception {
-        publicacionServicio.bajaPublicacion(id);
-        return "index.html";
-    }
-
-    @GetMapping("/listar")
-    public String listar() throws Exception {
-        publicacionServicio.listarPublicaciones();
+        modelo.addAttribute("publicaciones", publicaciones);
 
         return "publicacion_list.html";
     }

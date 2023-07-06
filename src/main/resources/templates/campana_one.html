@@ -1,19 +1,19 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 
     <head  th:replace = "/fragments/head :: head"> </head>
-
-    <header> 
-        <nav th:replace= "/fragments/navbar :: nav"></nav>
-    </header>
-
     <body>
+        <!--en este header se encuentra el nav  <div class="hero"></div>-->
+        <header> 
+            <nav th:replace= "/fragments/navbar :: nav"></nav>
+        </header>
+
 
         <div class="container py-4">
             <div class="row">
                 <div class="col-md-8 mx-auto">
                     <!-- Título de la noticia -->
-                    <h1 th:text="${campana.titulo}" class="text-pre text-center"></h1>
+                    <h1 th:text="${campana.titulo}" class="text-camp2 text-center"></h1>
                     <!-- Subtítulo de la noticia -->
                     <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${campana.descripcion}"></h4>
                     <hr class="my-4">
@@ -21,7 +21,7 @@
                         <div style="display: flex; align-items: center;">
                             <img th:src="@{/imagen/perfil/__${campana.empresa.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 60px; height: 60px; margin-right: 10px;">
                             <div style="display: flex; flex-direction: column;">
-                                <a th:href="@{/campana/__${campana.idCampana}__}" target="_blank" class="text-muted a-card">
+                                <a th:href="@{/campana/__${campana.idCampana}__}"  class="text-muted a-card">
                                     <h7 class="card-periodista">Por <span th:text="${campana.empresa.nombreEmpresa}" class="fw-bold"></span></h7>
                                 </a>
                                 <div>
@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}" th:href="@{/publicacion/campana/__${campana.idCampana}__/crearPublicacion}" target="_blank" type="button" class="btn btn-success">Crear publicación</a>
+                        <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}" th:href="@{/publicacion/campana/__${campana.idCampana}__/crearPublicacion}" type="button" class="btn btn-success">Crear publicación</a>
                     </div>
 
                     <hr class="my-4">
@@ -44,16 +44,20 @@
 
                 </div>
             </div>
-            <h1 class="text-pre text-center">Publicaciones</h1>
-             <div>
-                <h2 th:if="${#lists.isEmpty(campana.publicaciones)}" class="featurette fw-normal lh-1 text-center text-secondary-emphasis">Todavía no hay publicaciones en esta campaña. Anímate y empieza ahora</h2>
-                
+            <h1 class="text-pre text-camp2 text-center">Publicaciones</h1>
+            <div class="text-center" sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" th:if="${#lists.isEmpty(publicaciones)}">
+                <h2 class="featurette fw-normal lh-1 text-secondary-emphasis">Todavía no hay publicaciones en esta campaña. Anímate y empieza ahora</h2>
+                <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}" th:href="@{'/publicacion/campana/' + ${campana.idCampana} + '/crearPublicacion'}" type="button" class="btn btn-success">Crear publicación</a>
             </div>
+
+
+
             <!-- Seccion Publicaciones -->
             <div class="container my-5">
                 <div class="row" >
-                    <div class="col-md-6 col-lg-4 mb-4" th:each="publicacion :${publicaciones}">
-                        <a th:href="@{/publicacion/__${publicacion.idPublicacion}__}" target="_blank" class="a-card">
+                    <div class="col-md-6 col-lg-4 mb-4" th:each="publicacion :${publicaciones}" th:if="${publicacion.altaBaja == true}">
+
+                        <a th:href="@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__}"  class="a-card">
                             <div class="card shadow">
                                 <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
                                 <div class="card-body">
@@ -67,14 +71,153 @@
 
                 </div>
             </div>
-        </div>
 
+        </div>
+        <section style="background-color: #BFD200;">
+            <div class="container my-5 py-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-12 col-lg-10">
+                        <div class="card text-dark">
+                            <div class="card-body p-4">
+                                <h4 class="mb-0">Comentarios recientes</h4>
+                                <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
+                                         height="60" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Maggie Marsh</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0">
+                                                March 07, 2021
+                                                <span class="badge bg-primary">Pending</span>
+                                            </p>
+                                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                                        </div>
+                                        <p class="mb-0">
+                                            Lorem Ipsum is simply dummy text of the printing and typesetting
+                                            industry. Lorem Ipsum has been the industry's standard dummy text ever
+                                            since the 1500s, when an unknown printer took a galley of type and
+                                            scrambled it.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-0" />
+
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
+                                         height="60" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Lara Stewart</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0">
+                                                March 15, 2021
+                                                <span class="badge bg-success">Approved</span>
+                                            </p>
+                                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                            <a href="#!" class="text-success"><i class="fas fa-redo-alt ms-2"></i></a>
+                                            <a href="#!" class="link-danger"><i class="fas fa-heart ms-2"></i></a>
+                                        </div>
+                                        <p class="mb-0">
+                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It
+                                            has roots in a piece of classical Latin literature from 45 BC, making it
+                                            over 2000 years old. Richard McClintock, a Latin professor at
+                                            Hampden-Sydney College in Virginia, looked up one of the more obscure
+                                            Latin words, consectetur, from a Lorem Ipsum passage, and going through
+                                            the cites.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-0" style="height: 1px;" />
+
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(33).webp" alt="avatar" width="60"
+                                         height="60" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Alexa Bennett</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0">
+                                                March 24, 2021
+                                                <span class="badge bg-danger">Rejected</span>
+                                            </p>
+                                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                                        </div>
+                                        <p class="mb-0">
+                                            There are many variations of passages of Lorem Ipsum available, but the
+                                            majority have suffered alteration in some form, by injected humour, or
+                                            randomised words which don't look even slightly believable. If you are
+                                            going to use a passage of Lorem Ipsum, you need to be sure.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-0" />
+
+                            <div class="card-body p-4">
+                                <div class="d-flex flex-start">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(24).webp" alt="avatar" width="60"
+                                         height="60" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Betty Walker</h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0">
+                                                March 30, 2021
+                                                <span class="badge bg-primary">Pending</span>
+                                            </p>
+                                            <a href="#!" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-redo-alt ms-2"></i></a>
+                                            <a href="#!" class="link-muted"><i class="fas fa-heart ms-2"></i></a>
+                                        </div>
+                                        <p class="mb-0">
+                                            It uses a dictionary of over 200 Latin words, combined with a handful of
+                                            model sentence structures, to generate Lorem Ipsum which looks
+                                            reasonable. The generated Lorem Ipsum is therefore always free from
+                                            repetition, injected humour, or non-characteristic words etc.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div  th:if="${session.usuariosession != null}" class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                                <div class="d-flex flex-start w-100">
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                         th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="avatar" width="60"
+                                         height="60" />
+                                    <div class="form-outline w-100">
+                                        <textarea class="form-control" id="textAreaExample" rows="4"
+                                                  style="background: #fff;"></textarea>
+                                        <!-- <label class="form-label" for="textAreaExample">Sé respetuoso</label>-->
+                                    </div>
+                                </div>
+                                <div class="float-end mt-2 pt-1">
+                                    <button type="button" class="btn btn-primary btn-sm">Comentar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
 
         <footer th:replace="/fragments/footer :: footer" ></footer>
         <!-- SCRIPTS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script src="/js/eventos.js" type="text/javaScript"></script>
     </body>
-
 </html>
