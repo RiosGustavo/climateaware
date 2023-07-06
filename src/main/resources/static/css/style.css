@@ -9,7 +9,8 @@ html {
     vertical-align: baseline;
 }
 body {
-    background-color: #f9fff8 !important;
+    background-color: rgba(85, 166, 48, .1) !important;
+ 
 }
 
 @font-face {
@@ -191,7 +192,7 @@ body {
 /*aca se controla la imagen del listado de campañas en el campana_list*/
 .row .col-md-5 .bd-placeholder-img{
     width: 400px;
-    height: 300px;
+    height: 250px;
     object-fit: cover;
     max-width: 100%;
     max-height: 100%;

@@ -1,5 +1,5 @@
 window.addEventListener('scroll', function() {
-    var elementos = document.querySelectorAll('.campañaPost');
+    var elementos = document.querySelectorAll('.campanaPost');
     var alturaVentana = window.innerHeight;
   
     elementos.forEach(function(elemento) {
