@@ -19,11 +19,12 @@
         <!--        <hr class="featurette-divider">-->
 
         <!--CARDS NOVEDADES-->
+         <hr class="featurette-divider">
         <h1 class="text-pre text-center">Novedades</h1>
         <div class="container marketing">
 
             <div class="row featurette py-3 campanaPost" th:each="noticia : ${noticias}">
-                <div class=" col-md-3">
+                <div class=" col-md-7">
                     <h2 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"><strong>First featurette heading.</strong> </h2>
                     <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
                     <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} "> 
