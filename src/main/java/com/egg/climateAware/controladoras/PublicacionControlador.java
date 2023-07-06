@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -34,20 +35,23 @@ public class PublicacionControlador {
     }
 
     @PostMapping("/{id}/votar")
-    public String vote(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+    @ResponseBody
+    public Integer votar(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            Publicacion publicacion = publicacionServicio.getOne(id);
             modelo.put("exito", "Publicacion creada exitosamente!");
             modelo.put("usuairo",logueado);
             if(logueado.getRoles().toString().equals("VOT")){
             publicacionServicio.votar(id, logueado.getId());
             }else{
                 modelo.put("error","Debe ser un usuario votante.");
+                return -2;
             }
-             return "redirect:/publicacion/{id}";
+            return publicacion.getVotos().size();
         } catch (Exception ex) {
             modelo.put("error",ex.getMessage());
-            return "redirect:/login";
+            return -1;
         }
     }
 

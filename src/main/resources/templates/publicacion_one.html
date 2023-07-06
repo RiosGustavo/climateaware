@@ -26,12 +26,10 @@
                                 </div>
                             </div>
                         </div>
-                        <form th:action="@{/publicacion/__${publicacion.idPublicacion}__/votar}" method="POST">
-                            <button type="submit" class="btn btn-light">
-                                <i sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
-                                <span class="ps-2" th:text="${publicacion.votos.size()}"></span>
+                            <button id="botonVotar" type="submit" class="btn btn-light">
+                                <i class="fa-regular fa-thumbs-up fa-bounce fa-2xl"></i>
+                                <span id="votos" class="ps-2" th:text="${publicacion.votos.size()}"></span>
                             </button>
-                        </form>
                     </div>
                     
 
@@ -59,6 +57,28 @@
 
         <!-- JS Boostrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-
+        <script th:inline="javascript">
+            $(document).ready(function() {
+              $("button#botonVotar").click(function() {
+                var id = [[${publicacion.idPublicacion}]];
+                $.ajax({
+                  type: "POST",
+                  url: "/publicacion/" + id + "/votar",
+                  success: function(data) {
+                    if (data !== -1 && data !==-2) {
+                      $("#votos").text(data);
+                    } else if (data == -2){
+                        alert("Debe estar logueado como usuario votante.")
+                    }else{
+                        window.location.href="/login"
+                    }
+                  },
+                  error: function() {
+                    alert("Debe estar logeado como usuario votante")
+                  }
+                });
+              });
+            });
+          </script>
     </body>
 </html>
