@@ -38,4 +38,8 @@ public interface  PublicacionRepositorio extends JpaRepository<Publicacion, Stri
     
     @Query(value = "SELECT * FROM Publicacion order by fecha_alta desc", nativeQuery = true)
     List<Publicacion> findAllOrderByfecha_altaDesc();
+    
+    @Query(value="select * from publicacion where votante_id=:id and campana_id_campana = :idCampana limit 1", nativeQuery = true)
+    public Publicacion  buscarPorCampanaporUsuario (@Param("idCampana") String idCampana,@Param("id") String id  );
+    
 }

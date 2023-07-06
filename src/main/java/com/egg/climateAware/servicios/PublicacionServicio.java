@@ -37,7 +37,7 @@ public class PublicacionServicio {
     @Transactional
     public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String youtubeUrl, String idVotante, String idCampana) throws Exception {
         validar(archivo, titulo, descripcion, cuerpo);
-
+        validarNoRepiteUsuarioPublicacionCampana(idCampana,idVotante);   
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idVotante);
 
         Optional<Campana> respuestaCampana = campanaRepositorio.findById(idCampana);
@@ -54,17 +54,17 @@ public class PublicacionServicio {
 
         if (youtubeUrl != null) {
             publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
-        }
-
+        }        
+        
         if (respuesta.isPresent()) {
 
             Usuario usuario = respuesta.get();
-
-            if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
-                Votante vo = (Votante) respuesta.get();
-                publicacion.setVotante(vo);
+                
+                if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
+                    Votante vo = (Votante) respuesta.get();
+                    publicacion.setVotante(vo);
+                }
             }
-        }
         if (respuesta.isPresent()) {
 
             publicacion.setCampana(respuestaCampana.get());
@@ -201,6 +201,13 @@ public class PublicacionServicio {
 
     }
 
+      private void validarNoRepiteUsuarioPublicacionCampana(String idCampana,String idVotante) throws Exception{          
+             Publicacion publicado = publicacionRepositorio.buscarPorCampanaporUsuario(idCampana,idVotante);
+             if(publicado != null){
+                     throw new Exception("UPS! Ya has genado una Publicación para esta campaña");                       
+             }               
+   }
+    
     private void validar(MultipartFile archivo, String titulo, String descripcion, String cuerpo) throws Exception {
         if (titulo.isEmpty() || titulo == null) {
             throw new Exception("El título no puede estar vacío.");
