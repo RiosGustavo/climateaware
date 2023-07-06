@@ -6,15 +6,15 @@
         <!-- Usuarios -->
         <div class="container my-2 ">
 
-            <h1 class="display-6 mt-4" >Usuarios</h1>
+            <h1 class="display-6 mt-4" >Bloggers</h1>
             <hr class="my-4">
         </div>
         <div class="container my-5">
             <div class="row justify-content-center ">
                 <div class="col-md-6 ">
-                    <form th:action="@{/admin/votantes}" method="get">
+                    <form th:action="@{/admin/bloggers}" method="get">
                         <div class="mb-3 d-flex justify-content-center">
-                            <h3>Buscar un usuario<h3/>
+                            <h3>Buscar un blogger<h3/>
                         </div>
 
                         <div class="mb-3">
@@ -33,7 +33,7 @@
             <table class="table" >
                 <thead>
                     <tr>
-                        <th scope="col" >ID del usuario</th>
+                        <th scope="col" >ID</th>
                         <th scope="col">Nombre y apellido</th>
                         <th scope="col">Email</th>
                         <th scope="col">DNI</th>
@@ -42,15 +42,15 @@
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
-                <tbody th:each="votante: ${votantes}" >
+                <tbody th:each="blogger: ${bloggers}" >
                     <tr >
-                        <th scope="row" th:text="${votante.id}"  ></th>
-                        <td th:text="${votante.nombreApellido}"  ></td>
-                        <td th:text="${votante.email}"  ></td>
-                        <td th:text="${votante.dni}"  ></td>
-                        <td th:text="${votante.direccion}"  ></td>
-                         <td th:if="${votante.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
-                        <td th:if="${votante.altaBaja == false}" th:text="Inactivo" class="text-danger fw-bold"></td>
+                        <th scope="row" th:text="${blogger.id}"  ></th>
+                        <td th:text="${blogger.nombreApellido}"  ></td>
+                        <td th:text="${blogger.email}"  ></td>
+                        <td th:text="${blogger.dni}"  ></td>
+                        <td th:text="${blogger.direccion}"  ></td>
+                         <td th:if="${blogger.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
+                        <td th:if="${blogger.altaBaja == false}" th:text="Inactivo" class="text-danger fw-bold"></td>
                         <td>
                             <div class="dropdown">
 
@@ -58,16 +58,16 @@
                                     Acciones
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li th:if="${votante.altaBaja == false}"><a th:href="@{/votante/alta/__${votante.id}__}"type="button" class="dropdown-item text-success">Dar de alta</a></li>
-                                    <li th:if="${votante.altaBaja == true}"><a th:href="@{/votante/baja/__${votante.id}__}"type="button" class="dropdown-item text-warning">Dar de baja</a></li>
-                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${votante.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
-                                    <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#exampleModal-' + ${votante.id}" class="dropdown-item text-danger fw-bold">Eliminar</a></li>
+                                    <li th:if="${blogger.altaBaja == false}"><a th:href="@{/blogger/alta/__${blogger.id}__}"type="button" class="dropdown-item text-success">Dar de alta</a></li>
+                                    <li th:if="${blogger.altaBaja == true}"><a th:href="@{/blogger/baja/__${blogger.id}__}"type="button" class="dropdown-item text-warning">Dar de baja</a></li>
+                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${blogger.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
+                                    <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#exampleModal-' + ${blogger.id}" class="dropdown-item text-danger fw-bold">Eliminar</a></li>
                                 </ul>
                             </div>
 
                         </td>
                         <!-- Modal confirmacion eliminar -->
-                <div class="modal fade" th:id="'exampleModal-' + ${votante.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" th:id="'exampleModal-' + ${blogger.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -76,19 +76,19 @@
                             </div>
                             <div class="modal-body text-center">
 
-                                <p>A continuación va a eliminar al usuario <span class="fw-bold" th:text="${votante.nombreApellido}"></span><p/>
+                                <p>A continuación va a eliminar al usuario <span class="fw-bold" th:text="${blogger.nombreApellido}"></span><p/>
                                 <p class="fw-bold text-danger">¿Está seguro que quiere eliminar a este usuario?<p/>
 
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a th:href="@{/admin/eliminar/__${votante.id}__}" type="button" class="btn btn-outline-danger ">Sí, eliminar</a>
+                                <a th:href="@{/admin/eliminar/__${blogger.id}__}" type="button" class="btn btn-outline-danger ">Sí, eliminar</a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Modal confirmacion rol -->
-                <div class="modal fade" th:id="'cambiarRol-' + ${votante.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" th:id="'cambiarRol-' + ${blogger.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -97,15 +97,14 @@
                             </div>
                             <div  class="modal-body text-center">
 
-
-                                <p>A continuación va a cambiar el Rol de <span class="fw-bold" th:text="${votante.nombreApellido}"></span> a  <span class="fw-bold text-primary">'BLOGGER'</span><p/>
-                                <p>Dicho rol otorga permisos como <span class="fw-bold ">crear noticias, modificarlas y/o eliminarlas</span><p/>
-                                <p class="fw-bold text-primary">¿Está seguro que desea convertir a este usuario en un Blogger?<p/>
+                                <p>A continuación va a cambiar el Rol de <span class="fw-bold" th:text="${blogger.nombreApellido}"></span> a  <span class="fw-bold text-primary">'VOTANTE'</span><p/>
+                                <p>Dicho rol retira los permisos como <span class="fw-bold ">crear noticias, modificarlas y/o eliminarlas y otorga permisos como crear publicaciones, votar y hacer comentarios.</span><p/>
+                                <p class="fw-bold text-primary">¿Está seguro que desea convertir a este blogger en un Votante?<p/>
 
                             </div> 
                             <div class="modal-footer"> 
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <a th:href="@{/admin/rolBlogger/__${votante.id}__}" type="button" class="btn btn-outline-primary ">Sí, cambiar</a>
+                                <a th:href="@{/admin/rolVotante/__${blogger.id}__}" type="button" class="btn btn-outline-primary ">Sí, cambiar</a>
                             </div>
                         </div>
                     </div>

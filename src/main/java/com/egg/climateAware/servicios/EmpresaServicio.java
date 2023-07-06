@@ -32,7 +32,7 @@ public class EmpresaServicio {
     public void registrarEmpresa(MultipartFile archivo, String nombreEmpresa, String cuit,
             String direccion, String rubro, String email, String password, String password2) throws Exception {
 
-        validar(nombreEmpresa, cuit, direccion, rubro, email, password, password2);
+        validar(archivo,nombreEmpresa, cuit, direccion, rubro, email, password, password2);
 
         Empresa empresa = new Empresa();
 
@@ -45,8 +45,14 @@ public class EmpresaServicio {
         empresa.setFechaAlta(new Date());
         empresa.setPassword(new BCryptPasswordEncoder().encode(password));
         empresa.setRoles(Rol.EMP);
-        Imagen imagen = imagenServicio.guardar(archivo);
-        empresa.setImagen(imagen);
+        
+        if (archivo.getSize() == 0) {
+            Imagen imagen = imagenServicio.obtenerImagenPorDefecto();
+            empresa.setImagen(imagen);
+        } else {
+            Imagen imagen = imagenServicio.guardar(archivo);
+            empresa.setImagen(imagen);
+        }
 
         empresaRepositorio.save(empresa);
 
@@ -126,7 +132,7 @@ public class EmpresaServicio {
 
     }
 
-    private void validar(String nombreEmpresa, String cuit, String direccion,
+    private void validar(MultipartFile archivo,String nombreEmpresa, String cuit, String direccion,
             String rubro, String email, String password, String password2) throws Exception {
 
         // Verificar si el email ya existe en la base de datos
@@ -167,7 +173,10 @@ public class EmpresaServicio {
             throw new Exception("La contraseña debe tener al menos 8 caracteres");
 
         }
-
+        
+        if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
+            throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
+        }
     }
 
     private void validarModificar(MultipartFile archivo, String nombreApellido, String direccion) throws Exception {

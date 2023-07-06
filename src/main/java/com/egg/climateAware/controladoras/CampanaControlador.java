@@ -36,7 +36,6 @@ public class CampanaControlador {
     @Autowired
     private CampanaRepositorio campanaRepositorio;
 
-    
     @Autowired
     private PublicacionServicio publicacionServicio;
     
@@ -69,7 +68,6 @@ public class CampanaControlador {
          return "campana_form.html";
 
     }
-
 
     @GetMapping("/modificar/{idCampana}")
     public String modificar(@PathVariable String idCampana, ModelMap modelo) {
@@ -109,7 +107,7 @@ public class CampanaControlador {
     
     @GetMapping("/campana_one/{idCampana}")
     public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
-        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampana(idCampana);
+        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
         
         modelo.put("publicaciones", publicaciones);
         modelo.put("campana", campanaServicio.getOne(idCampana));
@@ -118,7 +116,7 @@ public class CampanaControlador {
     
         //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String busquedaVotantes(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+    public String listadoCampanas(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
         
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Campana> campanas = new ArrayList<>();
@@ -127,7 +125,7 @@ public class CampanaControlador {
             campanas = campanaServicio.buscarCampanasPorTitulo(termino.toLowerCase());
         }else{
         
-            campanas = campanaServicio.listarCampanas();
+            campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
         }
 
         modelo.addAttribute("campanas", campanas);
