@@ -1,47 +1,52 @@
-<content>
-    <div class="modal fade" id="modificarPublicacion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modificar Noticia</h5>
 
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/noticia/modificar}" method="POST" enctype="multipart/form-data">
+<!DOCTYPE html>
+<html  xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <head  th:replace = "/fragments/head :: head"> </head>
+    <header> 
+        <nav th:replace= "/fragments/navbar :: nav"></nav>
+    </header>
+    <body>
+
+        <div class="container my-5">
+            <div class="row justify-content-center ">
+                <div class="col-md-6 ">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">Modificar publicacion</h3>
+                        </div>
+                        <div class="card-body ">
+                            <!-- Mensajes de error y exito -->
+                             <form th:action="@{/noticia/modificar/__${noticia.idNoticia}__}" method="POST" enctype="multipart/form-data">
                         <div th:replace="/fragments/msjes-error-exito :: div"></div>
                         <div class="mb-3">
 
-                            <input th:value="${publicacion.id}" hidden name="id" />
-                            <input th:value="${publicacion.fechaAlta}" hidden name="fechaAlta" />
-                            <input th:value="${publicacion.altaBaja}" hidden name="altaBaja" />
+                            <input th:value="${noticia.idNoticia}" hidden name="idNoticia" />
+                           
 
                             <label for="titulo" class="form-label">Título</label>
-                            <input type="titulo" class="form-control" name="titulo" th:value="${titulo}" />
+                            <input type="titulo" class="form-control" name="titulo" th:value="${noticia.titulo}" />
                         </div>
-
-                        <div class="mb-3">
-                            <label for="cuerpo" class="form-label">Cuerpo</label>
-                            <textarea style="resize: none; height: 200px;" type="text" class="form-control"
-                                      name="cuerpo" th:field="${noticia.cuerpo}"></textarea>
-                        </div>
-
                         <div class="mb-3">
                             <label for="descripcion" class="form-label">Descripcion</label>
                             <textarea style="resize: none; height: 100px;" type="text" class="form-control"
-                                      name="descripcion" th:field="${noticia.descripcion}"></textarea>
+                                      name="descripcion" th:text="${noticia.descripcion}"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cuerpo" class="form-label">Cuerpo</label>
+                            <textarea style="resize: none; height: 200px;" type="text" class="form-control"
+                                      name="cuerpo" th:text="${noticia.cuerpo}"></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label for="video" class="form-label">Link Video</label>
-                            <input name="video" class="form-control" type="text">
+                                    <label for="video" class="form-label">Link Video</label>
+                                    <input name="video" class="form-control" type="text" th:value="${noticia.video}">
 
-                        </div>
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="archivo" class="form-label">Seleccionar imagen</label>
-                            <input name="archivo" class="form-control" type="file">
-
-                        </div>
+                                <div class="mb-3">
+                                    <label for="archivo" class="form-label">Seleccionar imagen</label>
+                                    <input name="archivo" class="form-control" type="file">
+                                </div>
 
 
 
@@ -53,12 +58,17 @@
                             </button>
 
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</content>
+
+        <!-- JS Boostrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+        <!-- Mensajes para el formulario -->
+        <script src="/js/mensajeFormulario.js"/></script>
+
+</body>
+</html>

@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="container marketing campanas-list" th:each="noticia : ${noticias}">
-            <div sec:authorize="hasRole('BLO')" class="row featurette py-5 campañaPost" >
+            <div sec:authorize="hasRole('ADM')" class="row featurette py-5 campañaPost" >
                 <div  class=" col-md-6">
                     <h3 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"></h3>
                     <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${noticia.descripcion}"></h4>
@@ -45,7 +45,7 @@
                     <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" th:src="@{/imagen/noticia/__${campana.idNoticia}__}" alt="">
                 </div>
             </div>
-            <div th:if="${campana.altaBaja == true}"  sec:authorize="not(hasRole('ROLE_BLO'))" class="row featurette py-5 campañaPost">
+            <div th:if="${noticia.altaBaja == true}"  sec:authorize="not(hasRole('ROLE_ADM'))" class="row featurette py-5 campañaPost">
                 <div  class=" col-md-6">
                     <h3 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"></h3>
                     <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${noticia.descripcion}"></h4>

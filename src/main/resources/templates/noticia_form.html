@@ -39,9 +39,10 @@
                                     <input name="archivo" class="form-control" type="file">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="video" class="form-label">Video</label>
-                                    <textarea style="resize: none; height: 100px;" type="text" class="form-control" name="video" th:text="${video}"></textarea>
+                                    <label for="video" class="form-label">Link Video</label>
+                                  <input name="video" class="form-control" type="text" th:value="${video}">
                                 </div>
+                      
                                 <div class="d-grid mb-3">
                                     <button type="submit" class="btn btn-success">
                                         Crear Noticia

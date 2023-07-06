@@ -35,6 +35,7 @@ public class PortalControlador {
 
     @Autowired
     private NoticiaServicio noticiaServicio;
+    
     @Autowired
     private VotanteServicio votanteServicio;
 
