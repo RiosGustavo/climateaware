@@ -49,18 +49,7 @@ footer .nav .item2 .link2 {
     color: #80b918 !important;
     transition: 0.5s !important;
 }
-/*Boton para ir arriba*/
-footer #ir-arriba {
-	display:none;
-	padding:10px;
-	background:#80b918;
-	font-size:30px;
-	color:#fff;
-	cursor:pointer;
-	position: fixed;
-	bottom:20px;
-	right:20px;
-}
+
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
     text-decoration: underline !important;
     color: #80b918;
@@ -128,6 +117,18 @@ footer #ir-arriba {
     transition: 0.5s;
 }
 
+/*Boton para ir arriba*/
+footer #ir-arriba {
+	display:none;
+	padding:10px !important;
+	background:#80b918;
+	font-size:40px !important;
+	color:#fff;
+	cursor:pointer;
+	position: fixed;
+	bottom:20px !important;
+	right:20px !important;
+}
 /*KEYFRAMES DE TRANCICIONES*/
 
 /*TRANSICION DE PRESENTACION*/
