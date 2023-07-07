@@ -44,6 +44,23 @@ body {
     color: #80b918;
     transition: 0.5s !important;
 }
+footer .nav .item2 .link2 {
+   text-decoration: none !important;
+    color: #80b918 !important;
+    transition: 0.5s !important;
+}
+/*Boton para ir arriba*/
+footer #ir-arriba {
+	display:none;
+	padding:10px;
+	background:#80b918;
+	font-size:30px;
+	color:#fff;
+	cursor:pointer;
+	position: fixed;
+	bottom:20px;
+	right:20px;
+}
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
     text-decoration: underline !important;
     color: #80b918;
@@ -67,14 +84,14 @@ body {
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 .text-camp2 {
-    font-family: "Rigtheous";
+    font-family: "croogla";
     color: #80b918;
     font-size: 50px;
     text-shadow: #020201;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
 }
 .text-camp {
-    font-family: "Rigtheous";
+    font-family: "croogla";
     color: #80b918;
     font-size: 50px;
     text-shadow: #020201;
