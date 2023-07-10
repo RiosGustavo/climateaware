@@ -1,10 +1,12 @@
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
+import com.egg.climateAware.entidades.Comentario;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.servicios.CampanaServicio;
+import com.egg.climateAware.servicios.ComentarioServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
 import java.util.ArrayList;
@@ -38,6 +40,10 @@ public class CampanaControlador {
 
     @Autowired
     private PublicacionServicio publicacionServicio;
+    
+    @Autowired
+    private ComentarioServicio comentarioServicio;
+    
     
     
     @PreAuthorize("hasAnyRole('ROLE_EMP')")
@@ -108,8 +114,9 @@ public class CampanaControlador {
     @GetMapping("/campana_one/{idCampana}")
     public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
         List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
-        
+        List<Comentario> comentarios = comentarioServicio.comentariosPorCampana(idCampana);
         modelo.put("publicaciones", publicaciones);
+        modelo.put("comentarios",comentarios);
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_one.html";
     }
