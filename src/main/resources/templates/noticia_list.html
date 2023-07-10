@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head  th:replace = "/fragments/head :: head"> </head>
+
+    <header> 
+        <nav th:replace= "/fragments/navbar :: nav"></nav>
+    </header>
+
+    <body>
+        <h1 class="text-pre text-center">Novedades</h1>
+        <div class="container my-5">
+            <div class="row justify-content-center ">
+                <div class="col-md-6 ">
+                    <form th:action="@{/noticia/lista}" method="get">
+                        <div class="mb-3">
+                            <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por titulo">
+                        </div>
+
+
+                        <div class="mb-3 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary ">Buscar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="container marketing campanas-list" th:each="noticia : ${noticias}">
+            <div sec:authorize="hasRole('ADM')" class="row featurette py-5 campañaPost" >
+                <div  class=" col-md-7">
+                    <h3 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"></h3>
+                    <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${noticia.descripcion}"></h4>
+                    <p class="lead" th:if="${#strings.length(noticia.cuerpo) <= 50}" th:text="${noticia.cuerpo}"></p>
+                    <p class="lead" th:if="${#strings.length(noticia.cuerpo) > 50}" th:text="${#strings.substring(noticia.cuerpo, 0, 50) + '...'}"></p>
+                    <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} " class="btn btn-outline-secondary btn-sm px-4">Ver mas</a>
+                    <a th:href="@{/noticia/modificar/__${noticia.idNoticia}__}" class="btn btn-outline-secondary btn-sm px-4">Editar</a>
+                    <a th:if="${noticia.altaBaja}"  type="button" class="btn btn-outline-warning btn-sm px-4" th:href= "@{/noticia/baja/__${noticia.idNoticia}__} ">Dar de baja</a>
+                    <a th:if="${!noticia.altaBaja}"  type="button" class="btn btn-outline-success btn-sm px-4" th:href= "@{/noticia/alta/__${noticia.idNoticia}__} ">Dar de alta</a>
+                    <p th:if="${noticia.altaBaja}" th:text="Activo" class="text-success fw-bold"></p>
+                    <p th:if="${!noticia.altaBaja}" th:text="Inactivo" class="text-danger fw-bold"></p>
+                    <p class="text-campañaList text-secondary" ></p> 
+                    <p class="text-campañaList text-secondary" th:text="${noticia.fechaAlta}"></p>
+                </div>
+                <div class="col-md-5">
+                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" th:src="@{/imagen/noticia/__${noticia.idNoticia}__}" alt="">
+                </div>
+            </div>
+            <div th:if="${noticia.altaBaja == true}"  sec:authorize="not(hasRole('ROLE_ADM'))" class="row featurette py-5 campañaPost">
+                <div  class=" col-md-7">
+                    <h3 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"></h3>
+                    <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${noticia.descripcion}"></h4>
+                    <p class="lead" th:if="${#strings.length(noticia.cuerpo) <= 50}" th:text="${noticia.cuerpo}"></p>
+                    <p class="lead" th:if="${#strings.length(noticia.cuerpo) > 50}" th:text="${#strings.substring(noticia.cuerpo, 0, 50) + '...'}"></p>
+                    <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} "  class="btn btn-outline-secondary btn-sm px-4">Ver mas</a>
+                    <p class="text-campañaList text-secondary" ></p> 
+                    <p class="text-campañaList text-secondary" th:text="${noticia.fechaAlta}"></p>
+                </div>
+                <div class="col-md-5">
+                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" th:src="@{/imagen/noticia/__${noticia.idNoticia}__}" alt="">
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-cargar-mas" class="btn btn-outline-secondary col-4 mx-auto">Cargar más</button>
+
+
+        <footer th:replace="/fragments/footer :: footer" ></footer>
+        <!-- SCRIPTS -->
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script src="/js/verMas.js" type="text/javaScript"></script>
+         <script src="/js/eventos.js" type="text/javaScript"></script>
+
+
+    </body>
+
+</html>

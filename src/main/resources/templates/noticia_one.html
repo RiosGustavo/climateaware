@@ -1,23 +1,62 @@
-<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
-    
-     <head  th:replace = "/fragments/head :: head"> </head>
+<!DOCTYPE html>
+<html  xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <head  th:replace = "/fragments/head :: head"> </head>
+    <header> 
+        <nav th:replace= "/fragments/navbar :: nav"></nav>
+    </header>
     <body>
-        <!--en este header se encuentra el nav  <div class="hero"></div>-->
-        <header> 
-            <nav th:replace= "/fragments/navbar :: nav"></nav>
-        </header>
-        
-        
-        
-        <h1 th=" titulo de noticia">Hola mundo</h1>
-        <h2 th=" descripcion de la noticia"></h2>
-        <p th=" cuerpo de la noticia"></p>
-        
-        
-        
-                <footer th:replace="/fragments/footer :: footer" ></footer>
-            <!-- SCRIPTS -->
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-            <script src="../js/eventos.js" type="text/javaScript"></script>
+
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <!-- Título de la noticia -->
+                    <h1 th:text="${noticia.titulo}" class="text-center mb-4"></h1>
+                    <!-- Subtítulo de la noticia -->
+                    <hr class="my-4">
+                    <div th:if="${noticia.blogger != null}" style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center;">
+                            <img th:src="@{/imagen/perfil/__${noticia.blogger.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 60px; height: 60px; margin-right: 10px;">
+                            <div style="display: flex; flex-direction: column;">
+                                <a th:href="@{/noticia/__${noticia.idNoticia}__}" target="_blank" class="text-muted a-card">
+                                    <h7 class="card-periodista">Por <span th:text="${noticia.blogger.nombreApellido}" class="fw-bold"></span></h7>
+                                </a>
+                                <div>
+                                    <h7 th:text="${noticia.blogger.email}"></h7>
+                                    <p sec:authorize="hasRole('ADM')" th:if="${noticia.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
+                                    <p sec:authorize="hasRole('ADM')" th:if="${!noticia.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <a sec:authorize="hasRole('ADM')" th:if="${noticia.altaBaja}"  type="button" class="btn btn-outline-warning btn-sm px-4" th:href= "@{/noticia/baja/__${noticia.idNoticia}__} ">Dar de baja</a>
+                        <a sec:authorize="hasRole('ADM')" th:if="${!noticia.altaBaja}"  type="button" class="btn btn-outline-success btn-sm px-4" th:href= "@{/noticia/alta/__${noticia.idNoticia}__} ">Dar de alta</a>
+                       
+                    </div>
+
+
+                    <hr  class="my-4">
+                    <!-- Imagen de la publicacion -->
+                    <img th:src="@{/imagen/noticia/__${noticia.idNoticia}__}" alt="Imagen de la noticia" class="img-fluid mb-3 w-600 h-400 shadow-lg">
+
+                    <div class="d-flex mb-3">
+                        <p class="text-muted fw-bold" >Fecha de publicación: <span th:text="${noticia.fechaAlta}"></span></p >
+                    </div>
+
+                    <p th:text="${noticia.descripcion}" class="fw-semibold fst-italic"></p >
+                    <p th:text="${noticia.cuerpo}" ></p>
+
+                    <div th:if="${noticia.video != null}" class="d-flex justify-content-center align-items-center m-2">
+                        <iframe width="560" height="315" th:src="${noticia.video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer th:replace = "/fragments/footer ::footer"></footer>
+
+        <!-- JS Boostrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
     </body>
 </html>

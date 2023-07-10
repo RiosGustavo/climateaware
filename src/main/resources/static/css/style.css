@@ -9,7 +9,8 @@ html {
     vertical-align: baseline;
 }
 body {
-    background-color: #f9fff8 !important;
+    background-color: rgba(85, 166, 48, .1) !important;
+ 
 }
 
 @font-face {
@@ -43,6 +44,12 @@ body {
     color: #80b918;
     transition: 0.5s !important;
 }
+footer .nav .item2 .link2 {
+   text-decoration: none !important;
+    color: #80b918 !important;
+    transition: 0.5s !important;
+}
+
 #navbarNavDarkDropdown .navbar-nav .nav-item .dropdown-menu a:hover {
     text-decoration: underline !important;
     color: #80b918;
@@ -66,14 +73,14 @@ body {
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 .text-camp2 {
-    font-family: "Rigtheous";
+    font-family: "croogla";
     color: #80b918;
     font-size: 50px;
     text-shadow: #020201;
     text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.8);
 }
 .text-camp {
-    font-family: "Rigtheous";
+    font-family: "croogla";
     color: #80b918;
     font-size: 50px;
     text-shadow: #020201;
@@ -110,6 +117,18 @@ body {
     transition: 0.5s;
 }
 
+/*Boton para ir arriba*/
+footer #ir-arriba {
+	display:none;
+	padding:10px !important;
+	background:#80b918;
+	font-size:40px !important;
+	color:#fff;
+	cursor:pointer;
+	position: fixed;
+	bottom:20px !important;
+	right:20px !important;
+}
 /*KEYFRAMES DE TRANCICIONES*/
 
 /*TRANSICION DE PRESENTACION*/
@@ -191,7 +210,7 @@ body {
 /*aca se controla la imagen del listado de campañas en el campana_list*/
 .row .col-md-5 .bd-placeholder-img{
     width: 400px;
-    height: 300px;
+    height: 250px;
     object-fit: cover;
     max-width: 100%;
     max-height: 100%;
