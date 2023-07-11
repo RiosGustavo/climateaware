@@ -16,24 +16,26 @@
 
             </div>
         </div>
-        <!--        <hr class="featurette-divider">-->
 
         <!--CARDS NOVEDADES-->
+         <hr class="featurette-divider">
         <h1 class="text-pre text-center">Novedades</h1>
+        <br><br>
         <div class="container marketing">
 
-            <div class="row featurette py-3 campanaPost" th:each="noticia : ${noticias}">
-                <div class=" col-md-3">
-                    <h2 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"><strong>First featurette heading.</strong> </h2>
+            <div class="row featurette campanaPost mb-3" th:each="noticia : ${noticias}">
+                <div class=" col-md-7">
+                    <h1 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"><strong>First featurette heading.</strong> </h1>
                     <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
                     <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} "> 
                         <button type="button" class="btn btn-outline-secondary btn-sm px-4" >Ver mas</button>   
                     </a>
-
+ 
                 </div>
                 <div class="col-md-5">
-                    <img th:src="@{/imagen/noticia/__${noticia.idNoticia}__}"class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" alt="">
+                    <img th:src="@{/imagen/noticia/__${noticia.idNoticia}__}"class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto mb-3" width="100" height="300" alt="">
                 </div>
+                <hr class="featurette-divider py-2">
             </div>
 
             <hr class="featurette-divider">

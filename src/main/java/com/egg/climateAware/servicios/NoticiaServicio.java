@@ -113,7 +113,7 @@ public class NoticiaServicio {
     //        @Transactional(readOnly = true)
     public List<Noticia> listarNoticias() {
         List<Noticia> noticias = new ArrayList();
-        noticias = noticiaRepositorio.listadoNoticiasActivas();
+        noticias = noticiaRepositorio.findAll();
         return noticias;
     }
     
@@ -135,6 +135,13 @@ public class NoticiaServicio {
         }
     }
 
+     public List<Noticia> buscarNoticiasPorTitulo(String titulo) {
+
+        List<Noticia> noticias = new ArrayList();
+        noticias = noticiaRepositorio.buscarPorTitulo(titulo);
+        return noticias;
+    }
+     
     private void validar(String titulo, String descripcion, String cuerpo) throws Exception {
         if (titulo.isEmpty() || titulo == null) {
             throw new Exception("El Título no puede ser nulo o estar vacío");
