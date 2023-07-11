@@ -32,10 +32,10 @@ public class Campana {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String idCampana;
-    
+
     private String titulo;
-    
-    @Column(length=65535, columnDefinition="text")
+
+    @Column(length = 65535, columnDefinition = "text")
     private String cuerpo;
     private Boolean altaBaja;
 
@@ -48,12 +48,15 @@ public class Campana {
 
     @ManyToOne
     private Empresa empresa;
- 
+
     @OneToOne
     private Imagen imagen;
-    
+
     private String descripcion;
+
+    @OneToMany
+    private List<Votante> votantes;
     
     @OneToMany
-    private List<Votante> votantes; 
-    }
+    private List<Comentario> comentarios;
+}

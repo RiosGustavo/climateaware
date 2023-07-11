@@ -26,6 +26,9 @@ public class PublicacionServicio {
     private PublicacionRepositorio publicacionRepositorio;
 
     @Autowired
+    private VotanteServicio votanteServicio;
+
+    @Autowired
     private ImagenServicio imagenServicio;
 
     @Autowired
@@ -37,13 +40,13 @@ public class PublicacionServicio {
     @Transactional
     public void crearPublicacion(MultipartFile archivo, String titulo, String descripcion, String cuerpo, String youtubeUrl, String idVotante, String idCampana) throws Exception {
         validar(archivo, titulo, descripcion, cuerpo);
-        validarNoRepiteUsuarioPublicacionCampana(idCampana,idVotante);   
+        validarNoRepiteUsuarioPublicacionCampana(idCampana, idVotante);
         Optional<Usuario> respuesta = usuarioRepositorio.findById(idVotante);
 
         Optional<Campana> respuestaCampana = campanaRepositorio.findById(idCampana);
 
         Publicacion publicacion = new Publicacion();
-
+        List<Usuario> votos = new ArrayList();
         publicacion.setTitulo(titulo);
         publicacion.setDescripcion(descripcion);
         publicacion.setCuerpo(cuerpo);
@@ -51,22 +54,21 @@ public class PublicacionServicio {
         Imagen imagen = imagenServicio.guardar(archivo);
         publicacion.setImagen(imagen);
         publicacion.setAltaBaja(true);
-
+        publicacion.setVotos(votos);
         if (youtubeUrl != null) {
             publicacion.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
-        }        
-        
+        }
+
         if (respuesta.isPresent()) {
 
             Usuario usuario = respuesta.get();
-                
-                if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
-                    Votante vo = (Votante) respuesta.get();
-                    publicacion.setVotante(vo);
-                }
-            }
-        if (respuesta.isPresent()) {
 
+            if (usuario.getRoles().toString().equalsIgnoreCase("VOT")) {
+                Votante vo = (Votante) respuesta.get();
+                publicacion.setVotante(vo);
+            }
+        }
+        if (respuestaCampana.isPresent()) {
             publicacion.setCampana(respuestaCampana.get());
         }
 
@@ -116,6 +118,25 @@ public class PublicacionServicio {
             publicacionRepositorio.save(publicacion);
         }
 
+    }
+
+    @Transactional
+    public void votar(String idPublicacion, String idUsuario) {
+        Optional<Publicacion> respuesta = publicacionRepositorio.findById(idPublicacion);
+        Votante votante = votanteServicio.getOne(idUsuario);
+        if (respuesta.isPresent()) {
+            Publicacion publicacion = respuesta.get();
+            List votos = publicacion.getVotos();
+
+            if (publicacion.getVotos().contains(votante)) {
+                votos.remove(votante);
+                publicacion.setVotos(votos);
+            } else {
+                votos.add(votante);
+                publicacion.setVotos(votos);
+            }
+            publicacionRepositorio.save(publicacion);
+        }
     }
 
     public Publicacion getOne(String idPublicacion) {
@@ -201,13 +222,13 @@ public class PublicacionServicio {
 
     }
 
-      private void validarNoRepiteUsuarioPublicacionCampana(String idCampana,String idVotante) throws Exception{          
-             Publicacion publicado = publicacionRepositorio.buscarPorCampanaporUsuario(idCampana,idVotante);
-             if(publicado != null){
-                     throw new Exception("UPS! Ya has genado una Publicación para esta campaña");                       
-             }               
-   }
-    
+    private void validarNoRepiteUsuarioPublicacionCampana(String idCampana, String idVotante) throws Exception {
+        Publicacion publicado = publicacionRepositorio.buscarPorCampanaporUsuario(idCampana, idVotante);
+        if (publicado != null) {
+            throw new Exception("UPS! Ya has genado una Publicación para esta campaña");
+        }
+    }
+
     private void validar(MultipartFile archivo, String titulo, String descripcion, String cuerpo) throws Exception {
         if (titulo.isEmpty() || titulo == null) {
             throw new Exception("El título no puede estar vacío.");

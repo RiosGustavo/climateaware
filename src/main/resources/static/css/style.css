@@ -21,7 +21,7 @@ body {
     font-family: "croogla";
     src: url("../fonts/croogla.ttf") format("truetype");
 }
-.fs-4 {
+.croogla {
     font-family: "croogla", Arial, sans-serif;
     font-size: 90px !important;
     color: #80b918 !important;

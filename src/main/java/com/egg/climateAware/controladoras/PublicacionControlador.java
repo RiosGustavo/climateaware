@@ -1,4 +1,3 @@
-
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Publicacion;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -26,33 +26,54 @@ public class PublicacionControlador {
 
     @Autowired
     PublicacionServicio publicacionServicio = new PublicacionServicio();
-    
+
     @Autowired
     private CampanaServicio campanaServicio;
+
 
     @GetMapping("publicacion_one/{idPublicacion}")
     public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo){
         modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
         return "publicacion_one.html";
     }
-    
+
+    @PostMapping("/{id}/votar")
+    @ResponseBody
+    public Integer votar(@PathVariable("id") String id, ModelMap modelo, HttpSession session) {
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            Publicacion publicacion = publicacionServicio.getOne(id);
+            modelo.put("exito", "Publicacion creada exitosamente!");
+            modelo.put("usuario",logueado);
+            if(logueado.getRoles().toString().equals("VOT")){
+            publicacionServicio.votar(id, logueado.getId());
+            }else{
+                modelo.put("error","Debe ser un usuario votante.");
+                return -2;
+            }
+            return publicacion.getVotos().size();
+        } catch (Exception ex) {
+            modelo.put("error",ex.getMessage());
+            return -1;
+        }
+    }
+
     @PreAuthorize("hasAnyRole('ROLE_VOT')")
     @GetMapping("campana/{idCampana}/crearPublicacion")
-    public String registrar(@PathVariable String idCampana,  ModelMap modelo,HttpSession session) {
+    public String registrar(@PathVariable String idCampana, ModelMap modelo, HttpSession session) {
         if (session.getAttribute("usuariosession") == null || !((Usuario) session.getAttribute("usuariosession")).getAltaBaja()) {
             return "redirect:/votante/panel-principal";
         }
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "publicacion_form.html";
     }
-    
-    
+
     @PostMapping("campana/{idCampana}/creacion")
-    public String creacion(MultipartFile archivo, @PathVariable String idCampana,@RequestParam() String titulo,@RequestParam() String descripcion,
+    public String creacion(MultipartFile archivo, @PathVariable String idCampana, @RequestParam() String titulo, @RequestParam() String descripcion,
             @RequestParam() String cuerpo, @RequestParam() String video, ModelMap modelo, HttpSession session) {
         try {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
-            publicacionServicio.crearPublicacion(archivo, titulo, descripcion, cuerpo, video, logueado.getId(),idCampana);
+            publicacionServicio.crearPublicacion(archivo, titulo, descripcion, cuerpo, video, logueado.getId(), idCampana);
             modelo.put("exito", "Publicacion creada exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
@@ -66,6 +87,7 @@ public class PublicacionControlador {
         }
         return "redirect:/campana/campana_one/{idCampana}";
     }
+
 
     @GetMapping("/modificar/{idPublicacion}")
     public String modificar(@PathVariable String idPublicacion, ModelMap modelo) {
