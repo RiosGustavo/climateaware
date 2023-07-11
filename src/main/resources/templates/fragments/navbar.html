@@ -21,6 +21,7 @@
                 <li sec:authorize="hasRole('ADM')" class="nav-item">
                     <a class="nav-link" th:href="@{/admin/bloggers}" >/</a>
                 </li>
+                <button onclick="cambiarTema()" class="btn rounded-fill"><i id="dl-icon" class="bi bi-moon-fill"></i></button>
                 <li class="nav-item">
                     <a class="nav-link"th:href="@{/noticia/lista}" >Novedades</a>
                 </li>

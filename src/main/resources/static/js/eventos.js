@@ -33,10 +33,25 @@ $(document).ready(function(){
 	});
 
 });
- 
 
-  
-  
-  
-  
-  
+//tema oscuro
+
+const temaOscuro = () => {
+document.querySelector("html").setAttribute("data-bs-theme", "dark");
+document.querySelector("#d1-icon").setAttribute("class", "bi bi-brightness-high-fill");
+
+}
+const temaClaro = () => {
+document.querySelector("html").setAttribute("data-bs-theme", "light");
+document.querySelector("#d1-icon").setAttribute("class", "bi bi-moon-fill");
+}
+
+const cambiarTema=()=>{
+document.querySelector("html").getAttribute("data-bs-theme")==="light"?
+temaOscuro(): temaClaro();
+}
+
+
+
+
+
