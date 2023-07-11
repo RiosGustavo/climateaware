@@ -44,7 +44,7 @@ public class PublicacionControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             Publicacion publicacion = publicacionServicio.getOne(id);
             modelo.put("exito", "Publicacion creada exitosamente!");
-            modelo.put("usuairo",logueado);
+            modelo.put("usuario",logueado);
             if(logueado.getRoles().toString().equals("VOT")){
             publicacionServicio.votar(id, logueado.getId());
             }else{

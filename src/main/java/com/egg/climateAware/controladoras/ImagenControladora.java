@@ -2,9 +2,11 @@
 package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
+import com.egg.climateAware.entidades.Noticia;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.servicios.CampanaServicio;
+import com.egg.climateAware.servicios.NoticiaServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class ImagenControladora {
     @Autowired
     private PublicacionServicio publicacionServicio;
     
+    @Autowired
+    private NoticiaServicio noticiaServicio;
+    
     
     //Este metodo nos devuelve la imagen en arreglo de bytes, para poder visualizarla
     @GetMapping("/perfil/{id}")
@@ -53,6 +58,17 @@ public class ImagenControladora {
         Campana campana = campanaServicio.getOne(id);
         
         byte[] imagen = campana.getImagen().getContenido();
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG); 
+       
+        return new ResponseEntity<>(imagen,headers,HttpStatus.OK);
+    }
+        @GetMapping("/noticia/{id}")
+    public ResponseEntity<byte[]> imagenNoticia(@PathVariable String id){
+        Noticia noticia = noticiaServicio.getOne(id);
+        
+        byte[] imagen = noticia.getImagen().getContenido();
         
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG); 

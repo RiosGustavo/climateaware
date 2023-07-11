@@ -5,6 +5,7 @@ import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Imagen;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
@@ -36,13 +37,16 @@ public class CampanaServicio {
     @Autowired
     private ImagenServicio imagenServicio;
 
+    @Autowired
+    private VotanteServicio votanteServicio;
+
     @Transactional
     public void crearCampana(MultipartFile archivo, String titulo, String cuerpo, String descripcion, String id) throws Exception {
 
         validar(archivo, titulo, cuerpo, descripcion);
 
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
-
+        List<Votante> votantes = new ArrayList();
         Campana campana = new Campana();
         campana.setTitulo(titulo);
         campana.setCuerpo(cuerpo);
@@ -51,6 +55,7 @@ public class CampanaServicio {
         campana.setAltaBaja(true);
         Imagen imagen = imagenServicio.guardar(archivo);
         campana.setImagen(imagen);
+        campana.setVotantes(votantes);
 
         if (respuesta.isPresent()) {
 
@@ -91,6 +96,25 @@ public class CampanaServicio {
 
         }
 
+    }
+
+    @Transactional
+    public void seguir(String idCampana, String idUsuario) {
+        Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
+        Votante votante = votanteServicio.getOne(idUsuario);
+        if (respuesta.isPresent()) {
+            Campana campana = respuesta.get();
+            List votantes = campana.getVotantes();
+
+            if (campana.getVotantes().contains(votante)) {
+                votantes.remove(votante);
+                campana.setVotantes(votantes);
+            } else {
+                votantes.add(votante);
+                campana.setVotantes(votantes);
+            }
+            campanaRepositorio.save(campana);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -136,8 +160,8 @@ public class CampanaServicio {
 
         }
     }
-    
-     @Transactional
+
+    @Transactional
     public void darDeAltaCampana(String idCampana) throws Exception {
         Optional<Campana> respuesta = campanaRepositorio.findById(idCampana);
 

@@ -2,11 +2,13 @@ package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Empresa;
+import com.egg.climateAware.entidades.Noticia;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
+import com.egg.climateAware.servicios.NoticiaServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
@@ -32,6 +34,9 @@ public class PortalControlador {
     private UsuarioServicio usuarioServicio;
 
     @Autowired
+    private NoticiaServicio noticiaServicio;
+    
+    @Autowired
     private VotanteServicio votanteServicio;
 
     @Autowired
@@ -46,6 +51,9 @@ public class PortalControlador {
     @GetMapping("/")
     public String index(ModelMap modelo, HttpSession session) {
 
+        List<Noticia> noticias = noticiaServicio.listarNoticias();
+        modelo.addAttribute("noticias",noticias);
+        
         List<Campana> campanas = campanaServicio.listarCampanas();
         modelo.addAttribute("campanas", campanas);
 

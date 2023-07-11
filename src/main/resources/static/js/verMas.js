@@ -1,5 +1,5 @@
 // Cantidad inicial de publicaciones visibles
-var cantidadInicial = 4;
+var cantidadInicial = 3;
 
 // Obtener todas las publicaciones y ocultar las que excedan la cantidad inicial
 var publicaciones = document.querySelectorAll('.campanas-list');

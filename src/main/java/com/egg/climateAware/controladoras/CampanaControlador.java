@@ -4,6 +4,7 @@ import com.egg.climateAware.entidades.Campana;
 import com.egg.climateAware.entidades.Comentario;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.repositorios.CampanaRepositorio;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.ComentarioServicio;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,16 +36,16 @@ public class CampanaControlador {
 
     @Autowired
     private EmpresaServicio empresaServicio;
-    
+
     @Autowired
     private CampanaRepositorio campanaRepositorio;
 
     @Autowired
     private PublicacionServicio publicacionServicio;
+
     
     @Autowired
     private ComentarioServicio comentarioServicio;
-    
     
     
     @PreAuthorize("hasAnyRole('ROLE_EMP')")
@@ -71,7 +73,7 @@ public class CampanaControlador {
             modelo.addAttribute("cuerpo", cuerpo);
             modelo.addAttribute("descripcion", descripcion);
         }
-         return "campana_form.html";
+        return "campana_form.html";
 
     }
 
@@ -81,7 +83,7 @@ public class CampanaControlador {
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_modificar.html";
     }
-  
+
     @PostMapping("/modificar/{idCampana}")
     public String modificar(MultipartFile archivo, @PathVariable String idCampana, String titulo,
             String cuerpo, String descripcion, ModelMap modelo) {
@@ -102,15 +104,13 @@ public class CampanaControlador {
         campanaServicio.darDeBajaCampana(idCampana);
         return "redirect:/campana/lista";
     }
-    
-     @GetMapping("/alta/{idCampana}")
+
+    @GetMapping("/alta/{idCampana}")
     public String darDeAltaCamapna(@PathVariable String idCampana) throws Exception {
         campanaServicio.darDeAltaCampana(idCampana);
         return "redirect:/campana/lista";
     }
-    
-    
-    
+
     @GetMapping("/campana_one/{idCampana}")
     public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
         List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
@@ -119,19 +119,41 @@ public class CampanaControlador {
         modelo.put("comentarios",comentarios);
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_one.html";
+
     }
-    
-        //-----------------------------MOTOR BUSQUEDA---------------------------------
+
+    @PostMapping("/{idCampana}/seguir")
+    @ResponseBody
+    public Integer seguir(@PathVariable String idCampana, ModelMap modelo, HttpSession session) {
+        try {
+            Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+            Campana campana = campanaServicio.getOne(idCampana);
+            modelo.put("exito", "Publicacion creada exitosamente!");
+            modelo.put("usuario", logueado);
+            if (logueado.getRoles().toString().equals("VOT")) {
+                campanaServicio.seguir(idCampana, logueado.getId());
+            } else {
+                modelo.put("error", "Debe ser un usuario votante.");
+                return -2;
+            }
+            return campana.getVotantes().size();
+        } catch (Exception ex) {
+            modelo.put("error", ex.getMessage());
+            return -1;
+        }
+    }
+
+    //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
     public String listadoCampanas(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
-        
+
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Campana> campanas = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             campanas = campanaServicio.buscarCampanasPorTitulo(termino.toLowerCase());
-        }else{
-        
+        } else {
+
             campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
         }
 
@@ -139,6 +161,5 @@ public class CampanaControlador {
 
         return "campana_list.html";
     }
-    
 
 }
