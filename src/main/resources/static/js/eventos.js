@@ -38,12 +38,12 @@ $(document).ready(function(){
 
 const temaOscuro = () => {
 document.querySelector("html").setAttribute("data-bs-theme", "dark");
-document.querySelector("#d1-icon").setAttribute("class", "bi bi-brightness-high-fill");
+document.querySelector("#dl-icon").setAttribute("class", "bi bi-sun-fill");
 
 }
 const temaClaro = () => {
 document.querySelector("html").setAttribute("data-bs-theme", "light");
-document.querySelector("#d1-icon").setAttribute("class", "bi bi-moon-fill");
+document.querySelector("#dl-icon").setAttribute("class", "bi bi-moon-fill");
 }
 
 const cambiarTema=()=>{
