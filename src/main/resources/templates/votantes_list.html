@@ -16,7 +16,9 @@
                         <div class="mb-3 d-flex justify-content-center">
                             <h3>Buscar un usuario<h3/>
                         </div>
-
+                        <div class="mb-1 text-center">
+                            <small th:if="${error != null}" th:text="${error}" class="text-danger"></small>
+                        <div>
                         <div class="mb-3">
                             <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por nombre, dni, email, id">
                         </div>
@@ -29,11 +31,12 @@
             </div>
         </div>
         <!-- Usuarios -->
-        <div class="container m-5" >
-            <table class="table" >
+        <div class="container my-5" >
+            <table class="table table-success" >
                 <thead>
                     <tr>
                         <th scope="col" >ID del usuario</th>
+                        <th scope="col">Foto perfil</th>
                         <th scope="col">Nombre y apellido</th>
                         <th scope="col">Email</th>
                         <th scope="col">DNI</th>
@@ -43,13 +46,15 @@
                     </tr>
                 </thead>
                 <tbody th:each="votante: ${votantes}" >
-                    <tr >
+                
+                    <tr class="table-light">
                         <th scope="row" th:text="${votante.id}"  ></th>
+                        <td><img th:src="@{/imagen/perfil/__${votante.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 40px; height: 40px;"></td>
                         <td th:text="${votante.nombreApellido}"  ></td>
                         <td th:text="${votante.email}"  ></td>
                         <td th:text="${votante.dni}"  ></td>
                         <td th:text="${votante.direccion}"  ></td>
-                         <td th:if="${votante.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
+                        <td th:if="${votante.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
                         <td th:if="${votante.altaBaja == false}" th:text="Inactivo" class="text-danger fw-bold"></td>
                         <td>
                             <div class="dropdown">
@@ -60,13 +65,15 @@
                                 <ul class="dropdown-menu">
                                     <li th:if="${votante.altaBaja == false}"><a th:href="@{/votante/alta/__${votante.id}__}"type="button" class="dropdown-item text-success">Dar de alta</a></li>
                                     <li th:if="${votante.altaBaja == true}"><a th:href="@{/votante/baja/__${votante.id}__}"type="button" class="dropdown-item text-warning">Dar de baja</a></li>
-                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${votante.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
+                                    <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${votante.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#exampleModal-' + ${votante.id}" class="dropdown-item text-danger fw-bold">Eliminar</a></li>
                                 </ul>
                             </div>
 
                         </td>
-                        <!-- Modal confirmacion eliminar -->
+                    </tr>
+                
+                <!-- Modal confirmacion eliminar -->
                 <div class="modal fade" th:id="'exampleModal-' + ${votante.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -110,7 +117,7 @@
                         </div>
                     </div>
                 </div>
-                </tr>
+
                 </tbody>
             </table>
         </div>

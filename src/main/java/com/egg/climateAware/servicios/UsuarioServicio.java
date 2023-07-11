@@ -112,6 +112,37 @@ public class UsuarioServicio implements UserDetailsService {
         }
 
     }
+    
+    
+     public void updateResetPasswordToken(String token, String email) throws Exception {
+
+        Usuario usuario = usuarioRepositorio.buscarPorEmail(email);
+
+        if (usuario != null) {
+            usuario.setResetPasswordToken(token);
+            usuarioRepositorio.save(usuario);
+        } else {
+
+            throw new Exception("No se encuentra ningun usuario con el email: " + email);
+        }
+    }
+
+    public Usuario obtenrUsuarioPorToken(String resetPasswordToken) {
+        return usuarioRepositorio.findByResetPasswordToken(resetPasswordToken);
+    }
+
+    
+    public void updatePassword(Usuario usuario, String newPassword){
+    
+        usuario.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+        usuario.setResetPasswordToken(null);
+        usuarioRepositorio.save(usuario);
+    
+    }
+    
+    
+    
+    
 
     public Usuario getOne(String id) {
         return usuarioRepositorio.getOne(id);

@@ -69,7 +69,14 @@ public class ComentarioServicio {
         
         return comentarios;
     }
+    public List<Comentario> comentariosPorVotante(String id){
     
+        List<Comentario> comentarios = new ArrayList();
+    
+        comentarios = comentarioRepositorio.comentariosPorVotante(id);
+        
+        return comentarios;
+    }
     
     @Transactional
     public void darDeBajaComentario(String idComentario) throws Exception {

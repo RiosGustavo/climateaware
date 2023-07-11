@@ -28,4 +28,7 @@ public interface VotanteRepositorio extends JpaRepository<Votante, String> {
             + "(:termino IS NULL OR LOWER(vo.id) LIKE %:termino%))")
     List<Votante> buscarVotantesPorTermino(@Param("termino") String termino);
 
+    
+    
+   
 }

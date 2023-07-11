@@ -2,6 +2,7 @@ package com.egg.climateAware.entidades;
 
 import com.egg.climateAware.enumeraciones.Rol;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -45,6 +46,7 @@ public class Usuario {
     @OneToOne
     protected Imagen imagen;
     
-
-
+    @Column(name = "reset_password_token")
+    protected String resetPasswordToken;
+    
 }

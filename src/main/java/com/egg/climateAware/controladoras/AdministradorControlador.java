@@ -29,7 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/admin")
 public class AdministradorControlador {
 
-
     @Autowired
     VotanteServicio votanteServicio = new VotanteServicio();
 
@@ -38,10 +37,10 @@ public class AdministradorControlador {
 
     @Autowired
     UsuarioServicio usuarioServicio = new UsuarioServicio();
-    
+
     @Autowired
     BloggerServicio bloggerServicio = new BloggerServicio();
-    
+
     @GetMapping("/dashboard")
     public String panelAdministrativo() {
 
@@ -85,8 +84,7 @@ public class AdministradorControlador {
         usuarioServicio.cambiarEstado(id);
         return "index.html";
     }
-    
-    
+
     //Cambiar usuario a blogger
     @GetMapping("/rolBlogger/{id}")
     public String rolBlogger(@PathVariable String id) {
@@ -95,27 +93,31 @@ public class AdministradorControlador {
 
         return "redirect:/admin/bloggers";
     }
-    
-    
-     //Cambiar blogger a votante
+
+    //Cambiar blogger a votante
     @GetMapping("/rolVotante/{id}")
     public String bloggerAvotante(@PathVariable String id) {
         bloggerServicio.bloggerAvotante(id);
         return "redirect:/admin/votantes";
     }
-    
-    
-    
+
     //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/votantes")
-    public String busquedaVotantes(@RequestParam(required = false) String termino, Model modelo) {
+    public String busquedaVotantes(@RequestParam(required = false) String termino, ModelMap modelo) {
 
         List<Votante> votantes = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             votantes = votanteServicio.buscarVotantesPorTermino(termino.toLowerCase());
-        }else{
-        
+
+            if (votantes.isEmpty()) {
+
+                votantes = votanteServicio.listarVotantes();
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+            }
+
+        } else {
+
             votantes = votanteServicio.listarVotantes();
         }
 
@@ -123,35 +125,46 @@ public class AdministradorControlador {
 
         return "votantes_list.html";
     }
-    
-    
+
     @GetMapping("/empresas")
-    public String busquedaEmpresas(@RequestParam(required = false) String termino, Model modelo) {
+    public String busquedaEmpresas(@RequestParam(required = false) String termino, ModelMap modelo) {
 
         List<Empresa> empresas = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             empresas = empresaServicio.buscarEmpresasPorTermino(termino.toLowerCase());
-        }else{
-        
-           empresas = empresaServicio.listarEmpresas();
+
+            if (empresas.isEmpty()) {
+                empresas = empresaServicio.listarEmpresas();
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+            }
+
+        } else {
+
+            empresas = empresaServicio.listarEmpresas();
         }
 
         modelo.addAttribute("empresas", empresas);
 
         return "empresa_list.html";
     }
-    
-    
-     @GetMapping("/bloggers")
-    public String busquedaBloggers(@RequestParam(required = false) String termino, Model modelo) {
+
+    @GetMapping("/bloggers")
+    public String busquedaBloggers(@RequestParam(required = false) String termino, ModelMap modelo) {
 
         List<Blogger> bloggers = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
-            bloggers =bloggerServicio.buscarBloggersPorTermino(termino.toLowerCase());
-        }else{
-        
+            bloggers = bloggerServicio.buscarBloggersPorTermino(termino.toLowerCase());
+
+            if (bloggers.isEmpty()) {
+
+                bloggers = bloggerServicio.listarBloggers();
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+            }
+
+        } else {
+
             bloggers = bloggerServicio.listarBloggers();
         }
 

@@ -30,10 +30,9 @@ public class PublicacionControlador {
     @Autowired
     private CampanaServicio campanaServicio;
 
-
     @GetMapping("publicacion_one/{idPublicacion}")
-    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo){
-        modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
+    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo) {
+        modelo.put("publicacion", publicacionServicio.getOne(idPublicacion));
         return "publicacion_one.html";
     }
 
@@ -44,16 +43,16 @@ public class PublicacionControlador {
             Usuario logueado = (Usuario) session.getAttribute("usuariosession");
             Publicacion publicacion = publicacionServicio.getOne(id);
             modelo.put("exito", "Publicacion creada exitosamente!");
-            modelo.put("usuario",logueado);
-            if(logueado.getRoles().toString().equals("VOT")){
-            publicacionServicio.votar(id, logueado.getId());
-            }else{
-                modelo.put("error","Debe ser un usuario votante.");
+            modelo.put("usuario", logueado);
+            if (logueado.getRoles().toString().equals("VOT")) {
+                publicacionServicio.votar(id, logueado.getId());
+            } else {
+                modelo.put("error", "Debe ser un usuario votante.");
                 return -2;
             }
             return publicacion.getVotos().size();
         } catch (Exception ex) {
-            modelo.put("error",ex.getMessage());
+            modelo.put("error", ex.getMessage());
             return -1;
         }
     }
@@ -88,51 +87,57 @@ public class PublicacionControlador {
         return "redirect:/campana/campana_one/{idCampana}";
     }
 
-
     @GetMapping("/modificar/{idPublicacion}")
     public String modificar(@PathVariable String idPublicacion, ModelMap modelo) {
-         modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
+        modelo.put("publicacion", publicacionServicio.getOne(idPublicacion));
         return "publicacion_modificar.html";
     }
 
     @PostMapping("/modificar/{idPublicacion}")
-    public String modificacion(@PathVariable String idPublicacion,@RequestParam(required = false) MultipartFile archivo,
-           @RequestParam(required = false)  String titulo,@RequestParam(required = false)  String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
+    public String modificacion(@PathVariable String idPublicacion, @RequestParam(required = false) MultipartFile archivo,
+            @RequestParam(required = false) String titulo, @RequestParam(required = false) String descripcion, @RequestParam(required = false) String cuerpo, @RequestParam(required = false) String video, ModelMap modelo) {
         try {
-               publicacionServicio.modificarPublicacion(archivo, idPublicacion, titulo,descripcion,cuerpo, video);
+            publicacionServicio.modificarPublicacion(archivo, idPublicacion, titulo, descripcion, cuerpo, video);
             modelo.put("exito", "La publicacion se ha modificado exitosamente!");
         } catch (Exception ex) {
             modelo.put("error", ex.getMessage());
-           modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
+            modelo.put("publicacion", publicacionServicio.getOne(idPublicacion));
             return "publicacion_modificar.html";
         }
         return "redirect:/publicacion/lista";
     }
-  
+
     @GetMapping("/baja/{idPublicacion}")
     public String darDeBajaPublicacion(@PathVariable String idPublicacion) throws Exception {
         publicacionServicio.darDeBajaPublicacion(idPublicacion);
         return "redirect:/publicacion/lista";
     }
-    
+
     @GetMapping("/alta/{idPublicacion}")
     public String darDeAltaPublicacion(@PathVariable String idPublicacion) throws Exception {
         publicacionServicio.darDeAltaPublicacion(idPublicacion);
         return "redirect:/publicacion/lista";
     }
-    
-         //-----------------------------MOTOR BUSQUEDA---------------------------------
+
+    //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String listadoPublicaciones(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
-        
+    public String listadoPublicaciones(@RequestParam(required = false) String termino, ModelMap modelo, HttpSession session) {
+
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Publicacion> publicaciones = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             publicaciones = publicacionServicio.publicacionPorTitulo(termino.toLowerCase());
-        }else{
-        
+
+            if (publicaciones.isEmpty()) {
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+                publicaciones = publicacionServicio.publicacionPorFecha();
+            }
+
+        } else {
+
             publicaciones = publicacionServicio.publicacionPorFecha();
+
         }
 
         modelo.addAttribute("publicaciones", publicaciones);

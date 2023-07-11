@@ -43,11 +43,9 @@ public class CampanaControlador {
     @Autowired
     private PublicacionServicio publicacionServicio;
 
-    
     @Autowired
     private ComentarioServicio comentarioServicio;
-    
-    
+
     @PreAuthorize("hasAnyRole('ROLE_EMP')")
 
     @GetMapping("/registrar")
@@ -112,11 +110,11 @@ public class CampanaControlador {
     }
 
     @GetMapping("/campana_one/{idCampana}")
-    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
+    public String mostrarDetalleCampaña(@PathVariable String idCampana, ModelMap modelo) {
         List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
         List<Comentario> comentarios = comentarioServicio.comentariosPorCampana(idCampana);
         modelo.put("publicaciones", publicaciones);
-        modelo.put("comentarios",comentarios);
+        modelo.put("comentarios", comentarios);
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_one.html";
 
@@ -145,13 +143,19 @@ public class CampanaControlador {
 
     //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String listadoCampanas(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+    public String listadoCampanas(@RequestParam(required = false) String termino, ModelMap modelo, HttpSession session) {
 
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Campana> campanas = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             campanas = campanaServicio.buscarCampanasPorTitulo(termino.toLowerCase());
+
+            if (campanas.isEmpty()) {
+                campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+            }
+
         } else {
 
             campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();

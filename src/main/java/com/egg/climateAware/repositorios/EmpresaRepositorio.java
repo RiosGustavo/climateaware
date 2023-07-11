@@ -37,10 +37,5 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
             + "(:termino IS NULL OR em.email LIKE %:termino%) OR "
             + "(:termino IS NULL OR LOWER(em.id) LIKE %:termino%))")
     List<Empresa> buscarEmpresasPorTermino(@Param("termino") String termino);
-
-    
-    
-    
-    
     
 }

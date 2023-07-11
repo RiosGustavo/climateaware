@@ -1,10 +1,11 @@
-
 package com.egg.climateAware.controladoras;
 
+import com.egg.climateAware.entidades.Comentario;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
 import com.egg.climateAware.entidades.Votante;
+import com.egg.climateAware.servicios.ComentarioServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
 import com.egg.climateAware.servicios.VotanteServicio;
@@ -30,10 +31,12 @@ public class VotanteControlador {
     VotanteServicio votanteServicio;
     @Autowired
     UsuarioServicio usuarioServicio;
-    
+
     @Autowired
     PublicacionServicio publicacionServicio;
     
+    @Autowired
+    ComentarioServicio comentarioServicio;
 
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
     @GetMapping("/perfil")
@@ -71,35 +74,47 @@ public class VotanteControlador {
         Usuario usuario = usuarioServicio.getOne(logueado.getId());
         Votante votante = votanteServicio.getOne(logueado.getId());
         List<Publicacion> publicaciones = publicacionServicio.publicacionesPorVotante(logueado.getId());
-        
-                
+
         modelo.addAttribute("votante", votante);
         modelo.addAttribute("publicaciones", publicaciones);
 
         return "panel_votante.html";
     }
 
-     //Dar de baja un votante
-     @GetMapping("/baja/{id}")
+    //Dar de baja un votante
+    @GetMapping("/baja/{id}")
     public String darDeBaja(@PathVariable String id) throws Exception {
 
         votanteServicio.darDeBajaVotante(id);
-        
+
         return "redirect:/admin/votantes";
     }
+
     //Dar de alta un votante
-     @GetMapping("/alta/{id}")
+    @GetMapping("/alta/{id}")
     public String darDeAlta(@PathVariable String id) throws Exception {
 
         votanteServicio.darDeAltaVotante(id);
-        
+
         return "redirect:/admin/votantes";
     }
-    
-   
+
     @GetMapping("/listar")
     public String listar() throws Exception {
         votanteServicio.listarVotantes();
         return "publicacion_list.html";
     }
+
+    @GetMapping("/{id}")
+    public String perfilPublicoVotante(@PathVariable String id,ModelMap modelo, HttpSession session) {
+        
+        Votante votante = votanteServicio.getOne(id);
+        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorVotante(id);
+        List<Comentario> comentarios = comentarioServicio.comentariosPorVotante(id);
+        modelo.addAttribute("votante", votante);
+        modelo.addAttribute("publicaciones", publicaciones);
+        modelo.addAttribute("comentarios", comentarios);
+        return "perfil_publico_votante.html";
+    }
+
 }

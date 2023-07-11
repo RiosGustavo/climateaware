@@ -59,6 +59,11 @@ public class VotanteServicio {
 
     }
 
+   
+    
+    
+    
+    
     @Transactional
     public void modificarVotante(MultipartFile archivo, String idVotante, String nombreApellido, String direccion)
             throws Exception {
@@ -129,7 +134,7 @@ public class VotanteServicio {
         return votantes;
     }
 
-    private void validarRegistro(MultipartFile archivo,String nombreApellido, String dni, String direccion, String email, String password,
+    private void validarRegistro(MultipartFile archivo, String nombreApellido, String dni, String direccion, String email, String password,
             String password2) throws Exception {
 
         // Verificar si el email ya existe en la base de datos
@@ -164,7 +169,7 @@ public class VotanteServicio {
         if (password.length() < 8) {
             throw new Exception("La contraseña debe tener al menos 8 caracteres");
         }
-         
+
         if (archivo.getSize() > 10 * 1024 * 1024) { // 10 MB en bytes
             throw new Exception("El archivo es demasiado grande. Por favor, seleccione una imagen de menos de 10 MB");
         }

@@ -40,15 +40,20 @@ public class NoticiaControlador {
     
 
         @GetMapping("/lista")
-    public String listadoCampanas(@RequestParam(required = false) String termino, Model modelo, HttpSession session) {
+    public String listadoCampanas(@RequestParam(required = false) String termino, ModelMap modelo, HttpSession session) {
         
         Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Noticia> noticias = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
             noticias = noticiaServicio.buscarNoticiasPorTitulo(termino.toLowerCase());
+            
+            if(noticias.isEmpty()){
+                noticias = noticiaRepositorio.findAllOrderByfecha_altaDesc();
+                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+            }
+            
         }else{
-        
             noticias = noticiaRepositorio.findAllOrderByfecha_altaDesc();
         }
 
