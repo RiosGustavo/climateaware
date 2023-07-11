@@ -307,11 +307,18 @@ button.accordion-button:focus {
     cursor: pointer;
 }
 
+[data-bs-theme=dark] .fs-4{
+  color: #fff!important;
+  font-family: "croogla", Arial, sans-serif;
+  
+  
+}
 [data-bs-theme=dark] .croogla{
   color: #fff!important;
   
   
 }
+
 
 [data-bs-theme=dark] body {
     background-color: #2E2E2E !important;
