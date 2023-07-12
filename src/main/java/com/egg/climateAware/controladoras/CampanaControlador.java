@@ -112,14 +112,27 @@ public class CampanaControlador {
     }
 
     @GetMapping("/campana_one/{idCampana}")
-    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo){
+    public String mostrarDetalleCampaña(@PathVariable String idCampana,  ModelMap modelo, HttpSession session){
+        try{
+            Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+            for (Votante votante : campanaServicio.getOne(idCampana).getVotantes()) {
+                if(votante.getId().equals(usuario.getId())){
+                    modelo.put("verif",true);
+                    break;
+                }else{
+                    modelo.put("verif",false);
+                }
+            }
+        }finally{
+            
+       
         List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
         List<Comentario> comentarios = comentarioServicio.comentariosPorCampana(idCampana);
         modelo.put("publicaciones", publicaciones);
         modelo.put("comentarios",comentarios);
         modelo.put("campana", campanaServicio.getOne(idCampana));
         return "campana_one.html";
-
+         }
     }
 
     @PostMapping("/{idCampana}/seguir")
@@ -141,6 +154,13 @@ public class CampanaControlador {
             modelo.put("error", ex.getMessage());
             return -1;
         }
+    }
+
+    @GetMapping("/{idCampana}/votantes")
+    @ResponseBody
+    public List<Votante> actualizarVotantes(@PathVariable String idCampana) {
+        Campana campana = campanaServicio.getOne(idCampana);
+        return campana.getVotantes();
     }
 
     //-----------------------------MOTOR BUSQUEDA---------------------------------

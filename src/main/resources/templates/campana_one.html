@@ -1,227 +1,297 @@
-<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security" data-bs-theme="light">
+<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+    data-bs-theme="light">
 
-    <head  th:replace = "/fragments/head :: head"> </head>
-    <body>
+<head th:replace="/fragments/head :: head"> </head>
 
-        <header> 
-            <nav th:replace= "/fragments/navbar :: nav"></nav>
-        </header>
+<body>
 
-        <div class="container py-4">
-            <div class="row">
-                <div class="col-md-8 mx-auto">
-                    <!-- Título de la noticia -->
-                    <h1 th:text="${campana.titulo}" class="text-camp2 text-center"></h1>
-                    <!-- Subtítulo de la noticia -->
-                    <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis" th:text="${campana.descripcion}"></h4>
-                    <hr class="my-4">
-                    <div th:if="${campana.empresa != null}" style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center;">
-                            <img th:src="@{/imagen/perfil/__${campana.empresa.id}__}" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 60px; height: 60px; margin-right: 10px;">
-                            <div style="display: flex; flex-direction: column;">
-                                <a th:href="@{/campana/__${campana.idCampana}__}"  class="text-muted a-card">
-                                    <h7 class="card-periodista">Por <span th:text="${campana.empresa.nombreEmpresa}" class="fw-bold"></span></h7>
-                                </a>
-                                <div>
-                                    <h7 th:text="${campana.empresa.email}"></h7>
-                                </div>
-                                <div th:if="${session.usuariosession != null}" sec:authorize="not(hasAnyRole('EMP', 'ADM'))" class="btn-group mt-2">
-                                    <button id="botonSeguir" type="submit" class="btn btn-light">
-                                        <span th:text="Seguir" id="seguirEstado"></span>
-                                        <span id="seguidores" class="ps-2" th:text="${campana.getVotantes().size()}"></span>
-                                    </button>
-                                    <button  class="btn btn-light dropdown-toggle dropdown-toggle-split ps-2"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                    </button>
-                                    <ul  class="dropdown-menu">
-                                        <li>
-                                            <div th:each="seguidor:${campana.getVotantes()} " th:value="${seguidor.id}"
-                                                 class="dropdown-item me-5">
-                                                <img th:src="@{/imagen/perfil/__${seguidor.id}__}" alt="Imagen de perfil"
-                                                     class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
-                                                <span th:text="${seguidor.nombreApellido}"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
+    <header>
+        <nav th:replace="/fragments/navbar :: nav"></nav>
+    </header>
+
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <!-- Título de la noticia -->
+                <h1 th:text="${campana.titulo}" class="text-camp2 text-center"></h1>
+                <!-- Subtítulo de la noticia -->
+                <h4 class="featurette fw-normal lh-1 text-left text-secondary-emphasis"
+                    th:text="${campana.descripcion}"></h4>
+                <hr class="my-4">
+                <div th:if="${campana.empresa != null}"
+                    style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="display: flex; align-items: center;">
+                        <img th:src="@{/imagen/perfil/__${campana.empresa.id}__}" alt="Imagen de perfil"
+                            class="rounded-circle img-fluid" style="width: 60px; height: 60px; margin-right: 10px;">
+                        <div style="display: flex; flex-direction: column;">
+                            <a th:href="@{/campana/__${campana.idCampana}__}" class="text-muted a-card">
+                                <h7 class="card-periodista">Por <span th:text="${campana.empresa.nombreEmpresa}"
+                                        class="fw-bold"></span></h7>
+                            </a>
+                            <div>
+                                <h7 th:text="${campana.empresa.email}"></h7>
                             </div>
+                            <div th:if="${session.usuariosession != null}" sec:authorize="not(hasAnyRole('EMP', 'ADM'))"
+                                class="btn-group mt-2">
+                                <button id="botonSeguir" type="submit" class="btn btn-light">
+                                    <span th:text="${verif ? 'Siguiendo' : 'Seguir'}" id="seguirEstado">Seguir</span>
+                                    <span id="seguidores" class="ps-2" th:text="${campana.getVotantes().size()}"></span>
+                                </button>
+                                <button class="btn btn-light dropdown-toggle dropdown-toggle-split ps-2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul id="listaSeguidores" class="dropdown-menu">
+                                    <li>
+                                        <div th:each="seguidor:${campana.getVotantes()} " th:value="${seguidor.id}"
+                                            class="dropdown-item me-5">
+                                            <img th:src="@{/imagen/perfil/__${seguidor.id}__}" alt="Imagen de perfil"
+                                                class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
+                                            <span th:text="${seguidor.nombreApellido}"></span>
+                                        </div>
+                                    </li>
+                                </ul>
 
+                            </div>
                         </div>
-                        <button th:if="${session.usuariosession == null}" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registrate">Crear publicación</button>
-
-                        <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}" th:href="@{/publicacion/campana/__${campana.idCampana}__/crearPublicacion}" type="button" class="btn btn-success">Crear publicación</a>
 
                     </div>
-                    <content th:replace= "/fragments/modalRegistrate :: content"></content>
-                    <hr class="my-4">
-                    <!-- Imagen de la publicacion -->
-                    <img th:src="@{/imagen/campana/__${campana.idCampana}__}"  alt="Imagen de la campaña" class="img-fluid mb-3 w-600 h-400 shadow-lg ">
+                    <button th:if="${session.usuariosession == null}" type="button" class="btn btn-success"
+                        data-bs-toggle="modal" data-bs-target="#registrate">Crear publicación</button>
 
-                    <div class="d-flex mb-3">
-                        <p class="text-muted fw-bold" >Fecha de publicación: <span th:text="${campana.fechaAlta}" ></span></p >
-                    </div>
-
-                    <p th:text="${campana.cuerpo}" ></p>
+                    <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}"
+                        th:href="@{/publicacion/campana/__${campana.idCampana}__/crearPublicacion}" type="button"
+                        class="btn btn-success">Crear publicación</a>
 
                 </div>
-            </div>
-            <h1 class="text-pre text-camp2 text-center">Publicaciones</h1>
-            <div class="text-center" sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" th:if="${#lists.isEmpty(publicaciones)}">
-                <h2 class="featurette fw-normal lh-1 text-secondary-emphasis">Todavía no hay publicaciones en esta campaña. Anímate y empieza ahora</h2>
-                <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}" th:href="@{'/publicacion/campana/' + ${campana.idCampana} + '/crearPublicacion'}" type="button" class="btn btn-success">Crear publicación</a>
-                <button th:if="${session.usuariosession == null}" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registrate">Crear publicación</button>
-            </div>
+                <content th:replace="/fragments/modalRegistrate :: content"></content>
+                <hr class="my-4">
+                <!-- Imagen de la publicacion -->
+                <img th:src="@{/imagen/campana/__${campana.idCampana}__}" alt="Imagen de la campaña"
+                    class="img-fluid mb-3 w-600 h-400 shadow-lg ">
 
-
-
-            <!-- Seccion Publicaciones -->
-            <div class="container my-5">
-                <div class="row" >
-                    <div class="col-md-6 col-lg-4 mb-4" th:each="publicacion :${publicaciones}" th:if="${publicacion.altaBaja == true}">
-
-                        <a th:href="@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__}"  class="a-card">
-                            <div class="card shadow">
-                                <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" class="card-img-top" id="img-card-tamaño-pequeño" alt="...">
-                                <div class="card-body">
-                                    <h1 class="fs-5 a-subrayado" th:text="${publicacion.titulo}"></h1>
-                                    <p th:text="${publicacion.descripcion}"></p>
-                                    <h7 class="card-votante">Por <span th:text="${publicacion.votante.nombreApellido}" class="fw-bold" ></span></h7>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
+                <div class="d-flex mb-3">
+                    <p class="text-muted fw-bold">Fecha de publicación: <span th:text="${campana.fechaAlta}"></span></p>
                 </div>
-            </div>
 
+                <p th:text="${campana.cuerpo}"></p>
+
+            </div>
         </div>
-        <section style="background-color: #BFD200;">
-            <div class="container my-1 py-5">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-md-12 col-lg-10">
-                        <div class="card text-dark">
+        <h1 class="text-pre text-camp2 text-center">Publicaciones</h1>
+        <div class="text-center" sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))"
+            th:if="${#lists.isEmpty(publicaciones)}">
+            <h2 class="featurette fw-normal lh-1 text-secondary-emphasis">Todavía no hay publicaciones en esta campaña.
+                Anímate y empieza ahora</h2>
+            <a sec:authorize="hasRole('VOT')" th:if="${session.usuariosession.altaBaja == true}"
+                th:href="@{'/publicacion/campana/' + ${campana.idCampana} + '/crearPublicacion'}" type="button"
+                class="btn btn-success">Crear publicación</a>
+            <button th:if="${session.usuariosession == null}" type="button" class="btn btn-success"
+                data-bs-toggle="modal" data-bs-target="#registrate">Crear publicación</button>
+        </div>
 
 
-                            <div class="card-body py-4 pb-0" id="comentarios">
-                                <content class="content-coment" th:if="${#lists.isEmpty(comentarios)}" sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" >
-                                    <h4 class="mb-0">Todavía no hay comentarios en esta campaña</h4>
-                                    <p class="fw-light pb-2" th:text="'Sé el primero y dejá un comentario para la campaña: '+${campana.titulo}+', y no te olvides de votar el desafío que más te gustó'"></p>
-                                </content>
-                                <content th:if="${#lists.size(comentarios) > 0}" sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" >
-                                    <h4 class="mb-0">Comentarios recientes</h4>
-                                    <p class="fw-light pb-2" th:text="'Dejá un comentario para la campaña: '+${campana.titulo}+', y no te olvides de votar el desafío que más te gustó'"></p>
-                                </content>
-                                <content th:if="${#lists.size(comentarios) > 0}" sec:authorize="hasAnyRole('ROLE_ADM', 'ROLE_EMP')" >
-                                    <h4 class="pb-2">Comentarios recientes</h4>
-                                </content>
-                                <content th:if="${#lists.isEmpty(comentarios)}" sec:authorize="hasAnyRole('ROLE_ADM', 'ROLE_EMP')" >
-                                    <h4 class="pb-2">Esta campaña todavía no tiene comentarios</h4>
-                                </content>
-                                <content th:each="comentario :${comentarios}" th:if="${comentario.altaBaja}">
-                                    <div class="d-flex flex-start" >
 
-                                        <img class="rounded-circle shadow-1-strong me-3"
-                                             th:src="@{/imagen/perfil/__${comentario.votante.id}__}" alt="avatar" width="60"
-                                             height="60" />
-                                        <div>
-                                            <h6 class="fw-bold mb-1" th:text="${comentario.votante.nombreApellido}"></h6>
-                                            <div class="d-flex align-items-center mb-3">
-                                                <p class="mb-0" th:text="${comentario.fechaPublicacion}" ></p>
-                                                
+        <!-- Seccion Publicaciones -->
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4" th:each="publicacion :${publicaciones}"
+                    th:if="${publicacion.altaBaja == true}">
 
-                                                <a href="" class="m-2" sec:authorize="hasRole('ADM')" data-bs-toggle="modal" th:data-bs-target="'#exampleModal-' + ${comentario.idComentario}">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </a>
+                    <a th:href="@{/publicacion/publicacion_one/__${publicacion.idPublicacion}__}" class="a-card">
+                        <div class="card shadow">
+                            <img th:src="@{/imagen/publicacion/__${publicacion.idPublicacion}__}" class="card-img-top"
+                                id="img-card-tamaño-pequeño" alt="...">
+                            <div class="card-body">
+                                <h1 class="fs-5 a-subrayado" th:text="${publicacion.titulo}"></h1>
+                                <p th:text="${publicacion.descripcion}"></p>
+                                <h7 class="card-votante">Por <span th:text="${publicacion.votante.nombreApellido}"
+                                        class="fw-bold"></span></h7>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <section style="background-color: #BFD200;">
+        <div class="container my-5 py-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                    <div class="card text-dark">
 
 
-                                                <!-- Modal -->
-                                                <div class="modal fade"  th:id="'exampleModal-' + ${comentario.idComentario}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Dar de baja comentario</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p>Usuario responsable del comentario: <span class="fw-bold" th:text="${comentario.votante.nombreApellido}"></span></p>
-                                                                <p>Comentario: "<span class="fw-bold" th:text="${comentario.mensaje}"></span>"</p>
-                                                                <p>Fecha publicación: <span class="fw-bold" th:text="${comentario.fechaPublicacion}"></span></p>
-                                                                
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <a th:href= "@{/comentario/__${comentario.campana.idCampana}__/baja/__${comentario.idComentario}__}" type="button" class="btn btn-danger">Sí, eliminar</a>
+                        <div class="card-body p-4" id="comentarios">
+                            <content th:if="${#lists.isEmpty(comentarios)}"
+                                sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))">
+                                <h4 class="mb-0">Todavía no hay comentarios en esta campaña</h4>
+                                <p class="fw-light pb-2"
+                                    th:text="'Sé el primero y dejá un comentario para la campaña: '+${campana.titulo}+', y no te olvides de votar el desafío que más te gustó'">
+                                </p>
+                            </content>
+                            <content th:if="${#lists.size(comentarios) > 0}"
+                                sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))">
+                                <h4 class="mb-0">Comentarios recientes</h4>
+                                <p class="fw-light pb-2"
+                                    th:text="'Dejá un comentario para la campaña: '+${campana.titulo}+', y no te olvides de votar el desafío que más te gustó'">
+                                </p>
+                            </content>
+                            <content th:if="${#lists.size(comentarios) > 0}"
+                                sec:authorize="hasAnyRole('ROLE_ADM', 'ROLE_EMP')">
+                                <h4 class="pb-2">Comentarios recientes</h4>
+                            </content>
+                            <content th:if="${#lists.isEmpty(comentarios)}"
+                                sec:authorize="hasAnyRole('ROLE_ADM', 'ROLE_EMP')">
+                                <h4 class="pb-2">Esta campaña todavía no tiene comentarios</h4>
+                            </content>
+                            <content th:each="comentario :${comentarios}" th:if="${comentario.altaBaja}">
+                                <div class="d-flex flex-start">
 
-                                                            </div>
+                                    <img class="rounded-circle shadow-1-strong me-3"
+                                        th:src="@{/imagen/perfil/__${comentario.votante.id}__}" alt="avatar" width="60"
+                                        height="60" />
+                                    <div>
+                                        <h6 class="fw-bold mb-1" th:text="${comentario.votante.nombreApellido}"></h6>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <p class="mb-0" th:text="${comentario.fechaPublicacion}"></p>
+
+
+                                            <a href="" class="m-2" sec:authorize="hasRole('ADM')" data-bs-toggle="modal"
+                                                th:data-bs-target="'#exampleModal-' + ${comentario.idComentario}">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="'exampleModal-' + ${comentario.idComentario}"
+                                                tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Dar de
+                                                                baja comentario</h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Usuario responsable del comentario: <span class="fw-bold"
+                                                                    th:text="${comentario.votante.nombreApellido}"></span>
+                                                            </p>
+                                                            <p>Comentario: "<span class="fw-bold"
+                                                                    th:text="${comentario.mensaje}"></span>"</p>
+                                                            <p>Fecha publicación: <span class="fw-bold"
+                                                                    th:text="${comentario.fechaPublicacion}"></span></p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a th:href="@{/comentario/__${comentario.campana.idCampana}__/baja/__${comentario.idComentario}__}"
+                                                                type="button" class="btn btn-danger">Sí, eliminar</a>
+
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p class="mb-0 py-0" th:text="${comentario.mensaje}"></p>
                                         </div>
+                                        <p class="mb-0" th:text="${comentario.mensaje}"></p>
                                     </div>
-                                    <hr class="mb-3 " style="height: 1px;" />                               
-                                </content>
-                            </div>
-                            <div   sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" class="card-footer py-1 border-0" style="background-color: #f8f9fa;">
-                                <h4 class="mb-0 pb-3" style=" padding-button: 13px !important">Comentar</h4>
-                                <div class="d-flex flex-start w-100">
-                                    <img th:if="${session.usuariosession != null}" class="rounded-circle shadow-1-strong me-3"
-                                         th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="avatar" width="60"
-                                         height="60" />
-                                    <form th:action="@{/comentario/__${campana.idCampana}__/comentar}" method="POST" class="form-outline w-100">
-                                        <input hidden th:value="${campana.idCampana}"  name="idCampana" />
-                                        <textarea name="mensaje" class="form-control" rows="4" style="background: #fff;"></textarea>
-                                        <div th:if="${session.usuariosession != null}" class="float-end mt-2 pt-1">
-                                            <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
-                                        </div>
-                                        <div th:if="${session.usuariosession == null}" class="float-end mt-2 pt-1">
-
-                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#registrate">
-                                                Comentar
-                                            </button>
-                                            <content th:replace= "/fragments/modalRegistrate :: content"></content>
-                                        </div>
-
-                                    </form>
                                 </div>
+                                <hr class="mb-3" style="height: 1px;" />
+                            </content>
+                        </div>
+
+
+                        <div sec:authorize="not(hasAnyRole('ROLE_ADM', 'ROLE_EMP'))" class="card-footer py-3 border-0"
+                            style="background-color: #f8f9fa;">
+                            <div class="d-flex flex-start w-100">
+                                <img th:if="${session.usuariosession != null}"
+                                    class="rounded-circle shadow-1-strong me-3"
+                                    th:src="@{/imagen/perfil/__${session.usuariosession.id}__}" alt="avatar" width="60"
+                                    height="60" />
+                                <form th:action="@{/comentario/__${campana.idCampana}__/comentar}" method="POST"
+                                    class="form-outline w-100">
+                                    <input hidden th:value="${campana.idCampana}" name="idCampana" />
+                                    <textarea name="mensaje" class="form-control" rows="4"
+                                        style="background: #fff;"></textarea>
+                                    <div th:if="${session.usuariosession != null}" class="float-end mt-2 pt-1">
+                                        <button type="submit" class="btn btn-primary btn-sm">Comentar</button>
+                                    </div>
+                                    <div th:if="${session.usuariosession == null}" class="float-end mt-2 pt-1">
+
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#registrate">
+                                            Comentar
+                                        </button>
+                                        <content th:replace="/fragments/modalRegistrate :: content"></content>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>    
-        </section>
-        <footer th:replace="/fragments/footer :: footer" ></footer>
-        <!-- SCRIPTS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-        <script src="/js/eventos.js" type="text/javaScript"></script>
-        <script th:inline="javascript">
-            $(document).ready(function () {
+            </div>
+        </div>
+    </section>
+
+
+
+    <footer th:replace="/fragments/footer :: footer"></footer>
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script src="/js/eventos.js" type="text/javaScript"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
             $("button#botonSeguir").click(function () {
-            var id = [[${ campana.idCampana }]];
-            $.ajax({
-            type: "POST",
+                var id = [[${ campana.idCampana }]];
+                $.ajax({
+                    type: "POST",
                     url: "/campana/" + id + "/seguir",
                     success: function (data) {
-                    if (data !== - 1 && data !== - 2) {
-                    $("#seguidores").text(data);
-                    if ($("#seguirEstado").text() == "Seguir") {
-                    $("#seguirEstado").text("Seguidores");
-                    } else {
-                    $("#seguirEstado").text("Seguir");
-                    }
-                    } else if (data == - 2) {
-                    alert("Debe estar logueado como usuario votante.")
-                    } else {
-                    window.location.href = "/login"
-                    }
+                        if (data !== -1 && data !== -2) {
+                            $("#seguidores").text(data);
+                            if ($("#seguirEstado").text() == "Seguir") {
+                                $("#seguirEstado").text("Siguiendo");
+                            } else {
+                                $("#seguirEstado").text("Seguir");
+                            }
+                        } else if (data == -2) {
+                            alert("Debe estar logueado como usuario votante.")
+                        } else {
+                            window.location.href = "/login"
+                        }
+                        actualizarSeguidoresList();
                     },
                     error: function () {
-                    alert("Debe estar logeado como usuario votante")
+                        alert("Debe estar logeado como usuario votante")
                     }
+                });
+
+                function actualizarSeguidoresList() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/campana/" + [[${ campana.idCampana }]] + "/votantes",
+                        success: function (data) {
+                            var dropdownMenu = $("#listaSeguidores");
+                            dropdownMenu.empty();
+                            data.forEach(function (seguidor) {
+                                var listItem = $('<div class="dropdown-item me-5"></div>');
+                                var img = $('<img src="/imagen/perfil/' + seguidor.id + '" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">');
+                                var span = $('<span></span>').text(seguidor.nombreApellido);
+                                listItem.append(img, span);
+                                dropdownMenu.append($('<li></li>').append(listItem));
+                            });
+                        },
+                        error: function () {
+                            console.log("Error cargando los seguidores.");
+                        }
+                    });
+                }
             });
-            });
-            });
-        </script>
-    </body>
+        });
+
+    </script>
+</body>
+
 </html>
