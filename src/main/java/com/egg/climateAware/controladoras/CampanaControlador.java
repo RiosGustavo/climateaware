@@ -106,10 +106,10 @@ public class CampanaControlador {
 
     @GetMapping("/campana_one/{idCampana}")
     public String mostrarDetalleCampaña(@PathVariable String idCampana, ModelMap modelo, HttpSession session) {
-            List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
-            modelo.put("publicaciones", publicaciones);
-            modelo.put("campana", campanaServicio.getOne(idCampana));
-            return "campana_one.html";
+        List<Publicacion> publicaciones = publicacionServicio.publicacionesPorCampanaActivas(idCampana);
+        modelo.put("publicaciones", publicaciones);
+        modelo.put("campana", campanaServicio.getOne(idCampana));
+        return "campana_one.html";
     }
 
     @PostMapping("/{idCampana}/seguir")
@@ -131,6 +131,13 @@ public class CampanaControlador {
             modelo.put("error", ex.getMessage());
             return -1;
         }
+    }
+
+    @GetMapping("/{idCampana}/votantes")
+    @ResponseBody
+    public List<Votante> actualizarVotantes(@PathVariable String idCampana) {
+        Campana campana = campanaServicio.getOne(idCampana);
+        return campana.getVotantes();
     }
 
     //-----------------------------MOTOR BUSQUEDA---------------------------------

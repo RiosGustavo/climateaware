@@ -275,13 +275,37 @@
                         } else {
                             window.location.href = "/login"
                         }
+                        actualizarSeguidoresList(); 
                     },
                     error: function () {
                         alert("Debe estar logeado como usuario votante")
                     }
                 });
             });
+
+            function actualizarSeguidoresList() {
+            $.ajax({
+                type: "GET",
+                url: "/campana/" + [[${campana.idCampana}]] + "/votantes",
+                success: function (data) {
+                    var dropdownMenu = $(".dropdown-menu");
+                    dropdownMenu.empty();
+                    data.forEach(function (seguidor) {
+                        var listItem = $('<div class="dropdown-item me-5"></div>');
+                        var img = $('<img src="/imagen/perfil/' + seguidor.id + '" alt="Imagen de perfil" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">');
+                        var span = $('<span></span>').text(seguidor.nombreApellido);
+                        listItem.append(img, span);
+                        dropdownMenu.append($('<li></li>').append(listItem));
+                    });
+                },
+                error: function () {
+                    console.log("Error cargando los seguidores.");
+                }
+            });
+        }
         });
+
+        
     </script>
 </body>
 
