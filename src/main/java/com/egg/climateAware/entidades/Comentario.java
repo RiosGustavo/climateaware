@@ -1,14 +1,12 @@
+
 package com.egg.climateAware.entidades;
 
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import lombok.AccessLevel;
@@ -26,37 +24,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
-public class Campana {
-
+public class Comentario {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private String idCampana;
-
-    private String titulo;
-
-    @Column(length = 65535, columnDefinition = "text")
-    private String cuerpo;
-    private Boolean altaBaja;
-
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date fechaAlta;
-
-    @OneToMany
-    private List<Publicacion> publicaciones;
-
-    @ManyToOne
-    private Empresa empresa;
-
-    @OneToOne
-    private Imagen imagen;
-
-    private String descripcion;
-
-    @OneToMany
-    private List<Votante> votantes;
+    private String idComentario;
     
-    @OneToMany
-    private List<Comentario> comentarios;
+    
+    @Column(length = 65535, columnDefinition = "text")
+    private String mensaje;
+
+    private Boolean altaBaja;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private Date fechaPublicacion;
+    
+    @ManyToOne
+    private Votante votante;
+    
+    @ManyToOne
+    private Campana campana;
 }

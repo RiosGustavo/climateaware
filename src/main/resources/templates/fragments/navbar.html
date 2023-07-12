@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-body-primary shadow">
     <div class="container-fluid">
 
-        <a  class="fs-4 fw-bold text-black text-decoration-none" th:href="@{/}">Climate aware</a>
+        <a  class="fs-4 fw-bold text-black text-decoration-none croogla" th:href="@{/}">Climate aware</a>
         <img src="/img/logo.png" class="imagenNavbar" >
         <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,9 +18,8 @@
                 <li sec:authorize="hasRole('ADM')" class="nav-item fw-bold">
                     <a class="nav-link" th:href="@{/admin/bloggers}" >Blogger</a>
                 </li>
-                <li sec:authorize="hasRole('ADM')" class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/bloggers}" >/</a>
-                </li>
+               
+                <button onclick="cambiarTema()" class="btn rounded-fill"><i id="dl-icon" class="bi bi-moon-fill"></i></button>
                 <li class="nav-item">
                     <a class="nav-link"th:href="@{/noticia/lista}" >Novedades</a>
                 </li>

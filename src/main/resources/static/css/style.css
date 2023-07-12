@@ -21,7 +21,7 @@ body {
     font-family: "croogla";
     src: url("../fonts/croogla.ttf") format("truetype");
 }
-.fs-4 {
+.croogla {
     font-family: "croogla", Arial, sans-serif;
     font-size: 90px !important;
     color: #80b918 !important;
@@ -307,5 +307,21 @@ button.accordion-button:focus {
     cursor: pointer;
 }
 
+[data-bs-theme=dark] .fs-4{
+  color: #fff!important;
+  font-family: "croogla", Arial, sans-serif;
+  
+  
+}
+[data-bs-theme=dark] .croogla{
+  color: #fff!important;
+  
+  
+}
+
+
+[data-bs-theme=dark] body {
+    background-color: #2E2E2E !important;
+}
 
 
