@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="https://www.thymeleaf.org/" xmlns:sec="https://www.thymeleaf.org/extras/spring-security" data-bs-theme="light">
     <head  th:replace = "/fragments/head :: head"> </head>
     <header> 
         <nav th:replace= "/fragments/navbar :: nav"></nav>
@@ -134,6 +134,7 @@
 
     <!-- Mensajes para el formulario -->
     <script th:src="@{/js/mensajeFormulario.js}"/></script>
+    <script src="/js/eventos.js" type="text/javaScript"></script>
 
 <script th:src="@{/js/previewArchivoForm.js}"/></script>
 

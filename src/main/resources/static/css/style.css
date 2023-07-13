@@ -307,5 +307,46 @@ button.accordion-button:focus {
     cursor: pointer;
 }
 
+[data-bs-theme=dark] .fs-4{
+  color: #fff!important;
+  font-family: "croogla", Arial, sans-serif; 
+}
+[data-bs-theme=dark] .croogla{
+  color: #fff!important;
+  
+}
+
+[data-bs-theme=dark] #comentarios{
+  background-color: #212529!important;
+}
+
+[data-bs-theme=dark] .card-body .mb-0{
+  color: #fff!important;
+}
+[data-bs-theme=dark] .card-body .pb-2{
+  color: #fff!important;
+}
+[data-bs-theme=dark] .card-footer .mb-0{
+  color: #fff!important;
+}
+[data-bs-theme=dark] .card-body .fw-light{
+  color: #fff!important;
+}
+[data-bs-theme=dark] .card-body .fw-bold{
+  color: #fff!important;
+}
+[data-bs-theme=dark] .card-footer {
+  background-color: #212529!important;
+}
+[data-bs-theme=dark] .container .row .col-md-12 .card hr{
+ text-decoration: underline !important;
+    color: goldenrod;
+}
+
+
+
+[data-bs-theme=dark] body {
+    background-color: #2E2E2E !important;
+}
 
 
