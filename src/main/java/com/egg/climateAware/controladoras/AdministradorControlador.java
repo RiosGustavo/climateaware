@@ -8,6 +8,7 @@ package com.egg.climateAware.controladoras;
 import com.egg.climateAware.entidades.Blogger;
 import com.egg.climateAware.entidades.Empresa;
 import com.egg.climateAware.entidades.Votante;
+import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import com.egg.climateAware.servicios.BloggerServicio;
 import com.egg.climateAware.servicios.EmpresaServicio;
 import com.egg.climateAware.servicios.UsuarioServicio;
@@ -45,38 +46,6 @@ public class AdministradorControlador {
     public String panelAdministrativo() {
 
         return "panel_admin.html";
-    }
-
-//LISTA DE TODOS
-    @GetMapping("/lista")
-    public String lista(ModelMap modelo) {
-        modelo.put("usuarios", usuarioServicio.listaUsuarios());
-        return "lista.html";
-    }
-
-//LISTAS SEPARADAS  
-    @GetMapping("/listaAdministrador")
-    public String listaAdministradores(ModelMap modelo) {
-//       modelo.put("administradores",administradorServicio.listaAdministradores());
-        return "lista_admin.html";
-    }
-
-    @GetMapping("/listaEmpresas")
-    public String listaEmpresas(ModelMap modelo) {
-//       modelo.put("empresas",administradorServicio.listarEmpresas());
-        return "lista_empresa.html";
-    }
-
-    @GetMapping("/listaVotantes")
-    public String listaVotantes(ModelMap modelo) {
-        modelo.put("votantes", votanteServicio.listarVotantes());
-        return "lista_votante.html";
-    }
-
-    @GetMapping("/ListaBlogger")
-    public String listaBlogger(ModelMap modelo) {
-//         modelo.put("bloggers",bloggerServicio.listarBloggers());
-        return "lista_blogger.html";
     }
 
     @GetMapping("/eliminar/{id}")
@@ -127,23 +96,25 @@ public class AdministradorControlador {
     }
 
     @GetMapping("/empresas")
-    public String busquedaEmpresas(@RequestParam(required = false) String termino, ModelMap modelo) {
+    public String busquedaEmpresas(@RequestParam(required = false) String termino, @RequestParam(required = false) String estado, @RequestParam(required = false) String orden, ModelMap modelo) {
 
         List<Empresa> empresas = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
-            empresas = empresaServicio.buscarEmpresasPorTermino(termino.toLowerCase());
-
-            if (empresas.isEmpty()) {
-                empresas = empresaServicio.listarEmpresas();
-                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
-            }
-
+            empresas = empresaServicio.search(termino, estado, orden);
+            
         } else {
+            empresas = empresaServicio.search2(estado, orden);
+        } 
 
+        if (empresas.isEmpty()) {
             empresas = empresaServicio.listarEmpresas();
+            modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
         }
 
+        modelo.put("termino", termino);
+        modelo.put("estado", estado);
+        modelo.put("orden", orden);
         modelo.addAttribute("empresas", empresas);
 
         return "empresa_list.html";

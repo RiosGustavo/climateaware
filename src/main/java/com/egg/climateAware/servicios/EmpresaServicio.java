@@ -97,13 +97,20 @@ public class EmpresaServicio {
         return empresas;
     }
     
-    public List<Empresa> buscarEmpresasPorTermino(String termino) {
+    public List<Empresa> search(String termino, String estado,String orden) {
 
         List<Empresa> empresas = new ArrayList();
-        empresas = empresaRepositorio.buscarEmpresasPorTermino(termino);
+        empresas = empresaRepositorio. search(termino, estado,orden);
         return empresas;
     }
+    
+    public List<Empresa> search2(String estado,String orden) {
 
+        List<Empresa> empresas = new ArrayList();
+        empresas = empresaRepositorio. search2(estado,orden);
+        return empresas;
+    }
+    
     @Transactional
     public void darDeBajaEmpresa(String id) throws Exception {
 

@@ -10,7 +10,7 @@ html {
 }
 body {
     background-color: rgba(85, 166, 48, .1) !important;
- 
+
 }
 
 @font-face {
@@ -45,7 +45,7 @@ body {
     transition: 0.5s !important;
 }
 footer .nav .item2 .link2 {
-   text-decoration: none !important;
+    text-decoration: none !important;
     color: #80b918 !important;
     transition: 0.5s !important;
 }
@@ -119,15 +119,15 @@ footer .nav .item2 .link2 {
 
 /*Boton para ir arriba*/
 footer #ir-arriba {
-	display:none;
-	padding:10px !important;
-	background:#80b918;
-	font-size:40px !important;
-	color:#fff;
-	cursor:pointer;
-	position: fixed;
-	bottom:20px !important;
-	right:20px !important;
+    display:none;
+    padding:10px !important;
+    background:#80b918;
+    font-size:40px !important;
+    color:#fff;
+    cursor:pointer;
+    position: fixed;
+    bottom:20px !important;
+    right:20px !important;
 }
 /*KEYFRAMES DE TRANCICIONES*/
 
@@ -306,6 +306,3 @@ button.accordion-button:focus {
     height: 100%;
     cursor: pointer;
 }
-
-
-
