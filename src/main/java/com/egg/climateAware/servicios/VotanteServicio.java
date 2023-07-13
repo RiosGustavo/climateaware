@@ -127,10 +127,17 @@ public class VotanteServicio {
         return votantes;
     }
 
-    public List<Votante> buscarVotantesPorTermino(String termino) {
+    public List<Votante> search(String termino, String estado,String orden) {
 
         List<Votante> votantes = new ArrayList();
-        votantes = votanteRepositorio.buscarVotantesPorTermino(termino);
+        votantes = votanteRepositorio. search(termino, estado,orden);
+        return votantes;
+    }
+    
+    public List<Votante> search2(String estado,String orden) {
+
+        List<Votante> votantes = new ArrayList();
+        votantes = votanteRepositorio. search2(estado,orden);
         return votantes;
     }
 

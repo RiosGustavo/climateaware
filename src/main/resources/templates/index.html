@@ -25,8 +25,8 @@
 
             <div class="row featurette campanaPost mb-3" th:each="noticia : ${noticias}">
                 <div class=" col-md-7">
-                    <h1 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"><strong>First featurette heading.</strong> </h1>
-                    <p class="lead">Some great placeholder content for the first featurette here. Imagine some exciting prose here.</p>
+                    <h1 class="featurette-heading fw-normal lh-1 text-center" th:text="${noticia.titulo}"></h1>
+                    <p class="lead" th:text="${noticia.descripcion}"></p>
                     <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} "> 
                         <button type="button" class="btn btn-outline-secondary btn-sm px-4" >Ver mas</button>   
                     </a>

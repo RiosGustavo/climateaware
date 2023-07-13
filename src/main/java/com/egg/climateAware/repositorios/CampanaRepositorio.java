@@ -38,4 +38,17 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
    
      List<Campana> findByAltaBajaTrue();
     
+     
+     
+    @Query("SELECT ca FROM Campana ca WHERE (:termino IS NULL OR CONCAT(ca.titulo, ca.descripcion, ca.empresa.nombreEmpresa) LIKE %:termino%) "
+            + "AND (:estado IS NULL OR ca.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE ca.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN ca.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN ca.fechaAlta END DESC")
+    public  List<Campana> search(@Param("termino") String termino, @Param("estado") String estado, @Param("orden") String orden);
+
+    @Query("SELECT ca FROM Campana ca WHERE (:estado IS NULL OR ca.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE ca.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN ca.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN ca.fechaAlta END DESC")
+    public  List<Campana> search2(@Param("estado") String estado, @Param("orden") String orden);
+     
+     
+     
 }

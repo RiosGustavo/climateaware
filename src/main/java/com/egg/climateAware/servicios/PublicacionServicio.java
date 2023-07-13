@@ -195,6 +195,20 @@ public class PublicacionServicio {
         publicaciones = publicacionRepositorio.findAllOrderByfecha_altaDesc();
         return publicaciones;
     }
+    
+    public List<Publicacion>  search(String termino, String estado, String orden) {
+
+        List<Publicacion> publicaciones = new ArrayList<>();
+        publicaciones = publicacionRepositorio.search(termino, estado, orden);
+        return publicaciones;
+    }
+
+    public List<Publicacion> search2(String estado, String orden) {
+
+        List<Publicacion> publicaciones = new ArrayList<>();
+        publicaciones = publicacionRepositorio.search2(estado, orden);
+       return publicaciones;
+    }
 
     @Transactional
     public void darDeBajaPublicacion(String idPublicacion) throws Exception {

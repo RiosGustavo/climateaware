@@ -42,4 +42,15 @@ public interface  PublicacionRepositorio extends JpaRepository<Publicacion, Stri
     @Query(value="select * from publicacion where votante_id=:id and campana_id_campana = :idCampana limit 1", nativeQuery = true)
     public Publicacion  buscarPorCampanaporUsuario (@Param("idCampana") String idCampana,@Param("id") String id  );
     
+    
+    
+     @Query("SELECT ca FROM Publicacion ca WHERE (:termino IS NULL OR CONCAT(ca.titulo, ca.descripcion, ca.votante.nombreApellido) LIKE %:termino%) "
+            + "AND (:estado IS NULL OR ca.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE ca.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN ca.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN ca.fechaAlta END DESC")
+    public  List<Publicacion> search(@Param("termino") String termino, @Param("estado") String estado, @Param("orden") String orden);
+
+    @Query("SELECT ca FROM Publicacion ca WHERE (:estado IS NULL OR ca.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE ca.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN ca.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN ca.fechaAlta END DESC")
+    public  List<Publicacion> search2(@Param("estado") String estado, @Param("orden") String orden);
+     
 }

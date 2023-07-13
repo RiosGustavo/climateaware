@@ -41,39 +41,33 @@ public class BloggerServicio {
         blo.setPassword(votante.getPassword());
         blo.setRoles(Rol.BLO);
         blo.setImagen(votante.getImagen());
-        
 
         bloggerRepositorio.save(blo);
         votanteRepositorio.deleteById(id);
         return blo;
     }
-    
+
     @Transactional
-    public Votante bloggerAvotante(String id){
-        
+    public Votante bloggerAvotante(String id) {
+
         Blogger blogger = bloggerRepositorio.findById(id).get();
         Votante vo = new Votante();
-        
-        vo.setNombreApellido( blogger.getNombreApellido());
-        vo.setDni( blogger.getDni());
-        vo.setDireccion( blogger.getDireccion());
+
+        vo.setNombreApellido(blogger.getNombreApellido());
+        vo.setDni(blogger.getDni());
+        vo.setDireccion(blogger.getDireccion());
         vo.setEmail(blogger.getEmail());
         vo.setFechaAlta(new Date());
         vo.setAltaBaja(true);
         vo.setPassword(blogger.getPassword());
         vo.setRoles(Rol.VOT);
         vo.setImagen(blogger.getImagen());
-        
-        
-        
+
         votanteRepositorio.save(vo);
         bloggerRepositorio.deleteById(id);
         return vo;
-       
+
     }
-    
-    
-    
 
     @Transactional
     public void modificarBlogger(MultipartFile archivo, String id, String nombreApellido, String direccion)
@@ -128,10 +122,17 @@ public class BloggerServicio {
         return bloggerRepositorio.getOne(id);
     }
 
-    public List<Blogger> buscarBloggersPorTermino(String termino) {
+    public List<Blogger> search(String termino, String estado, String orden) {
 
         List<Blogger> bloggers = new ArrayList();
-        bloggers = bloggerRepositorio.buscarBloggersPorTermino(termino);
+        bloggers = bloggerRepositorio.search(termino, estado, orden);
+        return bloggers;
+    }
+
+    public List<Blogger> search2(String estado, String orden) {
+
+        List<Blogger> bloggers = new ArrayList();
+        bloggers = bloggerRepositorio.search2(estado, orden);
         return bloggers;
     }
 

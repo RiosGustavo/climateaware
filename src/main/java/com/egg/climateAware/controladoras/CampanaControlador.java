@@ -113,14 +113,14 @@ public class CampanaControlador {
     public String mostrarDetalleCampaña(@PathVariable String idCampana, ModelMap modelo, HttpSession session) {
         try {
             Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+            boolean verif = false; 
             for (Votante votante : campanaServicio.getOne(idCampana).getVotantes()) {
                 if (votante.getId().equals(usuario.getId())) {
-                    modelo.put("verif", true);
+                    verif = true; 
                     break;
-                } else {
-                    modelo.put("verif", false);
                 }
             }
+            modelo.put("verif", verif);
         } catch (Exception e) {
             modelo.put("verif", false);
         } finally {
@@ -163,28 +163,35 @@ public class CampanaControlador {
     }
 
     //-----------------------------MOTOR BUSQUEDA---------------------------------
-    @GetMapping("/lista")
-    public String listadoCampanas(@RequestParam(required = false) String termino, ModelMap modelo, HttpSession session) {
 
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
+   
+   @GetMapping("/lista")
+    public String listadoCampanas(@RequestParam(required = false) String termino, @RequestParam(required = false) String estado, @RequestParam(required = false) String orden, ModelMap modelo) {
+
         List<Campana> campanas = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
-            campanas = campanaServicio.buscarCampanasPorTitulo(termino.toLowerCase());
-
-            if (campanas.isEmpty()) {
-                campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
-                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
-            }
+            campanas = campanaServicio.search(termino, estado, orden);
 
         } else {
-
-            campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
+            campanas = campanaServicio.search2(estado, orden);
         }
 
-        modelo.addAttribute("campanas", campanas);
+        if (campanas.isEmpty()) {
+            campanas = campanaRepositorio.findAllOrderByfecha_altaDesc();
+            modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+        }
+
+        modelo.put("termino", termino);
+        modelo.put("estado", estado);
+        modelo.put("orden", orden);
+         modelo.addAttribute("campanas", campanas);
 
         return "campana_list.html";
     }
-
+    
+    
+    
+    
+    
 }

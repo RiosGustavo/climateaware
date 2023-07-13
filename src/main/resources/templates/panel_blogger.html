@@ -51,7 +51,7 @@
                             <p th:if="${!noticia.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
                             <div class="row m-1" >
                                 <a th:if='${session.usuariosession.altaBaja == true}' th:href="@{/noticia/modificar/__${noticia.idNoticia}__}" class="btn btn-warning mt-2">Modificar</a>
-                                <a th:href= "@{/noticia/__${noticia.idNoticia}__} " target="_blank" class="btn btn-light mt-2">Ver más</a>
+                                <a th:href= "@{/noticia/noticia_one/__${noticia.idNoticia}__} " target="_blank" class="btn btn-light mt-2">Ver más</a>
                             </div>
                         </div>
                     </div>

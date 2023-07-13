@@ -10,10 +10,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BloggerRepositorio extends JpaRepository<Blogger, String> {
 
-    @Query("SELECT blo FROM Blogger blo WHERE ((:termino IS NULL OR LOWER(blo.nombreApellido) LIKE %:termino%) OR "
-            + "(:termino IS NULL OR blo.dni LIKE %:termino%) OR "
-            + "(:termino IS NULL OR blo.email LIKE %:termino%) OR "
-            + "(:termino IS NULL OR LOWER(blo.id) LIKE %:termino%))")
-    List<Blogger> buscarBloggersPorTermino(@Param("termino") String termino);
+    @Query("SELECT vot FROM Blogger vot WHERE (:termino IS NULL OR CONCAT(vot.nombreApellido,vot.email ,vot.direccion, vot.dni, vot.id) LIKE %:termino%) "
+            + "AND (:estado IS NULL OR vot.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE vot.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN vot.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN vot.fechaAlta END DESC")
+    public List<Blogger> search(@Param("termino") String termino, @Param("estado") String estado, @Param("orden") String orden);
+
+    @Query("SELECT vot FROM Blogger vot WHERE (:estado IS NULL OR vot.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE vot.altaBaja END) "
+            + "ORDER BY CASE WHEN :orden = 'asc' THEN vot.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN vot.fechaAlta END DESC")
+    public List<Blogger> search2(@Param("estado") String estado, @Param("orden") String orden);
 
 }

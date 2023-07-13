@@ -137,8 +137,22 @@ public class CampanaServicio {
     public List<Campana> listarCampanasActivas() {
         List<Campana> campanas = new ArrayList();
 
-        campanas = (List<Campana>) campanaRepositorio.buscarPorEstado();
+        campanas = campanaRepositorio.buscarPorEstado();
 
+        return campanas;
+    }
+
+    public List<Campana> search(String termino, String estado, String orden) {
+
+        List<Campana> campanas = new ArrayList();
+        campanas = campanaRepositorio.search(termino, estado, orden);
+        return campanas;
+    }
+
+    public List<Campana> search2(String estado, String orden) {
+
+        List<Campana> campanas = new ArrayList();
+        campanas = campanaRepositorio.search2(estado, orden);
         return campanas;
     }
 
@@ -203,29 +217,26 @@ public class CampanaServicio {
 
     }
 
-
-
-
     public void darDeBajaCampanasAntiguas() {
         List<Campana> campanasActivas = campanaRepositorio.findByAltaBajaTrue();
         Date fechaActual = new Date();
 
-  for (Campana campana : campanasActivas) {
-    Date fechaAlta = campana.getFechaAlta();
-    long diferenciaTiempo = fechaActual.getTime() - fechaAlta.getTime();
-    long diasPasados = diferenciaTiempo / (1000 * 60 * 60 * 24);
+        for (Campana campana : campanasActivas) {
+            Date fechaAlta = campana.getFechaAlta();
+            long diferenciaTiempo = fechaActual.getTime() - fechaAlta.getTime();
+            long diasPasados = diferenciaTiempo / (1000 * 60 * 60 * 24);
 
-    if (diasPasados >= 30) {
-        campana.setAltaBaja(false);
-        
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(fechaAlta);
-        calendar.add(Calendar.DAY_OF_MONTH, 30);
-        
-        Date fechaBaja = calendar.getTime();
-        
-        campana.setFechaBaja(fechaBaja);
-        campanaRepositorio.save(campana);
+            if (diasPasados >= 30) {
+                campana.setAltaBaja(false);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(fechaAlta);
+                calendar.add(Calendar.DAY_OF_MONTH, 30);
+
+                Date fechaBaja = calendar.getTime();
+
+                campana.setFechaBaja(fechaBaja);
+                campanaRepositorio.save(campana);
             }
         }
     }

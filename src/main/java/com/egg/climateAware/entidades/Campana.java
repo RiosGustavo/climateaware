@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -43,7 +44,7 @@ public class Campana {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
     
-     @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaBaja;
     
@@ -58,7 +59,7 @@ public class Campana {
 
     private String descripcion;
 
-    @OneToMany
+    @ManyToMany
     private List<Votante> votantes;
     
     @OneToMany

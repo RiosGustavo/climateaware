@@ -2,6 +2,7 @@ package com.egg.climateAware.controladoras;
 
 import com.egg.climateAware.entidades.Publicacion;
 import com.egg.climateAware.entidades.Usuario;
+import com.egg.climateAware.entidades.Votante;
 import com.egg.climateAware.servicios.CampanaServicio;
 import com.egg.climateAware.servicios.PublicacionServicio;
 import java.util.ArrayList;
@@ -32,27 +33,26 @@ public class PublicacionControlador {
 
     @GetMapping("publicacion_one/{idPublicacion}")
 
-    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo, HttpSession session){
-        try{
-            Usuario usuarioLogueado = (Usuario) session.getAttribute("usuariosession");
-            for (Usuario usuario : publicacionServicio.getOne(idPublicacion).getVotos()) {
-                if(usuario.getId().equals(usuarioLogueado.getId())){
-                    modelo.put("verif",true);
+    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo, HttpSession session) {
+        try {
+            Usuario usuario = (Usuario) session.getAttribute("usuariosession");
+            boolean verif = false;
+            for (Usuario votante : publicacionServicio.getOne(idPublicacion).getVotos()) {
+                if (votante.getId().equals(usuario.getId())) {
+                    verif = true;
+
                     break;
-                }else{
-                    modelo.put("verif",false);
                 }
             }
+            modelo.put("verif", verif);
+        } catch (Exception e) {
+            modelo.put("verif", false);
+        } finally {
+
+            modelo.put("publicacion", publicacionServicio.getOne(idPublicacion));
+            return "publicacion_one.html";
         }
-        catch (Exception e){
-            modelo.put("verif",false);
-        }
-        finally{
-        
-        modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
-         return "publicacion_one.html";
-         }
-        
+
     }
 
     @PostMapping("/{id}/votar")
@@ -140,27 +140,28 @@ public class PublicacionControlador {
 
     //-----------------------------MOTOR BUSQUEDA---------------------------------
     @GetMapping("/lista")
-    public String listadoPublicaciones(@RequestParam(required = false) String termino, ModelMap modelo, HttpSession session) {
+    public String listadoPublicaciones(@RequestParam(required = false) String termino, @RequestParam(required = false) String estado, @RequestParam(required = false) String orden, ModelMap modelo) {
 
-        Usuario logueado = (Usuario) session.getAttribute("usuariosession");
         List<Publicacion> publicaciones = new ArrayList<>();
 
         if (termino != null && !termino.isEmpty()) {
-            publicaciones = publicacionServicio.publicacionPorTitulo(termino.toLowerCase());
-
-            if (publicaciones.isEmpty()) {
-                modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
-                publicaciones = publicacionServicio.publicacionPorFecha();
-            }
+            publicaciones = publicacionServicio.search(termino, estado, orden);
 
         } else {
-
-            publicaciones = publicacionServicio.publicacionPorFecha();
-
+            publicaciones = publicacionServicio.search2(estado, orden);
         }
 
+        if (publicaciones.isEmpty()) {
+            publicaciones = publicaciones = publicacionServicio.publicacionPorFecha();
+            modelo.put("error", "No se encontró nada con el término ingresado. Intente de otra manera.");
+        }
+
+        modelo.put("termino", termino);
+        modelo.put("estado", estado);
+        modelo.put("orden", orden);
         modelo.addAttribute("publicaciones", publicaciones);
 
         return "publicacion_list.html";
     }
+
 }

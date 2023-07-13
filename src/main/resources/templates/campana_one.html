@@ -147,10 +147,10 @@
                             </content>
                             <content th:each="comentario :${comentarios}" th:if="${comentario.altaBaja}">
                                 <div class="d-flex flex-start">
-
+                                    <a class="pe-2" th:href="@{/votante/__${comentario.votante.id}__}" >
                                     <img class="rounded-circle shadow-1-strong me-3"
                                         th:src="@{/imagen/perfil/__${comentario.votante.id}__}" alt="avatar" width="60"
-                                        height="60" />
+                                        height="60" /></a>
                                     <div>
                                         <h6 class="fw-bold mb-1" th:text="${comentario.votante.nombreApellido}"></h6>
                                         <div class="d-flex align-items-center mb-3">

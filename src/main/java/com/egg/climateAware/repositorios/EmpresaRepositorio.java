@@ -19,7 +19,7 @@ public interface EmpresaRepositorio extends JpaRepository<Empresa, String> {
             + "ORDER BY CASE WHEN :orden = 'asc' THEN em.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN em.fechaAlta END DESC")
     public List<Empresa> search(@Param("termino") String termino, @Param("estado") String estado, @Param("orden") String orden);
 
-    @Query("SELECT em FROM Empresa em WHERE (:estado IS NULL OR (em.altaBaja = 1 AND :estado = 'true') OR (em.altaBaja = 0 AND :estado = 'false')) "
+    @Query("SELECT em FROM Empresa em WHERE (:estado IS NULL OR em.altaBaja = CASE WHEN :estado = 'true' THEN 1 WHEN :estado = 'false' THEN 0 ELSE em.altaBaja END) "
             + "ORDER BY CASE WHEN :orden = 'asc' THEN em.fechaAlta END ASC, CASE WHEN :orden = 'desc' THEN em.fechaAlta END DESC")
     public List<Empresa> search2(@Param("estado") String estado, @Param("orden") String orden);
 

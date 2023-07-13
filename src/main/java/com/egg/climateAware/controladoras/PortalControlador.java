@@ -137,8 +137,11 @@ public class PortalControlador {
         if (logueado.getRoles().toString().equals("BLO")) {
             return "redirect:/blogger/panel-principal";
         }
-
-        return "redirect:votante/panel-principal";
+        if (logueado.getRoles().toString().equals("VOT")) {
+            String votanteUrl = String.format("redirect:/votante/%s", logueado.getId());
+            return votanteUrl;
+        }
+        return "index.html";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADM','ROLE_VOT','ROLE_EMP')")
@@ -168,7 +171,7 @@ public class PortalControlador {
 
     @GetMapping("/forgot_password")
     public String recuperarContraseñaForm(Model modelo) {
-        
+
         return "forgot_password_form.html";
 
     }

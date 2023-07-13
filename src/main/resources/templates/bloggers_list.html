@@ -10,21 +10,35 @@
             <hr class="my-4">
         </div>
         <div class="container my-5">
-            <div class="row justify-content-center ">
-                <div class="col-md-6 ">
-                    <form th:action="@{/admin/bloggers}" method="get">
-                        <div class="mb-3 d-flex justify-content-center">
-                            <h3>Buscar un blogger<h3/>
-                        </div>
-                        <div class="mb-1 text-center">
-                            <small th:if="${error != null}" th:text="${error}" class="text-danger"></small>
-                        <div>
-                        <div class="mb-3">
-                            <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por nombre, dni, email, id">
-                        </div>
+            <div class="row">    
+                <div class="col-8 offset-2">
 
-                        <div class="mb-3 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary ">Buscar </button>
+                    <div class="mb-3 d-flex justify-content-center">
+                        <h3>Buscar<h3/>
+                    </div>
+                    <div class="mb-1 text-center">
+                        <small th:if="${error != null}" th:text="${error}" class="text-danger"></small>
+                    </div>
+                    <form th:action="@{/admin/bloggers}" method="get" class="d-flex">
+
+                        <div class="input-group">
+                            <div class="dropdown shadow">
+                                <select name="estado"  class="form-select" aria-label="Estado">
+                                    <option selected>Estado</option>
+                                    <option value="true" th:selected="${estado == 'true'}" >Activo</option>
+                                    <option value="false" th:selected="${estado == 'false'}" >Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="dropdown shadow">
+                                <select name="orden" th:selected="${orden}" class="form-select" aria-label="Orden">
+                                    <option selected>Orden</option>
+                                    <option  value="desc" th:selected="${orden == 'desc'}" >Recientes</option>
+                                    <option  value="asc" th:selected="${orden == 'asc'}" >Antiguos</option>
+                                </select>
+                            </div>
+
+                            <input name="termino" type="text" class="form-control shadow ms-2" id="nombre" placeholder="¿Que desea buscar?">
+                            <button type="submit" class="btn btn-light shadow"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>
                 </div>
@@ -38,6 +52,7 @@
                         <th scope="col" >ID</th>
                         <th scope="col">Nombre y apellido</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Fecha de alta</th>
                         <th scope="col">DNI</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Estado</th>
@@ -49,9 +64,10 @@
                         <th scope="row" th:text="${blogger.id}"  ></th>
                         <td th:text="${blogger.nombreApellido}"  ></td>
                         <td th:text="${blogger.email}"  ></td>
+                        <td th:text="${blogger.fechaAlta}"  ></td>
                         <td th:text="${blogger.dni}"  ></td>
                         <td th:text="${blogger.direccion}"  ></td>
-                         <td th:if="${blogger.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
+                        <td th:if="${blogger.altaBaja == true}" th:text="Activo" class="text-success fw-bold"></td>
                         <td th:if="${blogger.altaBaja == false}" th:text="Inactivo" class="text-danger fw-bold"></td>
                         <td>
                             <div class="dropdown">
@@ -62,7 +78,7 @@
                                 <ul class="dropdown-menu">
                                     <li th:if="${blogger.altaBaja == false}"><a th:href="@{/blogger/alta/__${blogger.id}__}"type="button" class="dropdown-item text-success">Dar de alta</a></li>
                                     <li th:if="${blogger.altaBaja == true}"><a th:href="@{/blogger/baja/__${blogger.id}__}"type="button" class="dropdown-item text-warning">Dar de baja</a></li>
-                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${blogger.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
+                                    <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#cambiarRol-' + ${blogger.id}" class="dropdown-item text-primary">Cambiar rol</a></li>
                                     <li><a type="button" data-bs-toggle="modal" th:data-bs-target="'#exampleModal-' + ${blogger.id}" class="dropdown-item text-danger fw-bold">Eliminar</a></li>
                                 </ul>
                             </div>

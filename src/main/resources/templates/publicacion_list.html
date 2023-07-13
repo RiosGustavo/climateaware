@@ -9,20 +9,36 @@
 
     <body>
         <h1 class="text-pre text-center">Publicaciones</h1>
-        <div class="container my-5">
-            <div class="row justify-content-center ">
-                <div class="col-md-6 ">
-                    <form th:action="@{/publicacion/lista}" method="get">
-                        <div class="mb-1 text-center">
-                            <small th:if="${error != null}" th:text="${error}" class="text-danger"></small>
-                        <div>
-                        <div class="mb-3">
-                            <input name="termino" type="text" class="form-control shadow" id="nombre" placeholder="Buscar por titulo">
-                        </div>
+       <div class="container my-5">
+            <div class="row">    
+                <div class="col-8 offset-2">
 
+                    <div class="mb-3 d-flex justify-content-center">
+                        <h3>Buscar<h3/>
+                    </div>
+                    <div class="mb-1 text-center">
+                        <small th:if="${error != null}" th:text="${error}" class="text-danger"></small>
+                    </div>
+                    <form th:action="@{/publicacion/lista}" method="get" class="d-flex">
 
-                        <div class="mb-3 d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary ">Buscar </button>
+                        <div class="input-group">
+                            <div class="dropdown shadow" sec:authorize="hasRole('ADM')">
+                                <select name="estado"  class="form-select" aria-label="Estado">
+                                    <option selected>Estado</option>
+                                    <option value="true" th:selected="${estado == 'true'}" >Activo</option>
+                                    <option value="false" th:selected="${estado == 'false'}" >Inactivo</option>
+                                </select>
+                            </div>
+                            <div class="dropdown shadow">
+                                <select name="orden" th:selected="${orden}" class="form-select" aria-label="Orden">
+                                    <option selected>Orden</option>
+                                    <option  value="desc" th:selected="${orden == 'desc'}" >Recientes</option>
+                                    <option  value="asc" th:selected="${orden == 'asc'}" >Antiguos</option>
+                                </select>
+                            </div>
+
+                            <input name="termino" type="text" class="form-control shadow ms-2" id="nombre" placeholder="¿Que desea buscar?">
+                            <button type="submit" class="btn btn-light shadow"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </form>
                 </div>

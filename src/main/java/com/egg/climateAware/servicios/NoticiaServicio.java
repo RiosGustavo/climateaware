@@ -91,12 +91,12 @@ public class NoticiaServicio {
             if (youtubeUrl != null) {
                 noticia.setVideo(getEmbeddedYouTubeUrl(youtubeUrl));
             }
-            String idImagen = null;
-            if (noticia.getImagen() != null) {
+             String idImagen = null;
+            if (archivo.getSize() > 0) {
                 idImagen = noticia.getImagen().getId();
+                Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
+                noticia.setImagen(imagen);
             }
-            Imagen imagen = imagenServicio.actualizar(archivo, idImagen);
-            noticia.setImagen(imagen);
             noticiaRepositorio.save(noticia);
         }
     }
