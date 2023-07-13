@@ -32,9 +32,27 @@ public class PublicacionControlador {
 
 
     @GetMapping("publicacion_one/{idPublicacion}")
-    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo){
+    public String publicacion_one(@PathVariable String idPublicacion, ModelMap modelo, HttpSession session){
+        try{
+            Usuario usuarioLogueado = (Usuario) session.getAttribute("usuariosession");
+            for (Usuario usuario : publicacionServicio.getOne(idPublicacion).getVotos()) {
+                if(usuario.getId().equals(usuarioLogueado.getId())){
+                    modelo.put("verif",true);
+                    break;
+                }else{
+                    modelo.put("verif",false);
+                }
+            }
+        }
+        catch (Exception e){
+            modelo.put("verif",false);
+        }
+        finally{
+        
         modelo.put("publicacion",publicacionServicio.getOne(idPublicacion));
-        return "publicacion_one.html";
+         return "publicacion_one.html";
+         }
+        
     }
 
     @PostMapping("/{id}/votar")

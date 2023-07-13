@@ -122,7 +122,10 @@ public class CampanaControlador {
                 }else{
                     modelo.put("verif",false);
                 }
-            }
+            }           
+        }
+        catch (Exception e){
+            modelo.put("verif",false);
         }finally{
             
        
