@@ -42,7 +42,11 @@ public class Campana {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fechaAlta;
-
+    
+     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private Date fechaBaja;
+    
     @OneToMany
     private List<Publicacion> publicaciones;
 
