@@ -323,6 +323,9 @@ button.accordion-button:focus {
 [data-bs-theme=dark] .card-body .mb-0{
   color: #fff!important;
 }
+[data-bs-theme=dark] .card-body .pb-2{
+  color: #fff!important;
+}
 [data-bs-theme=dark] .card-footer .mb-0{
   color: #fff!important;
 }

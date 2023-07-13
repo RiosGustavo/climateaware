@@ -40,7 +40,7 @@
                     <p th:if="${campana.altaBaja}" th:text="Activa" class="text-success fw-bold"></p>
                     <p th:if="${!campana.altaBaja}" th:text="Inactiva" class="text-danger fw-bold"></p>
                     <p class="text-campañaList text-secondary" ></p> 
-                    <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"></p>
+                    <p class="text-campañaList text-secondary" th:text="${campana.altaBaja ? 'Campaña comenzada el: ' + campana.fechaAlta : 'Campaña terminada el: ' + campana.fechaBaja}"></p>
                 </div>
                 <div class="col-md-5">
                     <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" th:src="@{/imagen/campana/__${campana.idCampana}__}" alt="">
@@ -54,7 +54,7 @@
                     <p class="lead" th:if="${#strings.length(campana.cuerpo) > 50}" th:text="${#strings.substring(campana.cuerpo, 0, 50) + '...'}"></p>
                     <a th:href= "@{/campana/campana_one/__${campana.idCampana}__} "  class="btn btn-outline-secondary btn-sm px-4">Ver mas</a>
                     <p class="text-campañaList text-secondary" ></p> 
-                    <p class="text-campañaList text-secondary" th:text="${campana.fechaAlta}"></p>
+                    <p class="text-campañaList text-secondary" th:text="${campana.altaBaja ? 'Campaña comenzada el: ' + campana.fechaAlta : 'Campaña terminada el: ' + campana.fechaBaja}"></p>
                 </div>
                 <div class="col-md-5">
                     <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300" th:src="@{/imagen/campana/__${campana.idCampana}__}" alt="">

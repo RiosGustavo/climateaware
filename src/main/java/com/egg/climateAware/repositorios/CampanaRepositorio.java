@@ -36,6 +36,6 @@ public interface CampanaRepositorio extends JpaRepository<Campana, String>{
     @Query("SELECT em FROM Empresa em WHERE em.nombreEmpresa = :nombreEmpresa")
     public List<Campana> buscarPorNombreEmpresa (@Param("nombreEmpresa") String nombreEmpresa);
    
-    
+     List<Campana> findByAltaBajaTrue();
     
 }

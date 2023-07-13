@@ -11,6 +11,7 @@ import com.egg.climateAware.repositorios.EmpresaRepositorio;
 import com.egg.climateAware.repositorios.PublicacionRepositorio;
 import com.egg.climateAware.repositorios.UsuarioRepositorio;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -202,4 +203,30 @@ public class CampanaServicio {
 
     }
 
+
+
+
+    public void darDeBajaCampanasAntiguas() {
+        List<Campana> campanasActivas = campanaRepositorio.findByAltaBajaTrue();
+        Date fechaActual = new Date();
+
+  for (Campana campana : campanasActivas) {
+    Date fechaAlta = campana.getFechaAlta();
+    long diferenciaTiempo = fechaActual.getTime() - fechaAlta.getTime();
+    long diasPasados = diferenciaTiempo / (1000 * 60 * 60 * 24);
+
+    if (diasPasados >= 30) {
+        campana.setAltaBaja(false);
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaAlta);
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
+        
+        Date fechaBaja = calendar.getTime();
+        
+        campana.setFechaBaja(fechaBaja);
+        campanaRepositorio.save(campana);
+            }
+        }
+    }
 }
